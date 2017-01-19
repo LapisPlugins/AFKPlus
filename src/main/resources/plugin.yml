@@ -1,0 +1,5 @@
+name: AFKPlus
+version: ${project.version}
+main: net.lapismc.afkplus.AFKPlus
+authors: [Dart2112]
+description: AFK for professional servers
