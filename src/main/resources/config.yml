@@ -1,0 +1,8 @@
+#Time in seconds until someone will be set as AFK
+TimeUntilAFK: 60
+#Time in seconds that a player has to be AFK for before they are kicked
+TimeUntilAction: 60
+#Actions can be COMMAND, MESSAGE, KICK
+Action: COMMAND
+#The command to e run for COMMAND and the message for KICK or MESSAGE
+ActionVariable: "kick %name AFK for more than 2 Minutes"
