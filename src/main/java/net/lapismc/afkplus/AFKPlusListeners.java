@@ -3,6 +3,8 @@ package net.lapismc.afkplus;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -27,12 +29,27 @@ public class AFKPlusListeners implements Listener {
         if (plugin.playersAFK.containsKey(p.getUniqueId())) {
             plugin.playersAFK.remove(p.getUniqueId());
         }
+        if (plugin.commandAFK.containsKey(p.getUniqueId())) {
+            plugin.commandAFK.remove(p.getUniqueId());
+        }
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent e) {
+        Player p = e.getPlayer();
+        interact(p);
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent e) {
+        Player p = e.getPlayer();
+        interact(p);
     }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
         Player p = e.getPlayer();
-        if (e.getFrom().getBlock() != e.getTo().getBlock()) {
+        if (e.getFrom().getBlock().getLocation() != e.getTo().getBlock().getLocation()) {
             interact(p);
         }
     }

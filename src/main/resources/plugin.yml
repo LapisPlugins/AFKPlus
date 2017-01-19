@@ -3,3 +3,8 @@ version: ${project.version}
 main: net.lapismc.afkplus.AFKPlus
 authors: [Dart2112]
 description: AFK for professional servers
+commands:
+  afk:
+    description: Toggles your AFK status
+  afkplus:
+    description: shows plugin info and how long a player has been AFK
