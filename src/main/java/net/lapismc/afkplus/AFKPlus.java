@@ -22,6 +22,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
@@ -43,12 +44,25 @@ public final class AFKPlus extends JavaPlugin {
         this.getCommand("afkplus").setExecutor(new net.lapismc.afkplus.commands.AFKPlus(this));
         this.getCommand("afk").setExecutor(new AFKPlusAFK(this));
         saveDefaultConfig();
+        configVersion();
         Metrics metrics = new Metrics(this);
         metrics.start();
         AFKListeners = new AFKPlusListeners(this);
         AFKConfig = new AFKPlusConfiguration(this);
         Bukkit.getPluginManager().registerEvents(AFKListeners, this);
         startTimer();
+    }
+
+    private void configVersion() {
+        if (getConfig().getInt("ConfigVersion") != 1) {
+            File oldConfig = new File(getDataFolder() + File.separator + "config.yml");
+            File backupConfig = new File(getDataFolder() + File.separator +
+                    "Backup_config.yml");
+            oldConfig.renameTo(backupConfig);
+            saveDefaultConfig();
+            logger.info("New config generated!");
+            logger.info("Please transfer values!");
+        }
     }
 
     private void update() {

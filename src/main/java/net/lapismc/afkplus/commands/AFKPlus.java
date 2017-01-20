@@ -45,6 +45,13 @@ public class AFKPlus implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (cmd.getName().equalsIgnoreCase("afkplus")) {
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (!p.hasPermission("afkplus.admin")) {
+                    p.sendMessage(plugin.AFKConfig.getColoredMessage("NoPerms"));
+                    return true;
+                }
+            }
             if (args.length == 0) {
                 if (sender instanceof Player) {
                     sender.sendMessage(ChatColor.GOLD + "------------------"

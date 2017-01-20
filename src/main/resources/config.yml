@@ -1,9 +1,20 @@
+#Don't change this value unless you want to reset the config
+ConfigVersion: 1
 #If true the plugin will automatically download the latest version of AFK+ when a newer version is released
 UpdateDownload: false
 #Time in seconds until someone will be set as AFK
 TimeUntilAFK: 60
 #Time in seconds that a player has to be AFK for before they are kicked
 TimeUntilAction: 240
+#This is a list of the enabled listeners for AFK
+EnabledListeners:
+- "BlockPlace"
+- "BlockBreak"
+- "BlockInteract"
+- "Move"
+- "Chat"
+- "Command"
+- "Join"
 #Actions can be COMMAND, MESSAGE, KICK
 Action: COMMAND
 #The command to e run for COMMAND and the message for KICK or MESSAGE

@@ -8,3 +8,10 @@ commands:
     description: Toggles your AFK status
   afkplus:
     description: shows plugin info and how long a player has been AFK
+permissions:
+  afkplus.use:
+    description: Allows users to toggle their AFK status
+    default: true
+  afkplus.admin:
+    description: Allows setting of other players AFK status and /afkplus
+    default: op

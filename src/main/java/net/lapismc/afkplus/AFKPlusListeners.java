@@ -21,19 +21,27 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 
 import java.util.Date;
+import java.util.List;
 
 public class AFKPlusListeners implements Listener {
 
     private AFKPlus plugin;
+    private List<String> eventList;
 
     public AFKPlusListeners(AFKPlus p) {
         plugin = p;
+        eventList = plugin.getConfig().getStringList("EnabledListeners");
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        if (eventList.contains("Join")) {
+            Player p = e.getPlayer();
+            interact(p);
+        }
     }
 
     @EventHandler
@@ -52,34 +60,50 @@ public class AFKPlusListeners implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
-        Player p = e.getPlayer();
-        interact(p);
+        if (eventList.contains("BlockPlace")) {
+            Player p = e.getPlayer();
+            interact(p);
+        }
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
-        Player p = e.getPlayer();
-        interact(p);
+        if (eventList.contains("BlockBreak")) {
+            Player p = e.getPlayer();
+            interact(p);
+        }
     }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
-        Player p = e.getPlayer();
-        if (e.getFrom().getBlock().getLocation() != e.getTo().getBlock().getLocation()) {
+        if (eventList.contains("Move")) {
+            Player p = e.getPlayer();
             interact(p);
         }
     }
 
     @EventHandler
     public void onInteractEvent(PlayerInteractEvent e) {
-        Player p = e.getPlayer();
-        interact(p);
+        if (eventList.contains("BlockInteract")) {
+            Player p = e.getPlayer();
+            interact(p);
+        }
     }
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e) {
-        Player p = e.getPlayer();
-        interact(p);
+        if (eventList.contains("Chat")) {
+            Player p = e.getPlayer();
+            interact(p);
+        }
+    }
+
+    @EventHandler
+    public void onCommand(PlayerCommandPreprocessEvent e) {
+        if (eventList.contains("Command")) {
+            Player p = e.getPlayer();
+            interact(p);
+        }
     }
 
     public void interact(Player p) {

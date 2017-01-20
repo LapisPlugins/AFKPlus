@@ -1,2 +1,6 @@
 2.0:
 - "Initial release"
+2.0.1:
+- "Added permissions"
+- "Added config option to disable certain listeners"
+- "Fixed some smaller bugs here and there"

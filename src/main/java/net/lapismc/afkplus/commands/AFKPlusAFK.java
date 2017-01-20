@@ -41,6 +41,10 @@ public class AFKPlusAFK implements CommandExecutor {
                     return true;
                 }
                 Player p = (Player) sender;
+                if (!p.hasPermission("afkplus.use")) {
+                    p.sendMessage(plugin.AFKConfig.getColoredMessage("NoPerms"));
+                    return true;
+                }
                 if (plugin.playersAFK.containsKey(p.getUniqueId())) {
                     plugin.stopAFK(p.getUniqueId());
                 } else {
@@ -48,6 +52,13 @@ public class AFKPlusAFK implements CommandExecutor {
                     plugin.commandAFK.put(p.getUniqueId(), true);
                 }
             } else if (args.length == 1) {
+                if (sender instanceof Player) {
+                    Player p = (Player) sender;
+                    if (!p.hasPermission("afkplus.admin")) {
+                        p.sendMessage(plugin.AFKConfig.getColoredMessage("NoPerms"));
+                        return true;
+                    }
+                }
                 OfflinePlayer op = Bukkit.getOfflinePlayer(args[0]);
                 if (op.isOnline()) {
                     Player p = op.getPlayer();
