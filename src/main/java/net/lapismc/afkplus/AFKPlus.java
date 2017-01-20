@@ -29,7 +29,7 @@ public final class AFKPlus extends JavaPlugin {
         saveDefaultConfig();
         updater = new LapisUpdater(this, "AFKPlus", "Dart2112", "AFKPlus", "master");
         if (updater.checkUpdate("AFKPlus")) {
-            if (getConfig().getBoolean("DownloadUpdate")) {
+            if (getConfig().getBoolean("UpdateDownload")) {
                 updater.downloadUpdate("AFKPlus");
             } else {
                 logger.info("A new update is available for AFKPlus");
