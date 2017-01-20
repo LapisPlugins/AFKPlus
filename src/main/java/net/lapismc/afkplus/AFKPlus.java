@@ -19,6 +19,7 @@ public final class AFKPlus extends JavaPlugin {
     public Logger logger = Bukkit.getLogger();
     public AFKPlusListeners AFKListeners;
     public AFKPlusConfiguration AFKConfig;
+    public LapisUpdater updater;
     Integer timer;
 
     @Override
@@ -26,6 +27,18 @@ public final class AFKPlus extends JavaPlugin {
         this.getCommand("afkplus").setExecutor(new net.lapismc.afkplus.commands.AFKPlus(this));
         this.getCommand("afk").setExecutor(new AFKPlusAFK(this));
         saveDefaultConfig();
+        updater = new LapisUpdater(this, "AFKPlus", "Dart2112", "AFKPlus", "master");
+        if (updater.checkUpdate("AFKPlus")) {
+            if (getConfig().getBoolean("DownloadUpdate")) {
+                updater.downloadUpdate("AFKPlus");
+            } else {
+                logger.info("A new update is available for AFKPlus");
+            }
+        } else {
+            logger.info("No update available for AFKPlus");
+        }
+        Metrics metrics = new Metrics(this);
+        metrics.start();
         AFKListeners = new AFKPlusListeners(this);
         AFKConfig = new AFKPlusConfiguration(this);
         Bukkit.getPluginManager().registerEvents(AFKListeners, this);
