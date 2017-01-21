@@ -4,3 +4,6 @@
 - "Added permissions"
 - "Added config option to disable certain listeners"
 - "Fixed some smaller bugs here and there"
+2.0.2:
+- "Fixed java.util.ConcurrentModificationException error"
+- "Improved event listener selection in config"

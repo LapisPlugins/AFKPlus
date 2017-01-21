@@ -48,8 +48,7 @@ public class AFKPlusAFK implements CommandExecutor {
                 if (plugin.playersAFK.containsKey(p.getUniqueId())) {
                     plugin.stopAFK(p.getUniqueId());
                 } else {
-                    plugin.startAFK(p.getUniqueId());
-                    plugin.commandAFK.put(p.getUniqueId(), true);
+                    plugin.startAFK(p.getUniqueId(), true);
                 }
             } else if (args.length == 1) {
                 if (sender instanceof Player) {
@@ -65,8 +64,7 @@ public class AFKPlusAFK implements CommandExecutor {
                     if (plugin.playersAFK.containsKey(p.getUniqueId())) {
                         plugin.stopAFK(p.getUniqueId());
                     } else {
-                        plugin.startAFK(p.getUniqueId());
-                        plugin.commandAFK.put(p.getUniqueId(), true);
+                        plugin.startAFK(p.getUniqueId(), true);
                     }
                 } else {
                     if (sender instanceof Player) {

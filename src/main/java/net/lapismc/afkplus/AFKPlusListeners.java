@@ -24,21 +24,18 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.*;
 
 import java.util.Date;
-import java.util.List;
 
 public class AFKPlusListeners implements Listener {
 
     private AFKPlus plugin;
-    private List<String> eventList;
 
     public AFKPlusListeners(AFKPlus p) {
         plugin = p;
-        eventList = plugin.getConfig().getStringList("EnabledListeners");
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        if (eventList.contains("Join")) {
+        if (plugin.getConfig().getBoolean("EnabledListeners.Join")) {
             Player p = e.getPlayer();
             interact(p);
         }
@@ -60,7 +57,7 @@ public class AFKPlusListeners implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
-        if (eventList.contains("BlockPlace")) {
+        if (plugin.getConfig().getBoolean("EnabledListeners.BlockPlace")) {
             Player p = e.getPlayer();
             interact(p);
         }
@@ -68,7 +65,7 @@ public class AFKPlusListeners implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
-        if (eventList.contains("BlockBreak")) {
+        if (plugin.getConfig().getBoolean("EnabledListeners.BlockBreak")) {
             Player p = e.getPlayer();
             interact(p);
         }
@@ -76,7 +73,7 @@ public class AFKPlusListeners implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
-        if (eventList.contains("Move")) {
+        if (plugin.getConfig().getBoolean("EnabledListeners.Move")) {
             Player p = e.getPlayer();
             interact(p);
         }
@@ -84,7 +81,7 @@ public class AFKPlusListeners implements Listener {
 
     @EventHandler
     public void onInteractEvent(PlayerInteractEvent e) {
-        if (eventList.contains("BlockInteract")) {
+        if (plugin.getConfig().getBoolean("EnabledListeners.BlockInteract")) {
             Player p = e.getPlayer();
             interact(p);
         }
@@ -92,7 +89,7 @@ public class AFKPlusListeners implements Listener {
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e) {
-        if (eventList.contains("Chat")) {
+        if (plugin.getConfig().getBoolean("EnabledListeners.Chat")) {
             Player p = e.getPlayer();
             interact(p);
         }
@@ -100,7 +97,7 @@ public class AFKPlusListeners implements Listener {
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
-        if (eventList.contains("Command")) {
+        if (plugin.getConfig().getBoolean("EnabledListeners.Command")) {
             Player p = e.getPlayer();
             interact(p);
         }

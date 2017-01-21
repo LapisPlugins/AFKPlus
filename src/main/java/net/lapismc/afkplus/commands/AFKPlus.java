@@ -62,6 +62,10 @@ public class AFKPlus implements CommandExecutor {
                     sender.sendMessage(ChatColor.RED + "Version: "
                             + ChatColor.GOLD
                             + plugin.getDescription().getVersion());
+                    sender.sendMessage(ChatColor.RED + "Commands:");
+                    sender.sendMessage(ChatColor.RED + "/afk (player): " + ChatColor.GOLD + "Toggles AFK");
+                    sender.sendMessage(ChatColor.RED + "/afkplus (player): " + ChatColor.GOLD +
+                            "See how long a player ask been AFK for");
                     sender.sendMessage(ChatColor.GOLD
                             + "-----------------------------------------");
                 } else {
@@ -69,6 +73,9 @@ public class AFKPlus implements CommandExecutor {
                     sender.sendMessage("Author: Dart2112");
                     sender.sendMessage("Version: "
                             + plugin.getDescription().getVersion());
+                    sender.sendMessage("Commands:");
+                    sender.sendMessage("/afk (player): Toggles AFK");
+                    sender.sendMessage("/afkplus (player): See how long a player ask been AFK for");
                     sender.sendMessage("-----------------------------------------");
                 }
             } else if (args.length == 1) {

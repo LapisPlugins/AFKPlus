@@ -54,7 +54,7 @@ public final class AFKPlus extends JavaPlugin {
     }
 
     private void configVersion() {
-        if (getConfig().getInt("ConfigVersion") != 1) {
+        if (getConfig().getInt("ConfigVersion") != 2) {
             File oldConfig = new File(getDataFolder() + File.separator + "config.yml");
             File backupConfig = new File(getDataFolder() + File.separator +
                     "Backup_config.yml");
@@ -87,8 +87,7 @@ public final class AFKPlus extends JavaPlugin {
                     Long time = timeSinceLastInteract.get(uuid);
                     Long difference = (date.getTime() - time) / 1000;
                     if (difference.intValue() >= getConfig().getInt("TimeUntilAFK")) {
-                        startAFK(uuid);
-                        commandAFK.put(uuid, false);
+                        startAFK(uuid, false);
                     }
                 }
                 for (UUID uuid : playersAFK.keySet()) {
@@ -101,7 +100,7 @@ public final class AFKPlus extends JavaPlugin {
                             public void run() {
                                 playersAFK.remove(uuid);
                             }
-                        }, 10l);
+                        }, 2);
                         switch (getConfig().getString("Action")) {
                             case "COMMAND":
                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
@@ -128,12 +127,19 @@ public final class AFKPlus extends JavaPlugin {
         timer = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, runnable(this), 20, 20);
     }
 
-    public void startAFK(UUID uuid) {
+    public void startAFK(UUID uuid, Boolean command) {
         if (!playersAFK.containsKey(uuid)) {
-            Date date = new Date();
-            playersAFK.put(uuid, date.getTime());
-            timeSinceLastInteract.remove(uuid);
-            Bukkit.broadcastMessage(AFKConfig.getColoredMessage("AFKStart").replace("%NAME", Bukkit.getPlayer(uuid).getName()));
+            Bukkit.getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
+                @Override
+                public void run() {
+                    Date date = new Date();
+                    commandAFK.put(uuid, command);
+                    playersAFK.put(uuid, date.getTime());
+                    timeSinceLastInteract.remove(uuid);
+                    Bukkit.broadcastMessage(AFKConfig.getColoredMessage("AFKStart")
+                            .replace("%NAME", Bukkit.getPlayer(uuid).getName()));
+                }
+            }, 2);
         }
     }
 
