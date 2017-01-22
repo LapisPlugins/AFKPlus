@@ -2,9 +2,16 @@
 ConfigVersion: 2
 #If true the plugin will automatically download the latest version of AFK+ when a newer version is released
 UpdateDownload: false
+#Should action or warnings be used on players with the admin permission?
+AdminAction: false
 #Time in seconds until someone will be set as AFK
 TimeUntilAFK: 60
-#Time in seconds that a player has to be AFK for before they are kicked
+#This is how long after a player starts AFK that they will receive the warning message WarnMessage in messages.yml
+#Set this number higher than the TimeUntilAction value to disable
+#This timer starts when the player becomes AFK!
+TimeUntilWarn: 210
+#Time in seconds that a player has to be AFK for before they are kicked.
+#NOTE: This timer only starts when a player becomes AFK
 TimeUntilAction: 240
 #This is a list of the enabled listeners for AFK
 EnabledListeners:
@@ -17,5 +24,8 @@ EnabledListeners:
   Join: true
 #Actions can be COMMAND, MESSAGE, KICK
 Action: COMMAND
-#The command to e run for COMMAND and the message for KICK or MESSAGE
+#The command to be run for COMMAND and the message for KICK or MESSAGE
+#NOTE: add a ':' between commands if you want to run more than one
+#EG, ActionVariable: "warn %NAME being AFK for too long:kill %NAME"
+#This will warn the player(if you have a warn plugin) and then kill them
 ActionVariable: "kick %NAME AFK for more than 5 Minutes"

@@ -19,10 +19,13 @@ package net.lapismc.afkplus;
 import net.lapismc.afkplus.commands.AFKPlusAFK;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Instrument;
+import org.bukkit.Note;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
@@ -32,6 +35,7 @@ public final class AFKPlus extends JavaPlugin {
 
     public HashMap<UUID, Long> timeSinceLastInteract = new HashMap<>();
     public HashMap<UUID, Boolean> commandAFK = new HashMap<>();
+    public ArrayList<UUID> warnedPlayers = new ArrayList<>();
     public HashMap<UUID, Long> playersAFK = new HashMap<>();
     public Logger logger = Bukkit.getLogger();
     public AFKPlusListeners AFKListeners;
@@ -44,6 +48,7 @@ public final class AFKPlus extends JavaPlugin {
         this.getCommand("afkplus").setExecutor(new net.lapismc.afkplus.commands.AFKPlus(this));
         this.getCommand("afk").setExecutor(new AFKPlusAFK(this));
         saveDefaultConfig();
+        update();
         configVersion();
         Metrics metrics = new Metrics(this);
         metrics.start();
@@ -91,31 +96,52 @@ public final class AFKPlus extends JavaPlugin {
                     }
                 }
                 for (UUID uuid : playersAFK.keySet()) {
-                    Long time = playersAFK.get(uuid);
-                    Long difference = (date.getTime() - time) / 1000;
-                    if (difference.intValue() >= getConfig().getInt("TimeUntilAction")) {
-                        Player p = Bukkit.getPlayer(uuid);
-                        Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
-                            @Override
-                            public void run() {
-                                playersAFK.remove(uuid);
+                    if (!Bukkit.getPlayer(uuid).hasPermission("afkplus.admin")) {
+                        Long time = playersAFK.get(uuid);
+                        Long difference = (date.getTime() - time) / 1000;
+                        if (difference.intValue() >= getConfig().getInt("TimeUntilWarn")) {
+                            Player p = Bukkit.getPlayer(uuid);
+                            p.sendMessage(AFKConfig.getColoredMessage("WarnMessage"));
+                            warnedPlayers.add(uuid);
+                            p.playNote(p.getLocation(), Instrument.PIANO, Note.flat(1, Note.Tone.C));
+                            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
+                                @Override
+                                public void run() {
+                                    p.playNote(p.getLocation(), Instrument.PIANO, Note.flat(1, Note.Tone.F));
+                                }
+                            }, 2);
+                        }
+                        if (difference.intValue() >= getConfig().getInt("TimeUntilAction")) {
+                            Player p = Bukkit.getPlayer(uuid);
+                            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
+                                @Override
+                                public void run() {
+                                    playersAFK.remove(uuid);
+                                }
+                            }, 2);
+                            switch (getConfig().getString("Action")) {
+                                case "COMMAND":
+                                    if (getConfig().getString("ActionVariable").contains(":")) {
+                                        for (String s : getConfig().getString("ActionVariable").split(":")) {
+                                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                                                    s.replace("%NAME", p.getName()));
+                                        }
+                                    } else {
+                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                                                getConfig().getString("ActionVariable").replace("%NAME", p.getName()));
+                                    }
+                                    break;
+                                case "MESSAGE":
+                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.translateAlternateColorCodes('&',
+                                            getConfig().getString("ActionVariable").replace("%NAME", p.getName()))));
+                                    break;
+                                case "KICK":
+                                    p.kickPlayer(ChatColor.translateAlternateColorCodes('&', ChatColor.translateAlternateColorCodes('&',
+                                            getConfig().getString("ActionVariable").replace("%NAME", p.getName()))));
+                                    break;
+                                default:
+                                    logger.severe("The AFK+ action is not correctly set in the config!");
                             }
-                        }, 2);
-                        switch (getConfig().getString("Action")) {
-                            case "COMMAND":
-                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                                        getConfig().getString("ActionVariable").replace("%NAME", p.getName()));
-                                break;
-                            case "MESSAGE":
-                                p.sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.translateAlternateColorCodes('&',
-                                        getConfig().getString("ActionVariable").replace("%NAME", p.getName()))));
-                                break;
-                            case "KICK":
-                                p.kickPlayer(ChatColor.translateAlternateColorCodes('&', ChatColor.translateAlternateColorCodes('&',
-                                        getConfig().getString("ActionVariable").replace("%NAME", p.getName()))));
-                                break;
-                            default:
-                                logger.severe("The AFK+ action is not correctly set in the config!");
                         }
                     }
                 }
@@ -145,6 +171,9 @@ public final class AFKPlus extends JavaPlugin {
 
     public void stopAFK(UUID uuid) {
         if (playersAFK.containsKey(uuid)) {
+            if (warnedPlayers.contains(uuid)) {
+                warnedPlayers.remove(uuid);
+            }
             Date date = new Date();
             playersAFK.remove(uuid);
             commandAFK.remove(uuid);

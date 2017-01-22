@@ -5,3 +5,4 @@ AFKNotaPlayer: "You must be a player to use this command without a players name!
 AFKNotOnline: "&4That player is not online!"
 AFKPlusNotAFK: "&6That player is not currently AFK"
 AFKPlusAFK: "&6That player became AFK &9"
+WarnMessage: "&6You have 30 seconds before you will be kicked for AFKing"
