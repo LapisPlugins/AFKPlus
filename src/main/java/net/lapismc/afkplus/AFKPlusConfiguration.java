@@ -27,6 +27,7 @@ public class AFKPlusConfiguration {
 
     public AFKPlusConfiguration(AFKPlus p) {
         plugin = p;
+        configVersion();
     }
 
     private YamlConfiguration getMessages() {
@@ -35,6 +36,18 @@ public class AFKPlusConfiguration {
             plugin.saveResource("messages.yml", false);
         }
         return YamlConfiguration.loadConfiguration(f);
+    }
+
+    private void configVersion() {
+        if (plugin.getConfig().getInt("ConfigVersion") != 3) {
+            File oldConfig = new File(plugin.getDataFolder() + File.separator + "config.yml");
+            File backupConfig = new File(plugin.getDataFolder() + File.separator +
+                    "Backup_config.yml");
+            oldConfig.renameTo(backupConfig);
+            plugin.saveDefaultConfig();
+            plugin.logger.info("New config generated!");
+            plugin.logger.info("Please transfer values!");
+        }
     }
 
     public String getMessage(String path) {

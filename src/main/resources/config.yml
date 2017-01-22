@@ -1,5 +1,5 @@
 #Don't change this value unless you want to reset the config
-ConfigVersion: 2
+ConfigVersion: 3
 #If true the plugin will automatically download the latest version of AFK+ when a newer version is released
 UpdateDownload: false
 #Should action or warnings be used on players with the admin permission?
