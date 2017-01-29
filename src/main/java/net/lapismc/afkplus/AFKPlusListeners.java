@@ -21,6 +21,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.*;
 
 import java.util.Date;
@@ -52,6 +53,24 @@ public class AFKPlusListeners implements Listener {
         }
         if (plugin.commandAFK.containsKey(p.getUniqueId())) {
             plugin.commandAFK.remove(p.getUniqueId());
+        }
+    }
+
+    @EventHandler
+    public void onPlayerAttack(EntityDamageByEntityEvent e) {
+        if (plugin.getConfig().getBoolean("EnabledListeners.Attack")) {
+            if (e.getDamager() instanceof Player) {
+                Player p = (Player) e.getDamager();
+                interact(p);
+            }
+        }
+        if (plugin.getConfig().getBoolean("AFKDamage")) {
+            if (e.getEntity() instanceof Player) {
+                Player p = (Player) e.getEntity();
+                if (plugin.playersAFK.containsKey(p.getUniqueId())) {
+                    e.setCancelled(true);
+                }
+            }
         }
     }
 

@@ -11,3 +11,6 @@
 - "Added warn message, timer and sound"
 - "Added option to run multiple commands"
 - "Added option to stop players with the admin permission from getting warnings or having actions used on them"
+2.0.4:
+- "Added option to stop players that are AFK from taking damage"
+- "Added listener for if a player is attacking things, for example in a mob grinder. this can be disabled if you would not like players to AFK there"

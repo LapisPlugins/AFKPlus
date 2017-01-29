@@ -1,5 +1,5 @@
 #Don't change this value unless you want to reset the config
-ConfigVersion: 3
+ConfigVersion: 4
 #If true the plugin will automatically download the latest version of AFK+ when a newer version is released
 UpdateDownload: false
 #Should action or warnings be used on players with the admin permission?
@@ -13,11 +13,14 @@ TimeUntilWarn: 210
 #Time in seconds that a player has to be AFK for before they are kicked.
 #NOTE: This timer only starts when a player becomes AFK
 TimeUntilAction: 240
+#Can players who are AFK be hurt?
+AFKDamage: false
 #This is a list of the enabled listeners for AFK
 EnabledListeners:
   BlockPlace: true
   BlockBreak: true
   BlockInteract: true
+  Attack: true
   Move: true
   Chat: true
   Command: true
