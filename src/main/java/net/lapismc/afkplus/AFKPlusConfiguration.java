@@ -24,18 +24,28 @@ import java.io.File;
 public class AFKPlusConfiguration {
 
     private AFKPlus plugin;
+    private YamlConfiguration messages;
 
     public AFKPlusConfiguration(AFKPlus p) {
         plugin = p;
         configVersion();
     }
 
-    private YamlConfiguration getMessages() {
-        File f = new File(plugin.getDataFolder() + File.separator + "messages.yml");
-        if (!f.exists()) {
-            plugin.saveResource("messages.yml", false);
+    protected YamlConfiguration getMessages() {
+        if (messages != null) {
+            return messages;
+        } else {
+            File f = new File(plugin.getDataFolder() + File.separator + "messages.yml");
+            if (!f.exists()) {
+                plugin.saveResource("messages.yml", false);
+            }
+            messages = YamlConfiguration.loadConfiguration(f);
+            return messages;
         }
-        return YamlConfiguration.loadConfiguration(f);
+    }
+
+    protected void reloadMessages(File f) {
+        messages = YamlConfiguration.loadConfiguration(f);
     }
 
     private void configVersion() {

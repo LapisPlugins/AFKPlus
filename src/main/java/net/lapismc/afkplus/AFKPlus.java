@@ -53,6 +53,8 @@ public final class AFKPlus extends JavaPlugin {
         AFKListeners = new AFKPlusListeners(this);
         AFKConfig = new AFKPlusConfiguration(this);
         Bukkit.getPluginManager().registerEvents(AFKListeners, this);
+        Thread watcher = new Thread(new AFKPlusFileWatcher(this));
+        watcher.start();
         startTimer();
     }
 
