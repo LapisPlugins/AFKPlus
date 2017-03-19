@@ -49,7 +49,6 @@ public final class AFKPlus extends JavaPlugin {
         saveDefaultConfig();
         update();
         Metrics metrics = new Metrics(this);
-        metrics.start();
         AFKListeners = new AFKPlusListeners(this);
         AFKConfig = new AFKPlusConfiguration(this);
         Bukkit.getPluginManager().registerEvents(AFKListeners, this);
