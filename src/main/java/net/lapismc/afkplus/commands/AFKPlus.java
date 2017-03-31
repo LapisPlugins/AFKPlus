@@ -23,11 +23,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.ocpsoft.prettytime.Duration;
 import org.ocpsoft.prettytime.PrettyTime;
 import org.ocpsoft.prettytime.units.JustNow;
 import org.ocpsoft.prettytime.units.Millisecond;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class AFKPlus implements CommandExecutor {
@@ -87,16 +89,19 @@ public class AFKPlus implements CommandExecutor {
                         sender.sendMessage("AFK+ Reloaded");
                     }
                 }
+                //noinspection deprecation
                 OfflinePlayer op = Bukkit.getOfflinePlayer(args[0]);
                 if (op.isOnline()) {
                     if (plugin.playersAFK.containsKey(op.getUniqueId())) {
                         Long time = plugin.playersAFK.get(op.getUniqueId());
                         String formattedTime;
                         if (plugin.commandAFK.get(op.getUniqueId())) {
-                            formattedTime = pt.format(new Date(time));
+                            List<Duration> durationList = pt.calculatePreciseDuration(new Date(time));
+                            formattedTime = pt.format(durationList);
                         } else {
-                            formattedTime = pt.format(new Date(time -
+                            List<Duration> durationList = pt.calculatePreciseDuration(new Date(time -
                                     (plugin.getConfig().getInt("TimeUntilAFK") * 1000)));
+                            formattedTime = pt.format(durationList);
                         }
                         if (sender instanceof Player) {
                             sender.sendMessage(plugin.AFKConfig.getColoredMessage("AFKPlusAFK") + formattedTime);

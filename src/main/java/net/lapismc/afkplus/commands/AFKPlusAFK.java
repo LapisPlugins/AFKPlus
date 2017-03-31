@@ -58,6 +58,7 @@ public class AFKPlusAFK implements CommandExecutor {
                         return true;
                     }
                 }
+                //noinspection deprecation
                 OfflinePlayer op = Bukkit.getOfflinePlayer(args[0]);
                 if (op.isOnline()) {
                     Player p = op.getPlayer();
