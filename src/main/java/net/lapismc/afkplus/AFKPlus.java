@@ -17,8 +17,8 @@
 package net.lapismc.afkplus;
 
 import net.lapismc.afkplus.commands.AFKPlusAFK;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Instrument;
 import org.bukkit.Note;
 import org.bukkit.entity.Player;
@@ -141,7 +141,7 @@ public final class AFKPlus extends JavaPlugin {
     }
 
     public void startAFK(UUID uuid, Boolean command) {
-        if (!playersAFK.containsKey(uuid)) {
+        if (!playersAFK.containsKey(uuid) && Bukkit.getPlayer(uuid).hasPermission("afkplus.check")) {
             Bukkit.getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
                 @Override
                 public void run() {

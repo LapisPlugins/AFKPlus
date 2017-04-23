@@ -12,6 +12,9 @@ permissions:
   afkplus.use:
     description: Allows users to toggle their AFK status
     default: true
+  afkplus.check:
+    description: Players with this permission will be checked to see if they are AFK
+    default: true
   afkplus.admin:
     description: Allows setting of other players AFK status and /afkplus
     default: op

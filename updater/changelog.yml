@@ -14,3 +14,5 @@
 2.0.4:
 - "Added option to stop players that are AFK from taking damage"
 - "Added listener for if a player is attacking things, for example in a mob grinder. this can be disabled if you would not like players to AFK there"
+2.0.5:
+- "Added afkplus.check permission, remove this permission to stop players being checked for AFK"
