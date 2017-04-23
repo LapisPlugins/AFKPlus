@@ -89,6 +89,7 @@ public class AFKPlus implements CommandExecutor {
                         sender.sendMessage("AFK+ Reloaded");
                     }
                 }
+                //noinspection deprecation
                 OfflinePlayer op = Bukkit.getOfflinePlayer(args[0]);
                 if (op.isOnline()) {
                     if (plugin.playersAFK.containsKey(op.getUniqueId())) {

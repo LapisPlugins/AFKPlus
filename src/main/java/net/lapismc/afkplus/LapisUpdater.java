@@ -30,10 +30,9 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.Date;
 import java.util.logging.Logger;
 
-public class LapisUpdater {
+class LapisUpdater {
 
     private String ID;
-    private String result;
     private String jarName;
     private String username;
     private String repoName;
@@ -43,7 +42,7 @@ public class LapisUpdater {
     private Boolean force;
     private String newVersionRawString;
 
-    public LapisUpdater(JavaPlugin plugin, String jarName, String username, String repoName, String branch) {
+    LapisUpdater(JavaPlugin plugin, String jarName, String username, String repoName, String branch) {
         this.plugin = plugin;
         this.jarName = jarName;
         this.username = username;
@@ -52,19 +51,19 @@ public class LapisUpdater {
         this.logger = Bukkit.getLogger();
     }
 
-    public boolean checkUpdate(String ID) {
-        this.ID = ID;
+    boolean checkUpdate() {
+        this.ID = "AFKPlus";
         this.force = false;
         return updateCheck();
     }
 
-    public boolean downloadUpdate(String ID) {
-        this.ID = ID;
+    void downloadUpdate() {
+        this.ID = "AFKPlus";
         this.force = true;
-        return downloadUpdateJar();
+        downloadUpdateJar();
     }
 
-    private boolean downloadUpdateJar() {
+    private void downloadUpdateJar() {
         if (updateCheck()) {
             try {
                 URL changeLogURL = new URL(
@@ -79,11 +78,15 @@ public class LapisUpdater {
                 ReadableByteChannel jarByteChannel = Channels.newChannel(jarURL.openStream());
                 File update = plugin.getServer().getUpdateFolderFile();
                 if (!update.exists()) {
-                    update.mkdir();
+                    if (!update.mkdir()) {
+                        logger.severe("Failed to generate " + update.getName());
+                    }
                 }
                 File jar = new File(update.getAbsolutePath() + File.separator + jarName + ".jar");
                 if (!jar.exists()) {
-                    jar.createNewFile();
+                    if (!jar.createNewFile()) {
+                        logger.severe("Failed to generate " + jar.getName());
+                    }
                 }
                 FileOutputStream jarOutputStream = new FileOutputStream(jar);
                 jarOutputStream.getChannel().transferFrom(jarByteChannel, 0, Long.MAX_VALUE);
@@ -99,23 +102,19 @@ public class LapisUpdater {
                 YamlConfiguration changeLog = YamlConfiguration.loadConfiguration(changeLogFile);
                 logger.info("Changes in newest Version \n" +
                         changeLog.getStringList(newVersionRawString).toString().replace("[", "").replace("]", ""));
-                return true;
             } catch (IOException e) {
                 logger.severe("HomeSpawn updater failed to download updates!");
                 logger.severe("Please check your internet connection and" +
                         " firewall settings and try again later");
-                return false;
             }
-        } else {
-            return false;
         }
     }
 
     private boolean updateCheck() {
-        Integer oldVersion = null;
-        Integer newVersion = null;
-        File f = null;
-        YamlConfiguration yaml = null;
+        Integer oldVersion;
+        Integer newVersion;
+        File f;
+        YamlConfiguration yaml;
         try {
             URL website = new URL(
                     "https://raw.githubusercontent.com/" + username + "/" + repoName + "/" + branch + "/updater" +
@@ -132,7 +131,9 @@ public class LapisUpdater {
                 rbc.close();
                 fos.flush();
                 fos.close();
-                f.setLastModified(d0.getTime());
+                if (!f.setLastModified(d0.getTime())) {
+                    logger.info("Failed to set modified time for " + f.getName());
+                }
             }
         } catch (IOException e) {
             logger.severe("Failed to check for updates!");
@@ -156,7 +157,9 @@ public class LapisUpdater {
             logger.severe("Failed to load update.yml or parse the values!" +
                     " It may be corrupt!");
             logger.severe("Please try again later");
-            f.delete();
+            if (!f.delete()) {
+                logger.info("Failed to delete " + f.getName());
+            }
             return false;
         }
         Boolean update = false;

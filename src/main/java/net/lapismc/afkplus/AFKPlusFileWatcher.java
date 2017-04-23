@@ -1,3 +1,19 @@
+/*
+ * Copyright 2017 Benjamin Martin
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.lapismc.afkplus;
 
 import java.io.File;
@@ -9,7 +25,7 @@ import static java.nio.file.StandardWatchEventKinds.*;
 public class AFKPlusFileWatcher implements Runnable {
     private AFKPlus plugin;
 
-    public AFKPlusFileWatcher(AFKPlus p) {
+    AFKPlusFileWatcher(AFKPlus p) {
         plugin = p;
     }
 
@@ -28,11 +44,7 @@ public class AFKPlusFileWatcher implements Runnable {
                     WatchEvent<Path> ev = (WatchEvent<Path>) event;
                     Path fileName = ev.context();
                     File f = fileName.toFile();
-                    if (kind == OVERFLOW) {
-                        continue;
-                    } else if (kind == ENTRY_CREATE) {
-
-                    } else if (kind == ENTRY_DELETE) {
+                    if (kind == ENTRY_DELETE) {
                         if (f.getName().endsWith(".yml")) {
                             String name = f.getName().replace(".yml", "");
                             switch (name) {
@@ -50,7 +62,7 @@ public class AFKPlusFileWatcher implements Runnable {
                         }
                     }
                 }
-                boolean valid = key.reset();
+                key.reset();
                 key = watcher.take();
             }
         } catch (IOException | InterruptedException e) {

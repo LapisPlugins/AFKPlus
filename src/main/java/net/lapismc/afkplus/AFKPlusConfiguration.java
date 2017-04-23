@@ -26,12 +26,12 @@ public class AFKPlusConfiguration {
     private AFKPlus plugin;
     private YamlConfiguration messages;
 
-    public AFKPlusConfiguration(AFKPlus p) {
+    AFKPlusConfiguration(AFKPlus p) {
         plugin = p;
         configVersion();
     }
 
-    protected YamlConfiguration getMessages() {
+    YamlConfiguration getMessages() {
         if (messages != null) {
             return messages;
         } else {
@@ -44,7 +44,7 @@ public class AFKPlusConfiguration {
         }
     }
 
-    protected void reloadMessages(File f) {
+    void reloadMessages(File f) {
         messages = YamlConfiguration.loadConfiguration(f);
     }
 
@@ -53,7 +53,9 @@ public class AFKPlusConfiguration {
             File oldConfig = new File(plugin.getDataFolder() + File.separator + "config.yml");
             File backupConfig = new File(plugin.getDataFolder() + File.separator +
                     "Backup_config.yml");
-            oldConfig.renameTo(backupConfig);
+            if (!oldConfig.renameTo(backupConfig)) {
+                plugin.logger.severe("Failed to generate new config");
+            }
             plugin.saveDefaultConfig();
             plugin.logger.info("New config generated!");
             plugin.logger.info("Please transfer values!");

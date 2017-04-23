@@ -30,7 +30,7 @@ public class AFKPlusListeners implements Listener {
 
     private AFKPlus plugin;
 
-    public AFKPlusListeners(AFKPlus p) {
+    AFKPlusListeners(AFKPlus p) {
         plugin = p;
     }
 
@@ -122,7 +122,7 @@ public class AFKPlusListeners implements Listener {
         }
     }
 
-    public void interact(Player p) {
+    private void interact(Player p) {
         Date date = new Date();
         if (plugin.playersAFK.containsKey(p.getUniqueId())) {
             plugin.stopAFK(p.getUniqueId());
