@@ -30,7 +30,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.Date;
 import java.util.logging.Logger;
 
-class LapisUpdater {
+public class LapisUpdater {
 
     private String ID;
     private String jarName;
@@ -51,13 +51,13 @@ class LapisUpdater {
         this.logger = Bukkit.getLogger();
     }
 
-    boolean checkUpdate() {
+    public boolean checkUpdate() {
         this.ID = "AFKPlus";
         this.force = false;
         return updateCheck();
     }
 
-    void downloadUpdate() {
+    public void downloadUpdate() {
         this.ID = "AFKPlus";
         this.force = true;
         downloadUpdateJar();

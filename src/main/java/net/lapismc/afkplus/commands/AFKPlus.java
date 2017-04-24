@@ -88,6 +88,26 @@ public class AFKPlus implements CommandExecutor {
                     } else {
                         sender.sendMessage("AFK+ Reloaded");
                     }
+                } else if (args[0].equalsIgnoreCase("update")) {
+                    if (sender instanceof Player) {
+                        sender.sendMessage(ChatColor.GOLD + "Checking for updates...");
+                    } else {
+                        sender.sendMessage("Checking for updates...");
+                    }
+                    if (plugin.updater.checkUpdate()) {
+                        if (sender instanceof Player) {
+                            sender.sendMessage(ChatColor.GOLD + "Found an update \nDownloading it now \nIt will be installed on the next server restart");
+                        } else {
+                            sender.sendMessage("Found an update \nDownloading it now \nIt will be installed on the next server restart");
+                        }
+                        plugin.updater.downloadUpdate();
+                    } else {
+                        if (sender instanceof Player) {
+                            sender.sendMessage(ChatColor.GOLD + "No update found");
+                        } else {
+                            sender.sendMessage("No update found");
+                        }
+                    }
                 }
                 //noinspection deprecation
                 OfflinePlayer op = Bukkit.getOfflinePlayer(args[0]);

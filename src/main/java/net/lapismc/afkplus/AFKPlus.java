@@ -35,6 +35,7 @@ public final class AFKPlus extends JavaPlugin {
     public HashMap<UUID, Boolean> commandAFK = new HashMap<>();
     public HashMap<UUID, Long> playersAFK = new HashMap<>();
     public AFKPlusConfiguration AFKConfig;
+    public LapisUpdater updater;
     HashMap<UUID, Long> timeSinceLastInteract = new HashMap<>();
     Logger logger = Bukkit.getLogger();
     private ArrayList<UUID> warnedPlayers = new ArrayList<>();
@@ -55,7 +56,7 @@ public final class AFKPlus extends JavaPlugin {
     }
 
     private void update() {
-        LapisUpdater updater = new LapisUpdater(this, "AFKPlus", "Dart2112", "AFKPlus", "master");
+        updater = new LapisUpdater(this, "AFKPlus", "Dart2112", "AFKPlus", "master");
         if (updater.checkUpdate()) {
             if (getConfig().getBoolean("UpdateDownload")) {
                 updater.downloadUpdate();
