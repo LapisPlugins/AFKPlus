@@ -16,6 +16,7 @@
 
 package net.lapismc.afkplus.commands;
 
+import net.lapismc.afkplus.AFKPlusPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -49,7 +50,7 @@ public class AFKPlus implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("afkplus")) {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
-                if (!p.hasPermission("afkplus.admin")) {
+                if (!plugin.AFKPerms.isPermitted(p.getUniqueId(), AFKPlusPerms.Perm.Admin)) {
                     p.sendMessage(plugin.AFKConfig.getColoredMessage("NoPerms"));
                     return true;
                 }

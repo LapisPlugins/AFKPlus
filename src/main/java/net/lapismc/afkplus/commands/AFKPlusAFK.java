@@ -17,6 +17,7 @@
 package net.lapismc.afkplus.commands;
 
 import net.lapismc.afkplus.AFKPlus;
+import net.lapismc.afkplus.AFKPlusPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -41,7 +42,7 @@ public class AFKPlusAFK implements CommandExecutor {
                     return true;
                 }
                 Player p = (Player) sender;
-                if (!p.hasPermission("afkplus.use")) {
+                if (!plugin.AFKPerms.isPermitted(p.getUniqueId(), AFKPlusPerms.Perm.UseCommand)) {
                     p.sendMessage(plugin.AFKConfig.getColoredMessage("NoPerms"));
                     return true;
                 }
@@ -53,7 +54,7 @@ public class AFKPlusAFK implements CommandExecutor {
             } else if (args.length == 1) {
                 if (sender instanceof Player) {
                     Player p = (Player) sender;
-                    if (!p.hasPermission("afkplus.admin")) {
+                    if (!plugin.AFKPerms.isPermitted(p.getUniqueId(), AFKPlusPerms.Perm.Admin)) {
                         p.sendMessage(plugin.AFKConfig.getColoredMessage("NoPerms"));
                         return true;
                     }
