@@ -37,8 +37,7 @@ public class AFKPlusListeners implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         if (plugin.getConfig().getBoolean("EnabledListeners.Join")) {
-            Player p = e.getPlayer();
-            interact(p);
+            interact(e.getPlayer());
         }
     }
 
@@ -77,48 +76,42 @@ public class AFKPlusListeners implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
         if (plugin.getConfig().getBoolean("EnabledListeners.BlockPlace")) {
-            Player p = e.getPlayer();
-            interact(p);
+            interact(e.getPlayer());
         }
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         if (plugin.getConfig().getBoolean("EnabledListeners.BlockBreak")) {
-            Player p = e.getPlayer();
-            interact(p);
+            interact(e.getPlayer());
         }
     }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
         if (plugin.getConfig().getBoolean("EnabledListeners.Move")) {
-            Player p = e.getPlayer();
-            interact(p);
+            interact(e.getPlayer());
         }
     }
 
     @EventHandler
     public void onInteractEvent(PlayerInteractEvent e) {
         if (plugin.getConfig().getBoolean("EnabledListeners.BlockInteract")) {
-            Player p = e.getPlayer();
-            interact(p);
+            interact(e.getPlayer());
         }
     }
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e) {
         if (plugin.getConfig().getBoolean("EnabledListeners.Chat")) {
-            Player p = e.getPlayer();
-            interact(p);
+            interact(e.getPlayer());
         }
     }
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
         if (plugin.getConfig().getBoolean("EnabledListeners.Command")) {
-            Player p = e.getPlayer();
-            interact(p);
+            interact(e.getPlayer());
         }
     }
 
@@ -126,9 +119,7 @@ public class AFKPlusListeners implements Listener {
         Date date = new Date();
         if (plugin.playersAFK.containsKey(p.getUniqueId())) {
             plugin.stopAFK(p.getUniqueId());
-            plugin.timeSinceLastInteract.put(p.getUniqueId(), date.getTime());
-        } else {
-            plugin.timeSinceLastInteract.put(p.getUniqueId(), date.getTime());
         }
+        plugin.timeSinceLastInteract.put(p.getUniqueId(), date.getTime());
     }
 }
