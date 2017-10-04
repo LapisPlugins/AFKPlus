@@ -35,7 +35,8 @@ public class AFKPlusPerms {
 
     AFKPlusPerms(AFKPlus p) {
         plugin = p;
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> playerPerms = new HashMap<>(), 20 * 60 * 5, 20 * 60 * 5);
+        loadPermissions();
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> playerPerms = new HashMap<>(), 20 * 60 * 1, 20 * 60 * 1);
     }
 
     void loadPermissions() {
@@ -85,6 +86,7 @@ public class AFKPlusPerms {
 
     void setPerms(UUID uuid, Permission p) {
         playerPerms.put(uuid, p);
+        plugin.AFKConfig.setPlayerPermission(uuid, p.getName());
     }
 
     public Permission getPlayerPermission(UUID uuid) {
@@ -105,7 +107,6 @@ public class AFKPlusPerms {
                 if (p == null) {
                     return null;
                 } else {
-                    plugin.AFKConfig.setPlayerPermission(op.getUniqueId(), p.getName());
                     playerPerms.put(uuid, p);
                 }
             } else {
@@ -136,6 +137,9 @@ public class AFKPlusPerms {
 
     public Integer getPermissionValue(UUID uuid, Perm p) {
         Permission perm = getPlayerPermission(uuid);
+        if (perm == null || pluginPerms.get(perm) == null) {
+            loadPermissions();
+        }
         return pluginPerms.get(perm).get(p);
     }
 

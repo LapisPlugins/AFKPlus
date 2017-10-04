@@ -38,7 +38,7 @@ public final class AFKPlus extends JavaPlugin {
     public AFKPlusPerms AFKPerms;
     public LapisUpdater updater;
     HashMap<UUID, Long> timeSinceLastInteract = new HashMap<>();
-    Logger logger = Bukkit.getLogger();
+    Logger logger = getLogger();
     private ArrayList<UUID> warnedPlayers = new ArrayList<>();
 
     @Override
@@ -55,6 +55,7 @@ public final class AFKPlus extends JavaPlugin {
         Thread watcher = new Thread(new AFKPlusFileWatcher(this));
         watcher.start();
         startTimer();
+        logger.info(getDescription().getName() + " v." + getDescription().getVersion() + " has been enabled!");
     }
 
     private void update() {

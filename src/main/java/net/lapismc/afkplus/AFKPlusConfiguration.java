@@ -80,6 +80,11 @@ public class AFKPlusConfiguration {
             users = YamlConfiguration.loadConfiguration(f);
             users.set(uuid.toString(), p);
         }
+        try {
+            users.save(new File(plugin.getDataFolder(), "users.yml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getPlayerPermission(UUID uuid) {
