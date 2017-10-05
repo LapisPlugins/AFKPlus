@@ -76,7 +76,7 @@ public class AFKPlusFileWatcher implements Runnable {
         switch (name) {
             case "config":
                 plugin.reloadConfig();
-                //plugin.HSPermissions.loadPermissionMaps();
+                plugin.AFKPerms.loadPermissions();
                 plugin.logger.info("Changes made to AFK+'s config have been loaded");
                 break;
             case "Messages":
