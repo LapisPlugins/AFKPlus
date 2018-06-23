@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Benjamin Martin
+ * Copyright 2018 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
 package net.lapismc.afkplus.commands;
 
 import net.lapismc.afkplus.AFKPlusPerms;
+import net.lapismc.afkplus.util.LapisCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.ocpsoft.prettytime.Duration;
@@ -29,16 +29,18 @@ import org.ocpsoft.prettytime.PrettyTime;
 import org.ocpsoft.prettytime.units.JustNow;
 import org.ocpsoft.prettytime.units.Millisecond;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class AFKPlus implements CommandExecutor {
+public class AFKPlus extends LapisCommand {
 
     private net.lapismc.afkplus.AFKPlus plugin;
     private PrettyTime pt;
 
     public AFKPlus(net.lapismc.afkplus.AFKPlus p) {
+        super("afkplus", "Shows plugin info and how long a player has been AFK", new ArrayList<>());
         plugin = p;
         pt = new PrettyTime(Locale.ENGLISH);
         pt.removeUnit(JustNow.class);
@@ -46,13 +48,13 @@ public class AFKPlus implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+    public void onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (cmd.getName().equalsIgnoreCase("afkplus")) {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (!plugin.AFKPerms.isPermitted(p.getUniqueId(), AFKPlusPerms.Perm.Admin)) {
                     p.sendMessage(plugin.AFKConfig.getColoredMessage("NoPerms"));
-                    return true;
+                    return;
                 }
             }
             if (args.length == 0) {
@@ -145,7 +147,6 @@ public class AFKPlus implements CommandExecutor {
                 }
             }
         }
-        return false;
     }
 
 }

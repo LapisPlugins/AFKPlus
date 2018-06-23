@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Benjamin Martin
+ * Copyright 2018 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.lapismc.afkplus;
+package net.lapismc.afkplus.util;
 
 
 import org.bukkit.Bukkit;
@@ -42,7 +42,7 @@ public class LapisUpdater {
     private Boolean force;
     private String newVersionRawString;
 
-    LapisUpdater(JavaPlugin plugin, String jarName, String username, String repoName, String branch) {
+    public LapisUpdater(JavaPlugin plugin, String jarName, String username, String repoName, String branch) {
         this.plugin = plugin;
         this.jarName = jarName;
         this.username = username;

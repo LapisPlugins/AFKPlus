@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Benjamin Martin
+ * Copyright 2018 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,33 +18,36 @@ package net.lapismc.afkplus.commands;
 
 import net.lapismc.afkplus.AFKPlus;
 import net.lapismc.afkplus.AFKPlusPerms;
+import net.lapismc.afkplus.util.LapisCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class AFKPlusAFK implements CommandExecutor {
+import java.util.ArrayList;
+
+public class AFKPlusAFK extends LapisCommand {
 
     private AFKPlus plugin;
 
     public AFKPlusAFK(AFKPlus p) {
+        super("afk", "Toggles your AFK status", new ArrayList<>());
         plugin = p;
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+    public void onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (cmd.getName().equalsIgnoreCase("afk")) {
             if (args.length == 0) {
                 if (!(sender instanceof Player)) {
                     sender.sendMessage(plugin.AFKConfig.getMessage("AFKNotaPlayer"));
-                    return true;
+                    return;
                 }
                 Player p = (Player) sender;
                 if (!plugin.AFKPerms.isPermitted(p.getUniqueId(), AFKPlusPerms.Perm.UseCommand)) {
                     p.sendMessage(plugin.AFKConfig.getColoredMessage("NoPerms"));
-                    return true;
+                    return;
                 }
                 if (plugin.playersAFK.containsKey(p.getUniqueId())) {
                     plugin.stopAFK(p.getUniqueId());
@@ -56,7 +59,7 @@ public class AFKPlusAFK implements CommandExecutor {
                     Player p = (Player) sender;
                     if (!plugin.AFKPerms.isPermitted(p.getUniqueId(), AFKPlusPerms.Perm.Admin)) {
                         p.sendMessage(plugin.AFKConfig.getColoredMessage("NoPerms"));
-                        return true;
+                        return;
                     }
                 }
                 //noinspection deprecation
@@ -78,9 +81,7 @@ public class AFKPlusAFK implements CommandExecutor {
             } else {
                 sender.sendMessage("Usage: /afk (player) Permission required to use another players name");
             }
-            return true;
         }
-        return false;
     }
 
 }

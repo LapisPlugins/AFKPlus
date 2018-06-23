@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Benjamin Martin
+ * Copyright 2018 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 package net.lapismc.afkplus;
 
 import net.lapismc.afkplus.commands.AFKPlusAFK;
+import net.lapismc.afkplus.util.LapisUpdater;
+import net.lapismc.afkplus.util.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Instrument;
@@ -43,8 +45,8 @@ public final class AFKPlus extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.getCommand("afkplus").setExecutor(new net.lapismc.afkplus.commands.AFKPlus(this));
-        this.getCommand("afk").setExecutor(new AFKPlusAFK(this));
+        new net.lapismc.afkplus.commands.AFKPlus(this);
+        new AFKPlusAFK(this);
         saveDefaultConfig();
         update();
         new Metrics(this);
@@ -143,9 +145,7 @@ public final class AFKPlus extends JavaPlugin {
 
     public void stopAFK(UUID uuid) {
         if (playersAFK.containsKey(uuid)) {
-            if (warnedPlayers.contains(uuid)) {
-                warnedPlayers.remove(uuid);
-            }
+            warnedPlayers.remove(uuid);
             Date date = new Date();
             playersAFK.remove(uuid);
             commandAFK.remove(uuid);
