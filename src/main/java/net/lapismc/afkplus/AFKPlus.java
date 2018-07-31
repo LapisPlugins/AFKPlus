@@ -57,7 +57,7 @@ public final class AFKPlus extends JavaPlugin {
         Thread watcher = new Thread(new AFKPlusFileWatcher(this));
         watcher.start();
         startTimer();
-        logger.info(getDescription().getName() + " v." + getDescription().getVersion() + " has been enabled!");
+        logger.info(getName() + " v." + getDescription().getVersion() + " has been enabled!");
     }
 
     private void update() {

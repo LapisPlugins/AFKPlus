@@ -36,7 +36,7 @@ public class AFKPlusPerms {
     AFKPlusPerms(AFKPlus p) {
         plugin = p;
         loadPermissions();
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> playerPerms = new HashMap<>(), 20 * 60 * 1, 20 * 60 * 1);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> playerPerms = new HashMap<>(), 20 * 60, 20 * 60);
     }
 
     void loadPermissions() {
