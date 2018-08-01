@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Benjamin Martin
+ * Copyright 2018 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,8 +24,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.*;
 
-import java.util.Date;
-
 public class AFKPlusListeners implements Listener {
 
     private AFKPlus plugin;
@@ -43,16 +41,7 @@ public class AFKPlusListeners implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
-        Player p = e.getPlayer();
-        if (plugin.timeSinceLastInteract.containsKey(p.getUniqueId())) {
-            plugin.timeSinceLastInteract.remove(p.getUniqueId());
-        }
-        if (plugin.playersAFK.containsKey(p.getUniqueId())) {
-            plugin.playersAFK.remove(p.getUniqueId());
-        }
-        if (plugin.commandAFK.containsKey(p.getUniqueId())) {
-            plugin.commandAFK.remove(p.getUniqueId());
-        }
+        plugin.removePlayer(e.getPlayer().getUniqueId());
     }
 
     @EventHandler
@@ -66,7 +55,7 @@ public class AFKPlusListeners implements Listener {
         if (plugin.getConfig().getBoolean("AFKDamage")) {
             if (e.getEntity() instanceof Player) {
                 Player p = (Player) e.getEntity();
-                if (plugin.playersAFK.containsKey(p.getUniqueId())) {
+                if (plugin.getPlayer(p).isAFK()) {
                     e.setCancelled(true);
                 }
             }
@@ -116,10 +105,10 @@ public class AFKPlusListeners implements Listener {
     }
 
     private void interact(Player p) {
-        Date date = new Date();
-        if (plugin.playersAFK.containsKey(p.getUniqueId())) {
-            plugin.stopAFK(p.getUniqueId());
+        AFKPlayer player = plugin.getPlayer(p);
+        if (player.isAFK()) {
+            player.stopAFK();
         }
-        plugin.timeSinceLastInteract.put(p.getUniqueId(), date.getTime());
+        player.setLastInteract();
     }
 }

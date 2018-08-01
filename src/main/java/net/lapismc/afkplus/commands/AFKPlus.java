@@ -16,6 +16,7 @@
 
 package net.lapismc.afkplus.commands;
 
+import net.lapismc.afkplus.AFKPlayer;
 import net.lapismc.afkplus.AFKPlusPerms;
 import net.lapismc.afkplus.util.LapisCommand;
 import org.bukkit.Bukkit;
@@ -115,10 +116,11 @@ public class AFKPlus extends LapisCommand {
                 //noinspection deprecation
                 OfflinePlayer op = Bukkit.getOfflinePlayer(args[0]);
                 if (op.isOnline()) {
-                    if (plugin.playersAFK.containsKey(op.getUniqueId())) {
-                        Long time = plugin.playersAFK.get(op.getUniqueId());
+                    AFKPlayer player = plugin.getPlayer(op);
+                    if (player.isAFK()) {
+                        Long time = player.getLastInteract();
                         String formattedTime;
-                        if (plugin.commandAFK.get(op.getUniqueId())) {
+                        if (player.isCommandAFK()) {
                             List<Duration> durationList = pt.calculatePreciseDuration(new Date(time));
                             formattedTime = pt.format(durationList);
                         } else {

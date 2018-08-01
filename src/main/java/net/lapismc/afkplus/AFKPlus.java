@@ -21,12 +21,10 @@ import net.lapismc.afkplus.util.LapisUpdater;
 import net.lapismc.afkplus.util.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Instrument;
-import org.bukkit.Note;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
@@ -34,14 +32,11 @@ import java.util.logging.Logger;
 
 public final class AFKPlus extends JavaPlugin {
 
-    public HashMap<UUID, Boolean> commandAFK = new HashMap<>();
-    public HashMap<UUID, Long> playersAFK = new HashMap<>();
     public AFKPlusConfiguration AFKConfig;
     public AFKPlusPerms AFKPerms;
     public LapisUpdater updater;
-    HashMap<UUID, Long> timeSinceLastInteract = new HashMap<>();
     Logger logger = getLogger();
-    private ArrayList<UUID> warnedPlayers = new ArrayList<>();
+    private HashMap<UUID, AFKPlayer> players = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -76,27 +71,25 @@ public final class AFKPlus extends JavaPlugin {
     private Runnable runnable(AFKPlus plugin) {
         return () -> {
             Date date = new Date();
-            for (UUID uuid : timeSinceLastInteract.keySet()) {
-                Long time = timeSinceLastInteract.get(uuid);
-                Long difference = (date.getTime() - time) / 1000;
-                if (difference.intValue() >= AFKPerms.getPermissionValue(uuid, AFKPlusPerms.Perm.TimeToAFK)) {
-                    startAFK(uuid, false);
+            for (AFKPlayer player : players.values()) {
+                if (!player.isAFK()) {
+                    Long time = player.getLastInteract();
+                    Long difference = (date.getTime() - time) / 1000;
+                    if (difference.intValue() >= AFKPerms.getPermissionValue(player.getUuid(), AFKPlusPerms.Perm.TimeToAFK)) {
+                        player.startAFK(false);
+                    }
                 }
             }
-            for (UUID uuid : playersAFK.keySet()) {
-                if (!AFKPerms.isPermitted(uuid, AFKPlusPerms.Perm.Admin)) {
-                    Long time = playersAFK.get(uuid);
+            for (AFKPlayer player : players.values()) {
+                if (!AFKPerms.isPermitted(player.getUuid(), AFKPlusPerms.Perm.Admin) && player.isAFK()) {
+                    Long time = player.getLastInteract();
                     Long difference = (date.getTime() - time) / 1000;
-                    if (difference.intValue() >= AFKPerms.getPermissionValue(uuid, AFKPlusPerms.Perm.TimeToWarn)) {
-                        Player p = Bukkit.getPlayer(uuid);
-                        p.sendMessage(AFKConfig.getColoredMessage("WarnMessage"));
-                        warnedPlayers.add(uuid);
-                        p.playNote(p.getLocation(), Instrument.PIANO, Note.flat(1, Note.Tone.C));
-                        Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> p.playNote(p.getLocation(), Instrument.PIANO, Note.flat(1, Note.Tone.F)), 2);
+                    if (difference.intValue() >= AFKPerms.getPermissionValue(player.getUuid(), AFKPlusPerms.Perm.TimeToWarn)) {
+                        player.warnPlayer();
                     }
-                    if (difference.intValue() >= AFKPerms.getPermissionValue(uuid, AFKPlusPerms.Perm.TimeToAction)) {
-                        Player p = Bukkit.getPlayer(uuid);
-                        Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> playersAFK.remove(uuid), 2);
+                    if (difference.intValue() >= AFKPerms.getPermissionValue(player.getUuid(), AFKPlusPerms.Perm.TimeToAction)) {
+                        Player p = Bukkit.getPlayer(player.getUuid());
+                        player.setAFK(false);
                         switch (getConfig().getString("Action")) {
                             case "COMMAND":
                                 if (getConfig().getString("ActionVariable").contains(":")) {
@@ -130,27 +123,29 @@ public final class AFKPlus extends JavaPlugin {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, runnable(this), 20, 20);
     }
 
-    public void startAFK(UUID uuid, Boolean command) {
-        if (!playersAFK.containsKey(uuid)) {
-            Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> {
-                Date date = new Date();
-                commandAFK.put(uuid, command);
-                playersAFK.put(uuid, date.getTime());
-                timeSinceLastInteract.remove(uuid);
-                Bukkit.broadcastMessage(AFKConfig.getColoredMessage("AFKStart")
-                        .replace("%NAME", Bukkit.getPlayer(uuid).getName()));
-            }, 2);
+    public AFKPlayer getPlayer(UUID uuid) {
+        if (!players.containsKey(uuid)) {
+            players.put(uuid, new AFKPlayer(this, uuid));
         }
+        return players.get(uuid);
     }
 
-    public void stopAFK(UUID uuid) {
-        if (playersAFK.containsKey(uuid)) {
-            warnedPlayers.remove(uuid);
-            Date date = new Date();
-            playersAFK.remove(uuid);
-            commandAFK.remove(uuid);
-            timeSinceLastInteract.put(uuid, date.getTime());
-            Bukkit.broadcastMessage(AFKConfig.getColoredMessage("AFKStop").replace("%NAME", Bukkit.getPlayer(uuid).getName()));
+    public AFKPlayer getPlayer(Player p) {
+        if (!players.containsKey(p.getUniqueId())) {
+            players.put(p.getUniqueId(), new AFKPlayer(this, p));
         }
+        return players.get(p.getUniqueId());
     }
+
+    public AFKPlayer getPlayer(OfflinePlayer op) {
+        if (!players.containsKey(op.getUniqueId())) {
+            players.put(op.getUniqueId(), new AFKPlayer(this, op));
+        }
+        return players.get(op.getUniqueId());
+    }
+
+    public void removePlayer(UUID uuid) {
+        players.remove(uuid);
+    }
+
 }

@@ -16,6 +16,7 @@
 
 package net.lapismc.afkplus.commands;
 
+import net.lapismc.afkplus.AFKPlayer;
 import net.lapismc.afkplus.AFKPlus;
 import net.lapismc.afkplus.AFKPlusPerms;
 import net.lapismc.afkplus.util.LapisCommand;
@@ -41,18 +42,19 @@ public class AFKPlusAFK extends LapisCommand {
         if (cmd.getName().equalsIgnoreCase("afk")) {
             if (args.length == 0) {
                 if (!(sender instanceof Player)) {
-                    sender.sendMessage(plugin.AFKConfig.getMessage("AFKNotaPlayer"));
+                    sender.sendMessage(plugin.AFKConfig.getMessage("AFKNotAPlayer"));
                     return;
                 }
                 Player p = (Player) sender;
+                AFKPlayer player = plugin.getPlayer(p);
                 if (!plugin.AFKPerms.isPermitted(p.getUniqueId(), AFKPlusPerms.Perm.UseCommand)) {
                     p.sendMessage(plugin.AFKConfig.getColoredMessage("NoPerms"));
                     return;
                 }
-                if (plugin.playersAFK.containsKey(p.getUniqueId())) {
-                    plugin.stopAFK(p.getUniqueId());
+                if (player.isAFK()) {
+                    player.stopAFK();
                 } else {
-                    plugin.startAFK(p.getUniqueId(), true);
+                    player.startAFK(true);
                 }
             } else if (args.length == 1) {
                 if (sender instanceof Player) {
@@ -65,11 +67,11 @@ public class AFKPlusAFK extends LapisCommand {
                 //noinspection deprecation
                 OfflinePlayer op = Bukkit.getOfflinePlayer(args[0]);
                 if (op.isOnline()) {
-                    Player p = op.getPlayer();
-                    if (plugin.playersAFK.containsKey(p.getUniqueId())) {
-                        plugin.stopAFK(p.getUniqueId());
+                    AFKPlayer player = plugin.getPlayer(op);
+                    if (player.isAFK()) {
+                        player.stopAFK();
                     } else {
-                        plugin.startAFK(p.getUniqueId(), true);
+                        player.startAFK(true);
                     }
                 } else {
                     if (sender instanceof Player) {

@@ -1,7 +1,7 @@
 AFKStart: "&8[&6AFK&4+&8] &9%NAME &6is now AFK"
 AFKStop: "&8[&6AFK&4+&8] &9%NAME &6is no longer AFK"
 NoPerms: "&4You don't have permission to use this command!"
-AFKNotaPlayer: "You must be a player to use this command without a players name!"
+AFKNotAPlayer: "You must be a player to use this command without a players name!"
 AFKNotOnline: "&4That player is not online!"
 AFKPlusNotAFK: "&6That player is not currently AFK"
 AFKPlusAFK: "&6That player became AFK &9"
