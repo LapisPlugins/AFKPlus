@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Benjamin Martin
+ * Copyright 2018 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import java.util.UUID;
 
 public class AFKPlusPerms {
 
-    HashMap<Permission, HashMap<Perm, Integer>> pluginPerms = new HashMap<>();
+    private HashMap<Permission, HashMap<Perm, Integer>> pluginPerms = new HashMap<>();
     private AFKPlus plugin;
     private HashMap<UUID, Permission> playerPerms = new HashMap<>();
 
@@ -84,15 +84,9 @@ public class AFKPlusPerms {
         }
     }
 
-    void setPerms(UUID uuid, Permission p) {
-        playerPerms.put(uuid, p);
-        plugin.AFKConfig.setPlayerPermission(uuid, p.getName());
-    }
-
-    public Permission getPlayerPermission(UUID uuid) {
+    private Permission getPlayerPermission(UUID uuid) {
         Permission p = null;
         OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
-        String permFromFile = plugin.AFKConfig.getPlayerPermission(uuid);
         if (op.isOnline()) {
             Player player = op.getPlayer();
             if (!playerPerms.containsKey(uuid) || playerPerms.get(uuid) == null) {
@@ -112,15 +106,10 @@ public class AFKPlusPerms {
             } else {
                 p = playerPerms.get(uuid);
             }
+            playerPerms.put(uuid, p);
             return p;
-        } else {
-            for (Permission perm : pluginPerms.keySet()) {
-                if (perm.getName().equals(permFromFile)) {
-                    return perm;
-                }
-            }
-            return null;
         }
+        return null;
     }
 
     public Boolean isPermitted(UUID uuid, Perm perm) {
@@ -135,7 +124,7 @@ public class AFKPlusPerms {
         return permMap.get(perm) != null && permMap.get(perm) == 1;
     }
 
-    public Integer getPermissionValue(UUID uuid, Perm p) {
+    Integer getPermissionValue(UUID uuid, Perm p) {
         Permission perm = getPlayerPermission(uuid);
         if (perm == null || pluginPerms.get(perm) == null) {
             loadPermissions();

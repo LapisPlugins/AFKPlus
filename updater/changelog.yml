@@ -16,3 +16,7 @@
 - "Added listener for if a player is attacking things, for example in a mob grinder. this can be disabled if you would not like players to AFK there"
 2.0.5:
 - "Added afkplus.check permission, remove this permission to stop players being checked for AFK"
+2.1.0:
+- "Updated for 1.13"
+- "Added AFKPlayer class for better data management"
+- "Added start and stop commands"

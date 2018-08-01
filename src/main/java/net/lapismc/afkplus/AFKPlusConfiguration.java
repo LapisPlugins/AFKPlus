@@ -20,14 +20,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
 
 public class AFKPlusConfiguration {
 
     private AFKPlus plugin;
     private YamlConfiguration messages;
-    private YamlConfiguration users;
 
     AFKPlusConfiguration(AFKPlus p) {
         plugin = p;
@@ -62,45 +59,6 @@ public class AFKPlusConfiguration {
             plugin.saveDefaultConfig();
             plugin.logger.info("New config generated!");
             plugin.logger.info("Please transfer values!");
-        }
-    }
-
-    void setPlayerPermission(UUID uuid, String p) {
-        if (users != null) {
-            users.set(uuid.toString(), p);
-        } else {
-            File f = new File(plugin.getDataFolder() + File.separator + "users.yml");
-            if (!f.exists()) {
-                try {
-                    f.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            users = YamlConfiguration.loadConfiguration(f);
-            users.set(uuid.toString(), p);
-        }
-        try {
-            users.save(new File(plugin.getDataFolder(), "users.yml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    String getPlayerPermission(UUID uuid) {
-        if (users != null) {
-            return users.getString(uuid.toString());
-        } else {
-            File f = new File(plugin.getDataFolder() + File.separator + "users.yml");
-            if (!f.exists()) {
-                try {
-                    f.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            users = YamlConfiguration.loadConfiguration(f);
-            return users.getString(uuid.toString());
         }
     }
 

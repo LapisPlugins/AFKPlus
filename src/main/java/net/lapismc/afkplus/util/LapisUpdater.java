@@ -177,7 +177,7 @@ public class LapisUpdater {
         }
         if (!yaml.getString(ID).contains("Beta") && !plugin.getDescription()
                 .getVersion().contains("Beta")) {
-            update = oldVersion < newVersion;
+            update = !oldVersion.equals(newVersion);
         }
         return update;
     }

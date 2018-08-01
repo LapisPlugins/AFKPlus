@@ -27,8 +27,8 @@ ActionVariable: "kick %NAME% AFK for more than 5 Minutes"
 # before and after these commands are run, this means you can teleport the player if they are AFK and it wont count as the player moving
 # Be aware that these commands are run by console and that the plugin doesn't store the players location
 # Set this to an empty string for no command
-AFKStart: "tell %PLAYER% You have been set as AFK as you have been inactive"
-AFKStop: "tell %PLAYER% Welcome back!"
+StartCommand: "tell %NAME% You have been set as AFK as you have been inactive"
+StopCommand: ""
 
 # Custom Permissions section
 Permissions:
@@ -55,6 +55,7 @@ Permissions:
     Default: 2
     Priority: 2
     Admin: 1
+    UseCommand: 1
     TimeToAFK: 120
     TimeToWarn: 270
     TimeToAction: 300
