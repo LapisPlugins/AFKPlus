@@ -30,11 +30,8 @@ import java.util.ArrayList;
 
 public class AFKPlusAFK extends LapisCommand {
 
-    private AFKPlus plugin;
-
-    public AFKPlusAFK(AFKPlus p) {
-        super("afk", "Toggles your AFK status", new ArrayList<>());
-        plugin = p;
+    public AFKPlusAFK(AFKPlus plugin) {
+        super(plugin, "afk", "Toggles your AFK status", new ArrayList<>());
     }
 
     @Override
@@ -57,13 +54,7 @@ public class AFKPlusAFK extends LapisCommand {
                     player.startAFK(true);
                 }
             } else if (args.length == 1) {
-                if (sender instanceof Player) {
-                    Player p = (Player) sender;
-                    if (!plugin.AFKPerms.isPermitted(p.getUniqueId(), AFKPlusPerms.Perm.Admin)) {
-                        p.sendMessage(plugin.AFKConfig.getColoredMessage("NoPerms"));
-                        return;
-                    }
-                }
+                if (isNotAdmin(sender)) return;
                 //noinspection deprecation
                 OfflinePlayer op = Bukkit.getOfflinePlayer(args[0]);
                 if (op.isOnline()) {
@@ -85,5 +76,6 @@ public class AFKPlusAFK extends LapisCommand {
             }
         }
     }
+
 
 }

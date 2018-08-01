@@ -17,7 +17,6 @@
 package net.lapismc.afkplus.commands;
 
 import net.lapismc.afkplus.AFKPlayer;
-import net.lapismc.afkplus.AFKPlusPerms;
 import net.lapismc.afkplus.util.LapisCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -37,12 +36,10 @@ import java.util.Locale;
 
 public class AFKPlus extends LapisCommand {
 
-    private net.lapismc.afkplus.AFKPlus plugin;
     private PrettyTime pt;
 
-    public AFKPlus(net.lapismc.afkplus.AFKPlus p) {
-        super("afkplus", "Shows plugin info and how long a player has been AFK", new ArrayList<>());
-        plugin = p;
+    public AFKPlus(net.lapismc.afkplus.AFKPlus plugin) {
+        super(plugin, "afkplus", "Shows plugin info and how long a player has been AFK", new ArrayList<>());
         pt = new PrettyTime(Locale.ENGLISH);
         pt.removeUnit(JustNow.class);
         pt.removeUnit(Millisecond.class);
@@ -51,13 +48,7 @@ public class AFKPlus extends LapisCommand {
     @Override
     public void onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (cmd.getName().equalsIgnoreCase("afkplus")) {
-            if (sender instanceof Player) {
-                Player p = (Player) sender;
-                if (!plugin.AFKPerms.isPermitted(p.getUniqueId(), AFKPlusPerms.Perm.Admin)) {
-                    p.sendMessage(plugin.AFKConfig.getColoredMessage("NoPerms"));
-                    return;
-                }
-            }
+            if (isNotAdmin(sender)) return;
             if (args.length == 0) {
                 if (sender instanceof Player) {
                     sender.sendMessage(ChatColor.GOLD + "------------------"

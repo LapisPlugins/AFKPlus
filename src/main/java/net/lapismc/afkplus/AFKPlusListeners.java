@@ -16,6 +16,7 @@
 
 package net.lapismc.afkplus;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,8 +29,9 @@ public class AFKPlusListeners implements Listener {
 
     private AFKPlus plugin;
 
-    AFKPlusListeners(AFKPlus p) {
-        plugin = p;
+    AFKPlusListeners(AFKPlus plugin) {
+        this.plugin = plugin;
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler
@@ -106,6 +108,9 @@ public class AFKPlusListeners implements Listener {
 
     private void interact(Player p) {
         AFKPlayer player = plugin.getPlayer(p);
+        if (player.shouldIgnore()) {
+            return;
+        }
         if (player.isAFK()) {
             player.stopAFK();
         }

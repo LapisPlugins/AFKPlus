@@ -162,7 +162,7 @@ public class LapisUpdater {
             }
             return false;
         }
-        Boolean update = false;
+        boolean update = false;
         if (yaml.getString(ID).contains("Beta") && !plugin.getDescription()
                 .getVersion().contains("Beta")) {
             update = true;

@@ -40,15 +40,14 @@ public final class AFKPlus extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        new net.lapismc.afkplus.commands.AFKPlus(this);
-        new AFKPlusAFK(this);
         saveDefaultConfig();
         update();
+        new net.lapismc.afkplus.commands.AFKPlus(this);
+        new AFKPlusAFK(this);
         new Metrics(this);
-        AFKPlusListeners AFKListeners = new AFKPlusListeners(this);
+        new AFKPlusListeners(this);
         AFKConfig = new AFKPlusConfiguration(this);
         AFKPerms = new AFKPlusPerms(this);
-        Bukkit.getPluginManager().registerEvents(AFKListeners, this);
         Thread watcher = new Thread(new AFKPlusFileWatcher(this));
         watcher.start();
         startTimer();
@@ -68,7 +67,7 @@ public final class AFKPlus extends JavaPlugin {
         }
     }
 
-    private Runnable runnable(AFKPlus plugin) {
+    private Runnable runnable() {
         return () -> {
             Date date = new Date();
             for (AFKPlayer player : players.values()) {
@@ -82,7 +81,7 @@ public final class AFKPlus extends JavaPlugin {
             }
             for (AFKPlayer player : players.values()) {
                 if (!AFKPerms.isPermitted(player.getUuid(), AFKPlusPerms.Perm.Admin) && player.isAFK()) {
-                    Long time = player.getLastInteract();
+                    Long time = player.getAFKTime();
                     Long difference = (date.getTime() - time) / 1000;
                     if (difference.intValue() >= AFKPerms.getPermissionValue(player.getUuid(), AFKPlusPerms.Perm.TimeToWarn)) {
                         player.warnPlayer();
@@ -95,20 +94,20 @@ public final class AFKPlus extends JavaPlugin {
                                 if (getConfig().getString("ActionVariable").contains(":")) {
                                     for (String s : getConfig().getString("ActionVariable").split(":")) {
                                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                                                s.replace("%NAME", p.getName()));
+                                                s.replace("%NAME%", p.getName()));
                                     }
                                 } else {
                                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                                            getConfig().getString("ActionVariable").replace("%NAME", p.getName()));
+                                            getConfig().getString("ActionVariable").replace("%NAME%", p.getName()));
                                 }
                                 break;
                             case "MESSAGE":
                                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.translateAlternateColorCodes('&',
-                                        getConfig().getString("ActionVariable").replace("%NAME", p.getName()))));
+                                        getConfig().getString("ActionVariable").replace("%NAME%", p.getName()))));
                                 break;
                             case "KICK":
                                 p.kickPlayer(ChatColor.translateAlternateColorCodes('&', ChatColor.translateAlternateColorCodes('&',
-                                        getConfig().getString("ActionVariable").replace("%NAME", p.getName()))));
+                                        getConfig().getString("ActionVariable").replace("%NAME%", p.getName()))));
                                 break;
                             default:
                                 logger.severe("The AFK+ action is not correctly set in the config!");
@@ -120,14 +119,7 @@ public final class AFKPlus extends JavaPlugin {
     }
 
     private void startTimer() {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, runnable(this), 20, 20);
-    }
-
-    public AFKPlayer getPlayer(UUID uuid) {
-        if (!players.containsKey(uuid)) {
-            players.put(uuid, new AFKPlayer(this, uuid));
-        }
-        return players.get(uuid);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, runnable(), 20, 20);
     }
 
     public AFKPlayer getPlayer(Player p) {
@@ -144,7 +136,7 @@ public final class AFKPlus extends JavaPlugin {
         return players.get(op.getUniqueId());
     }
 
-    public void removePlayer(UUID uuid) {
+    void removePlayer(UUID uuid) {
         players.remove(uuid);
     }
 

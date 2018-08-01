@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Benjamin Martin
+ * Copyright 2018 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ public class AFKPlusConfiguration {
     }
 
     private void configVersion() {
-        if (plugin.getConfig().getInt("ConfigVersion") != 4) {
+        if (plugin.getConfig().getInt("ConfigVersion") != 5) {
             File oldConfig = new File(plugin.getDataFolder() + File.separator + "config.yml");
             File backupConfig = new File(plugin.getDataFolder() + File.separator +
                     "Backup_config.yml");
@@ -65,7 +65,7 @@ public class AFKPlusConfiguration {
         }
     }
 
-    public void setPlayerPermission(UUID uuid, String p) {
+    void setPlayerPermission(UUID uuid, String p) {
         if (users != null) {
             users.set(uuid.toString(), p);
         } else {
@@ -87,7 +87,7 @@ public class AFKPlusConfiguration {
         }
     }
 
-    public String getPlayerPermission(UUID uuid) {
+    String getPlayerPermission(UUID uuid) {
         if (users != null) {
             return users.getString(uuid.toString());
         } else {

@@ -16,23 +16,30 @@
 
 package net.lapismc.afkplus.util;
 
+import net.lapismc.afkplus.AFKPlus;
+import net.lapismc.afkplus.AFKPlusPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
+import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public abstract class LapisCommand extends BukkitCommand {
 
-    public LapisCommand(String name, String desc, ArrayList<String> aliases) {
+    protected AFKPlus plugin;
+
+    public LapisCommand(AFKPlus plugin, String name, String desc, ArrayList<String> aliases) {
         super(name);
+        this.plugin = plugin;
         setDescription(desc);
         setAliases(aliases);
         registerCommand(name);
     }
+
 
     private void registerCommand(String name) {
         try {
@@ -43,6 +50,17 @@ public abstract class LapisCommand extends BukkitCommand {
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         }
+    }
+
+    protected boolean isNotAdmin(CommandSender sender) {
+        if (sender instanceof Player) {
+            Player p = (Player) sender;
+            if (!plugin.AFKPerms.isPermitted(p.getUniqueId(), AFKPlusPerms.Perm.Admin)) {
+                p.sendMessage(plugin.AFKConfig.getColoredMessage("NoPerms"));
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

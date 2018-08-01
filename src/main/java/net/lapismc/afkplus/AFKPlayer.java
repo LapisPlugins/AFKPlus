@@ -29,25 +29,26 @@ public class AFKPlayer {
     private AFKPlus plugin;
     private UUID uuid;
     private Long lastInteract;
-    private Long timeAFK;
+    private Long AFKTime;
+    private boolean shouldIgnore;
     private boolean isCommandAFK;
-    private boolean isWarned;
     private boolean isAFK;
+    private boolean isWarned;
 
-    public AFKPlayer(AFKPlus plugin, UUID uuid) {
+    private AFKPlayer(AFKPlus plugin, UUID uuid) {
         this.plugin = plugin;
         this.uuid = uuid;
     }
 
-    public AFKPlayer(AFKPlus plugin, OfflinePlayer op) {
+    AFKPlayer(AFKPlus plugin, OfflinePlayer op) {
         this(plugin, op.getUniqueId());
     }
 
-    public AFKPlayer(AFKPlus plugin, Player p) {
+    AFKPlayer(AFKPlus plugin, Player p) {
         this(plugin, p.getUniqueId());
     }
 
-    public UUID getUuid() {
+    UUID getUuid() {
         return uuid;
     }
 
@@ -55,12 +56,15 @@ public class AFKPlayer {
         return isAFK;
     }
 
-    public void setAFK(boolean afk) {
+    void setAFK(boolean afk) {
         isAFK = afk;
+        if (!afk) {
+            isWarned = false;
+        }
     }
 
-    public boolean isWarned() {
-        return isWarned;
+    Long getAFKTime() {
+        return AFKTime;
     }
 
     public boolean isCommandAFK() {
@@ -71,41 +75,64 @@ public class AFKPlayer {
         return lastInteract;
     }
 
-    public void setLastInteract() {
+    void setLastInteract() {
         lastInteract = System.currentTimeMillis();
     }
 
-    public void warnPlayer() {
-        Player p = Bukkit.getPlayer(uuid);
-        p.sendMessage(plugin.AFKConfig.getColoredMessage("WarnMessage"));
-        playWarningTone(p);
+    void warnPlayer() {
+        if (!isWarned) {
+            Player p = Bukkit.getPlayer(uuid);
+            p.sendMessage(plugin.AFKConfig.getColoredMessage("WarnMessage"));
+            playWarningTone(p);
+            isWarned = true;
+        }
     }
 
     public void startAFK(Boolean command) {
         if (!isAFK) {
-            timeAFK = System.currentTimeMillis();
+            setAFK(true);
+            AFKTime = System.currentTimeMillis();
             isCommandAFK = command;
-            isAFK = true;
             lastInteract = null;
             Bukkit.broadcastMessage(plugin.AFKConfig.getColoredMessage("AFKStart")
                     .replace("%NAME", Bukkit.getPlayer(uuid).getName()));
+            if (!plugin.getConfig().getString("StartCommand").equalsIgnoreCase("")) {
+                Player p = Bukkit.getPlayer(uuid);
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                        plugin.getConfig().getString("StartCommand").replace("%NAME%", p.getName()));
+            }
+            startIgnoring();
         }
     }
 
     public void stopAFK() {
         if (isAFK) {
-            isWarned = false;
-            isAFK = false;
+            setAFK(false);
             isCommandAFK = false;
             lastInteract = System.currentTimeMillis();
             Bukkit.broadcastMessage(plugin.AFKConfig.getColoredMessage("AFKStop")
                     .replace("%NAME", Bukkit.getPlayer(uuid).getName()));
+            if (!plugin.getConfig().getString("StopCommand").equalsIgnoreCase("")) {
+                Player p = Bukkit.getPlayer(uuid);
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                        plugin.getConfig().getString("StopCommand").replace("%NAME%", p.getName()));
+            }
+            startIgnoring();
         }
+    }
+
+    private void startIgnoring() {
+        shouldIgnore = true;
+        Bukkit.getScheduler().runTaskLater(plugin, () -> shouldIgnore = false, 2);
     }
 
     private void playWarningTone(Player p) {
         for (int i = 0; i < 5; i++) {
             p.playNote(p.getLocation(), Instrument.PIANO, Note.flat(1, Note.Tone.C));
         }
+    }
+
+    boolean shouldIgnore() {
+        return shouldIgnore;
     }
 }
