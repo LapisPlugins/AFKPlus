@@ -20,3 +20,5 @@
 - "Updated for 1.13"
 - "Added AFKPlayer class for better data management"
 - "Added start and stop commands"
+2.1.1:
+- "Fixed a null pointer in /afkplus (player) command"

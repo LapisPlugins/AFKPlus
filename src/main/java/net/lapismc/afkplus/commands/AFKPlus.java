@@ -17,6 +17,7 @@
 package net.lapismc.afkplus.commands;
 
 import net.lapismc.afkplus.AFKPlayer;
+import net.lapismc.afkplus.AFKPlusPerms;
 import net.lapismc.afkplus.util.LapisCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -116,7 +117,7 @@ public class AFKPlus extends LapisCommand {
                             formattedTime = pt.format(durationList);
                         } else {
                             List<Duration> durationList = pt.calculatePreciseDuration(new Date(time -
-                                    (plugin.getConfig().getInt("TimeUntilAFK") * 1000)));
+                                    (plugin.AFKPerms.getPermissionValue(op.getUniqueId(), AFKPlusPerms.Perm.TimeToAFK) * 1000)));
                             formattedTime = pt.format(durationList);
                         }
                         if (sender instanceof Player) {

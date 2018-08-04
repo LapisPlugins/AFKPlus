@@ -124,7 +124,7 @@ public class AFKPlusPerms {
         return permMap.get(perm) != null && permMap.get(perm) == 1;
     }
 
-    Integer getPermissionValue(UUID uuid, Perm p) {
+    public Integer getPermissionValue(UUID uuid, Perm p) {
         Permission perm = getPlayerPermission(uuid);
         if (perm == null || pluginPerms.get(perm) == null) {
             loadPermissions();
