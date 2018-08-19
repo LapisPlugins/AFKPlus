@@ -34,6 +34,7 @@ public class AFKPlayer {
     private boolean isCommandAFK;
     private boolean isAFK;
     private boolean isWarned;
+    private boolean shouldCollide;
 
     private AFKPlayer(AFKPlus plugin, UUID uuid) {
         this.plugin = plugin;
@@ -96,12 +97,20 @@ public class AFKPlayer {
             lastInteract = null;
             Bukkit.broadcastMessage(plugin.AFKConfig.getColoredMessage("AFKStart")
                     .replace("%NAME", Bukkit.getPlayer(uuid).getName()));
+            startIgnoring();
+            // if the player is currently collidable and they shouldn't be while afk
+            if (Bukkit.getPlayer(uuid).isCollidable() && !plugin.getConfig().getBoolean("PlayerCollision")) {
+                // set the should collide tag so that we know to re-enable collision when they exist AFK
+                shouldCollide = true;
+                Bukkit.getPlayer(uuid).setCollidable(false);
+            } else {
+                shouldCollide = false;
+            }
             if (!plugin.getConfig().getString("StartCommand").equalsIgnoreCase("")) {
                 Player p = Bukkit.getPlayer(uuid);
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
                         plugin.getConfig().getString("StartCommand").replace("%NAME%", p.getName()));
             }
-            startIgnoring();
         }
     }
 
@@ -112,18 +121,22 @@ public class AFKPlayer {
             lastInteract = System.currentTimeMillis();
             Bukkit.broadcastMessage(plugin.AFKConfig.getColoredMessage("AFKStop")
                     .replace("%NAME", Bukkit.getPlayer(uuid).getName()));
+            startIgnoring();
+            if (shouldCollide) {
+                Bukkit.getPlayer(uuid).setCollidable(true);
+                shouldCollide = false;
+            }
             if (!plugin.getConfig().getString("StopCommand").equalsIgnoreCase("")) {
                 Player p = Bukkit.getPlayer(uuid);
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
                         plugin.getConfig().getString("StopCommand").replace("%NAME%", p.getName()));
             }
-            startIgnoring();
         }
     }
 
     private void startIgnoring() {
         shouldIgnore = true;
-        Bukkit.getScheduler().runTaskLater(plugin, () -> shouldIgnore = false, 2);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> shouldIgnore = false, 20);
     }
 
     private void playWarningTone(Player p) {

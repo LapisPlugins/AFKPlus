@@ -1,11 +1,14 @@
 # Don't change this value unless you want to reset the config
-ConfigVersion: 5
+ConfigVersion: 6
 # If true the plugin will automatically download the latest version of AFK+ when a newer version is released
 UpdateDownload: false
 # Should action or warnings be used on players with the admin permission?
 AdminAction: false
 # Can players who are AFK be hurt?
 AFKDamage: false
+# Should players collide while AFK, false = no player collision
+# This should be set to false if you want to teleport players while they are AFK
+PlayerCollision: true
 # This is a list of the enabled listeners for AFK
 EnabledListeners:
   BlockPlace: true
@@ -23,7 +26,7 @@ Action: COMMAND
 # EG, ActionVariable: "warn %NAME being AFK for too long:kill %NAME"
 # This will warn the player(if you have a warn plugin) and then kill them
 ActionVariable: "kick %NAME% AFK for more than 5 Minutes"
-# AFK Start and stop commands are run when a player goes into or exits AFK respectively. The player will get a tick of no detections
+# AFK Start and stop commands are run when a player goes into or exits AFK respectively. The player will get a second of no detections
 # before and after these commands are run, this means you can teleport the player if they are AFK and it wont count as the player moving
 # Be aware that these commands are run by console and that the plugin doesn't store the players location
 # Set this to an empty string for no command
