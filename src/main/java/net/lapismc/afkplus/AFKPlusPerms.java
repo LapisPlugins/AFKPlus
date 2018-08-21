@@ -44,31 +44,20 @@ public class AFKPlusPerms {
         ConfigurationSection permsSection = plugin.getConfig().getConfigurationSection("Permissions");
         Set<String> perms = permsSection.getKeys(false);
         for (String perm : perms) {
-            String permName = perm.replace(",", ".");
-            int Default = plugin.getConfig().getInt("Permissions." + perm + ".Default");
-            int priority = plugin.getConfig().getInt("Permissions." + perm + ".Priority");
-            int Admin = plugin.getConfig().getInt("Permissions." + perm + ".Admin");
-            int UseCommand = plugin.getConfig().getInt("Permissions." + perm + ".UseCommand");
-            int TimeToAFK = plugin.getConfig().getInt("Permissions." + perm + ".TimeToAFK");
-            int TimeToWarn = plugin.getConfig().getInt("Permissions." + perm + ".TimeToWarn");
-            int TimeToAction = plugin.getConfig().getInt("Permissions." + perm + ".TimeToAction");
             HashMap<Perm, Integer> permMap = new HashMap<>();
-            permMap.put(Perm.Default, Default);
-            permMap.put(Perm.Priority, priority);
-            permMap.put(Perm.Admin, Admin);
-            permMap.put(Perm.UseCommand, UseCommand);
-            permMap.put(Perm.TimeToAFK, TimeToAFK);
-            permMap.put(Perm.TimeToWarn, TimeToWarn);
-            permMap.put(Perm.TimeToAction, TimeToAction);
+            String permName = perm.replace(",", ".");
+            for (Perm permission : Perm.values()) {
+                int i = plugin.getConfig().getInt("Permissions." + perm + "." + permission.name(), 0);
+                permMap.put(permission, i);
+            }
             PermissionDefault permissionDefault;
-            switch (Default) {
+            switch (permMap.get(Perm.Default)) {
                 case 1:
                     permissionDefault = PermissionDefault.TRUE;
                     break;
                 case 2:
                     permissionDefault = PermissionDefault.OP;
                     break;
-
                 case 0:
                 default:
                     permissionDefault = PermissionDefault.FALSE;
@@ -77,8 +66,6 @@ public class AFKPlusPerms {
             Permission permission = new Permission(permName, permissionDefault);
             if (Bukkit.getPluginManager().getPermission(permName) == null) {
                 Bukkit.getPluginManager().addPermission(permission);
-            } else {
-                plugin.logger.severe("Couldn't add permission " + permName + " as it already exists!");
             }
             pluginPerms.put(permission, permMap);
         }
@@ -126,7 +113,7 @@ public class AFKPlusPerms {
 
     public Integer getPermissionValue(UUID uuid, Perm p) {
         Permission perm = getPlayerPermission(uuid);
-        if (perm == null || pluginPerms.get(perm) == null) {
+        if (perm == null || pluginPerms.get(perm) == null || pluginPerms.get(perm).get(p) == null) {
             loadPermissions();
         }
         return pluginPerms.get(perm).get(p);
