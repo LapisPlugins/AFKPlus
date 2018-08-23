@@ -16,42 +16,40 @@
 
 package net.lapismc.afkplus;
 
-import net.lapismc.afkplus.commands.AFKPlusAFK;
 import net.lapismc.afkplus.util.LapisUpdater;
 import net.lapismc.afkplus.util.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.logging.Logger;
 
 public final class AFKPlus extends JavaPlugin {
 
-    public AFKPlusConfiguration AFKConfig;
-    public AFKPlusPerms AFKPerms;
     public LapisUpdater updater;
     Logger logger = getLogger();
-    private HashMap<UUID, AFKPlayer> players = new HashMap<>();
+    private HashMap<UUID, AFKPlusPlayer> players = new HashMap<>();
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
         update();
-        new net.lapismc.afkplus.commands.AFKPlus(this);
-        new AFKPlusAFK(this);
         new Metrics(this);
-        new AFKPlusListeners(this);
-        AFKConfig = new AFKPlusConfiguration(this);
-        AFKPerms = new AFKPlusPerms(this);
-        Thread watcher = new Thread(new AFKPlusFileWatcher(this));
-        watcher.start();
-        startTimer();
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, getRepeatingTask(), 20, 20);
         logger.info(getName() + " v." + getDescription().getVersion() + " has been enabled!");
+    }
+
+    public AFKPlusPlayer getPlayer(UUID uuid) {
+        if (!players.containsKey(uuid)) {
+            players.put(uuid, new AFKPlusPlayer(this, uuid));
+        }
+        return players.get(uuid);
+    }
+
+    public AFKPlusPlayer getPlayer(OfflinePlayer op) {
+        return getPlayer(op.getUniqueId());
     }
 
     private void update() {
@@ -67,77 +65,12 @@ public final class AFKPlus extends JavaPlugin {
         }
     }
 
-    private Runnable runnable() {
+    private Runnable getRepeatingTask() {
         return () -> {
-            Date date = new Date();
-            for (AFKPlayer player : players.values()) {
-                if (!player.isAFK()) {
-                    Long time = player.getLastInteract();
-                    Long difference = (date.getTime() - time) / 1000;
-                    if (difference.intValue() >= AFKPerms.getPermissionValue(player.getUuid(), AFKPlusPerms.Perm.TimeToAFK)) {
-                        player.startAFK(false);
-                    }
-                }
-            }
-            for (AFKPlayer player : players.values()) {
-                if (!AFKPerms.isPermitted(player.getUuid(), AFKPlusPerms.Perm.Admin) && player.isAFK()) {
-                    Long time = player.getAFKTime();
-                    Long difference = (date.getTime() - time) / 1000;
-                    if (difference.intValue() >= AFKPerms.getPermissionValue(player.getUuid(), AFKPlusPerms.Perm.TimeToWarn)) {
-                        player.warnPlayer();
-                    }
-                    if (difference.intValue() >= AFKPerms.getPermissionValue(player.getUuid(), AFKPlusPerms.Perm.TimeToAction)) {
-                        Player p = Bukkit.getPlayer(player.getUuid());
-                        player.setAFK(false);
-                        switch (getConfig().getString("Action")) {
-                            case "COMMAND":
-                                if (getConfig().getString("ActionVariable").contains(":")) {
-                                    for (String s : getConfig().getString("ActionVariable").split(":")) {
-                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                                                s.replace("%NAME%", p.getName()));
-                                    }
-                                } else {
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                                            getConfig().getString("ActionVariable").replace("%NAME%", p.getName()));
-                                }
-                                break;
-                            case "MESSAGE":
-                                p.sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.translateAlternateColorCodes('&',
-                                        getConfig().getString("ActionVariable").replace("%NAME%", p.getName()))));
-                                break;
-                            case "KICK":
-                                p.kickPlayer(ChatColor.translateAlternateColorCodes('&', ChatColor.translateAlternateColorCodes('&',
-                                        getConfig().getString("ActionVariable").replace("%NAME%", p.getName()))));
-                                break;
-                            default:
-                                logger.severe("The AFK+ action is not correctly set in the config!");
-                        }
-                    }
-                }
+            for (AFKPlusPlayer player : players.values()) {
+                player.getRepeatingTask().run();
             }
         };
-    }
-
-    private void startTimer() {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, runnable(), 20, 20);
-    }
-
-    public AFKPlayer getPlayer(Player p) {
-        if (!players.containsKey(p.getUniqueId())) {
-            players.put(p.getUniqueId(), new AFKPlayer(this, p));
-        }
-        return players.get(p.getUniqueId());
-    }
-
-    public AFKPlayer getPlayer(OfflinePlayer op) {
-        if (!players.containsKey(op.getUniqueId())) {
-            players.put(op.getUniqueId(), new AFKPlayer(this, op));
-        }
-        return players.get(op.getUniqueId());
-    }
-
-    void removePlayer(UUID uuid) {
-        players.remove(uuid);
     }
 
 }

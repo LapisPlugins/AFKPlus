@@ -31,6 +31,7 @@
 
     <build>
         <defaultGoal>clean install</defaultGoal>
+        <sourceDirectory>src/main/java</sourceDirectory>
         <finalName>${project.name}</finalName>
         <plugins>
             <plugin>
