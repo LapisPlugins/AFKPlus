@@ -18,17 +18,18 @@ package net.lapismc.afkplus;
 
 import net.lapismc.afkplus.util.LapisUpdater;
 import net.lapismc.afkplus.util.Metrics;
+import net.lapismc.lapiscore.LapisCorePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-public final class AFKPlus extends JavaPlugin {
+public final class AFKPlus extends LapisCorePlugin {
 
     public LapisUpdater updater;
+    public AFKPlusPermissions permissions;
     Logger logger = getLogger();
     private HashMap<UUID, AFKPlusPlayer> players = new HashMap<>();
 
@@ -36,6 +37,8 @@ public final class AFKPlus extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         update();
+        super.registerConfiguration(new AFBPlusConfiguration(this));
+        permissions = new AFKPlusPermissions(this);
         new Metrics(this);
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, getRepeatingTask(), 20, 20);
         logger.info(getName() + " v." + getDescription().getVersion() + " has been enabled!");

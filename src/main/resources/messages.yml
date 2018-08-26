@@ -1,0 +1,18 @@
+ConfigVersion: 1
+
+PrimaryColor: "&6"
+SecondaryColor: "&4"
+
+Broadcast:
+  Start: "&8[&6AFK&4+&8] &s%PLAYER%&p is now AFK"
+  Stop: "&8[&6AFK&4+&8] &s%PLAYER%&p is no longer AFK"
+
+Help:
+  AFK: "\"/afk [PlayerName]\"\n
+  Without a players name this will toggle your AFK status\n
+  With a name it will attempt to toggle that players AFK status"
+
+Error:
+  MustBePlayer: "&sYou must be player to do this!"
+  PlayerNotFound: "&sPlayer not found"
+  NotPermitted: "&sYou aren't permitted to do this"

@@ -20,21 +20,32 @@ import org.bukkit.Bukkit;
 
 import java.util.UUID;
 
+@SuppressWarnings("WeakerAccess")
 public class AFKPlusPlayer {
 
     private AFKPlus plugin;
     private UUID uuid;
     private Long lastInteract;
+    private Long afkStart;
     private boolean isAFK;
     private boolean isWarned;
 
-    public AFKPlusPlayer(AFKPlus plugin, UUID uuid) {
+    AFKPlusPlayer(AFKPlus plugin, UUID uuid) {
         this.plugin = plugin;
         this.uuid = uuid;
     }
 
-    public boolean isWarned() {
-        return isWarned;
+    public String getName() {
+        return Bukkit.getOfflinePlayer(uuid).getName();
+    }
+
+    public boolean isPermitted(AFKPlusPermissions.AFKPlusPermission perm) {
+        return plugin.permissions.isPermitted(uuid, perm.getPermission());
+    }
+
+    public void warnPlayer() {
+        isWarned = true;
+        //TODO make the warning happen
     }
 
     public boolean isAFK() {
@@ -42,21 +53,32 @@ public class AFKPlusPlayer {
     }
 
     public void startAFK() {
-        //TODO send afk message and take action
-        isAFK = true;
+        String message = plugin.config.getMessage("Broadcast.Start")
+                .replace("%PLAYER%", getName());
+        Bukkit.broadcastMessage(message);
+        forceStartAFK();
     }
 
     public void forceStartAFK() {
+        afkStart = System.currentTimeMillis();
         isAFK = true;
     }
 
     public void stopAFK() {
-        //TODO send afk message and take action
-        isAFK = false;
+        String message = plugin.config.getMessage("Broadcast.Stop")
+                .replace("%PLAYER%", getName());
+        Bukkit.broadcastMessage(message);
+        forceStopAFK();
     }
 
     public void forceStopAFK() {
+        isWarned = false;
         isAFK = false;
+        interact();
+    }
+
+    public void takeAction() {
+        //TODO take the action
     }
 
     public void interact() {
@@ -69,9 +91,36 @@ public class AFKPlusPlayer {
     Runnable getRepeatingTask() {
         return () -> {
             if (Bukkit.getOfflinePlayer(uuid).isOnline()) {
-                //TODO check if player should be AFK, Warned or Kicked
+                if (isAFK) {
+                    Integer timeToWarning = plugin.permissions.getPermissionValue(uuid,
+                            AFKPlusPermissions.AFKPlusPermission.TimeToWarning.getPermission());
+                    Integer timeToAction = plugin.permissions.getPermissionValue(uuid,
+                            AFKPlusPermissions.AFKPlusPermission.TimeToAction.getPermission());
+                    //Get the number of seconds since the player went AFK
+                    Long secondsSinceAFKStart = (afkStart - System.currentTimeMillis()) / 1000;
+                    //Check for warning
+                    if (!isWarned && secondsSinceAFKStart >= timeToWarning) {
+                        warnPlayer();
+                    }
+                    //Check for action
+                    if (secondsSinceAFKStart >= timeToAction) {
+                        takeAction();
+                    }
+                } else {
+                    Integer timeToAFK = plugin.permissions.getPermissionValue(uuid,
+                            AFKPlusPermissions.AFKPlusPermission.TimeToAFK.getPermission());
+                    if (timeToAFK.equals(-1)) {
+                        //This allows player to only be put into AFK by commands
+                        return;
+                    }
+                    //Get the number of seconds since the last recorded interact
+                    Long secondsSinceLastInteract = (lastInteract - System.currentTimeMillis()) / 1000;
+                    //Set them as AFK if it is the same or longer than the time to AFK
+                    if (secondsSinceLastInteract.intValue() >= timeToAFK) {
+                        startAFK();
+                    }
+                }
             }
         };
     }
-
 }
