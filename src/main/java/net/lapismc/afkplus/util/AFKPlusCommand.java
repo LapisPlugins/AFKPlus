@@ -17,12 +17,11 @@
 package net.lapismc.afkplus.util;
 
 import net.lapismc.afkplus.AFKPlus;
-import net.lapismc.afkplus.AFKPlusPermissions;
 import net.lapismc.afkplus.AFKPlusPlayer;
+import net.lapismc.afkplus.playerdata.Permission;
 import net.lapismc.lapiscore.LapisCoreCommand;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -36,11 +35,8 @@ public abstract class AFKPlusCommand extends LapisCoreCommand {
         this.plugin = plugin;
     }
 
-    protected boolean isPermitted(CommandSender sender, AFKPlusPermissions.AFKPlusPermission permission) {
-        if (sender instanceof Player) {
-            return getPlayer((Player) sender).isPermitted(permission);
-        }
-        return true;
+    protected boolean isPermitted(CommandSender sender, Permission permission) {
+        return isPermitted(sender, permission.getPermission());
     }
 
     protected AFKPlusPlayer getPlayer(UUID uuid) {

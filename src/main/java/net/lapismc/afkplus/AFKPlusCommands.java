@@ -16,20 +16,14 @@
 
 package net.lapismc.afkplus;
 
-import net.lapismc.afkplus.playerdata.Permission;
-import net.lapismc.lapiscore.LapisCorePermissions;
+import net.lapismc.afkplus.commands.AFK;
+import net.lapismc.afkplus.commands.AFKPlusCmd;
 
-class AFKPlusPermissions extends LapisCorePermissions {
+class AFKPlusCommands {
 
-    AFKPlusPermissions(AFKPlus plugin) {
-        super(plugin);
-        registerAFKPlusPermissions();
-        loadPermissions();
+    AFKPlusCommands(AFKPlus plugin) {
+        new AFK(plugin);
+        new AFKPlusCmd(plugin);
     }
 
-    private void registerAFKPlusPermissions() {
-        for (Permission permission : Permission.values()) {
-            registerPermissions(permission.getPermission());
-        }
-    }
 }

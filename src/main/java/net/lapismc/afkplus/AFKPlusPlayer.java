@@ -16,6 +16,7 @@
 
 package net.lapismc.afkplus;
 
+import net.lapismc.afkplus.playerdata.Permission;
 import org.bukkit.Bukkit;
 
 import java.util.UUID;
@@ -39,7 +40,7 @@ public class AFKPlusPlayer {
         return Bukkit.getOfflinePlayer(uuid).getName();
     }
 
-    public boolean isPermitted(AFKPlusPermissions.AFKPlusPermission perm) {
+    public boolean isPermitted(Permission perm) {
         return plugin.permissions.isPermitted(uuid, perm.getPermission());
     }
 
@@ -92,10 +93,8 @@ public class AFKPlusPlayer {
         return () -> {
             if (Bukkit.getOfflinePlayer(uuid).isOnline()) {
                 if (isAFK) {
-                    Integer timeToWarning = plugin.permissions.getPermissionValue(uuid,
-                            AFKPlusPermissions.AFKPlusPermission.TimeToWarning.getPermission());
-                    Integer timeToAction = plugin.permissions.getPermissionValue(uuid,
-                            AFKPlusPermissions.AFKPlusPermission.TimeToAction.getPermission());
+                    Integer timeToWarning = plugin.permissions.getPermissionValue(uuid, Permission.TimeToWarning.getPermission());
+                    Integer timeToAction = plugin.permissions.getPermissionValue(uuid, Permission.TimeToAction.getPermission());
                     //Get the number of seconds since the player went AFK
                     Long secondsSinceAFKStart = (afkStart - System.currentTimeMillis()) / 1000;
                     //Check for warning
@@ -107,8 +106,7 @@ public class AFKPlusPlayer {
                         takeAction();
                     }
                 } else {
-                    Integer timeToAFK = plugin.permissions.getPermissionValue(uuid,
-                            AFKPlusPermissions.AFKPlusPermission.TimeToAFK.getPermission());
+                    Integer timeToAFK = plugin.permissions.getPermissionValue(uuid, Permission.TimeToAFK.getPermission());
                     if (timeToAFK.equals(-1)) {
                         //This allows player to only be put into AFK by commands
                         return;

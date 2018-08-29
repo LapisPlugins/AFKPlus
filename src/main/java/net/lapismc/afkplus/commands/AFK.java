@@ -17,8 +17,8 @@
 package net.lapismc.afkplus.commands;
 
 import net.lapismc.afkplus.AFKPlus;
-import net.lapismc.afkplus.AFKPlusPermissions;
 import net.lapismc.afkplus.AFKPlusPlayer;
+import net.lapismc.afkplus.playerdata.Permission;
 import net.lapismc.afkplus.util.AFKPlusCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -43,7 +43,7 @@ public class AFK extends AFKPlusCommand {
             }
             AFKPlusPlayer player = getPlayer((Player) sender);
             //Check that they are permitted to use the command
-            if (!player.isPermitted(AFKPlusPermissions.AFKPlusPermission.AFFSelf)) {
+            if (!player.isPermitted(Permission.AFKSelf)) {
                 sendMessage(sender, "Error.NotPermitted");
                 return;
             }
@@ -52,7 +52,7 @@ public class AFK extends AFKPlusCommand {
         } else if (args.length == 1) {
             // /afk [PlayerName]
             //Check that they are permitted to use this command
-            if (!isPermitted(sender, AFKPlusPermissions.AFKPlusPermission.AFKOthers)) {
+            if (!isPermitted(sender, Permission.AFKOthers)) {
                 sendMessage(sender, "Error.NotPermitted");
                 return;
             }

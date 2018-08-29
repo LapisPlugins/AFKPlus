@@ -60,6 +60,10 @@
                                     <pattern>org.ocpsoft.prettytime</pattern>
                                     <shadedPattern>net.lapismc.afkplus.prettytime</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>net.lapismc.lapiscore</pattern>
+                                    <shadedPattern>net.lapismc.afkplus.core</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>

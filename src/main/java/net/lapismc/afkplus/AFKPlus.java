@@ -37,8 +37,9 @@ public final class AFKPlus extends LapisCorePlugin {
     public void onEnable() {
         saveDefaultConfig();
         update();
-        super.registerConfiguration(new AFBPlusConfiguration(this));
-        permissions = new AFKPlusPermissions(this);
+        registerConfiguration(new AFBPlusConfiguration(this));
+        registerPermissions(new AFKPlusPermissions(this));
+        new AFKPlusCommands(this);
         new Metrics(this);
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, getRepeatingTask(), 20, 20);
         logger.info(getName() + " v." + getDescription().getVersion() + " has been enabled!");
