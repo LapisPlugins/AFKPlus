@@ -20,7 +20,7 @@ import net.lapismc.lapiscore.LapisPermission;
 
 public enum Permission {
 
-    AFKSelf(new AFKSelf()), AFKOthers(new AFKOthers()), TimeToAFK(new TimeToAFK()),
+    Update(new Update()), AFKSelf(new AFKSelf()), AFKOthers(new AFKOthers()), TimeToAFK(new TimeToAFK()),
     TimeToWarning(new TimeToWarning()), TimeToAction(new TimeToAction());
 
     private final LapisPermission permission;
@@ -31,6 +31,13 @@ public enum Permission {
 
     public LapisPermission getPermission() {
         return this.permission;
+    }
+
+    private static class Update extends LapisPermission {
+        //Allows a player to update the plugin using /afkplus update
+        Update() {
+            super("Update");
+        }
     }
 
     private static class AFKSelf extends LapisPermission {

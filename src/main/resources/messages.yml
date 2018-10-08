@@ -3,11 +3,34 @@ ConfigVersion: 1
 PrimaryColor: "&6"
 SecondaryColor: "&4"
 
+#The language used for time values like "60 minutes from now"
+#Accepted values can be found at http://www.ocpsoft.org/prettytime/#i18n
+#Please use the abbreviation next to the language e.g. DE for German or FR for french
+PrettyTimeLocale: "en"
+
 Broadcast:
   Start: "&8[&6AFK&4+&8] &s%PLAYER%&p is now AFK"
   Stop: "&8[&6AFK&4+&8] &s%PLAYER%&p is no longer AFK"
 
+Updater:
+  NoUpdate: "&pThere is no update available"
+  UpdateFound: "&pThere is an update available for AFKPlus"
+  UpdateDownloading: "&pAn update was found and is being downloaded, it will be installed on the next server restart"
+
+Player:
+  AFK: "&s{PLAYER}&p has been AFK since &s{TIME}"
+  NotAFK: "&s{PLAYER}&p is not AFK"
+
 Help:
+  Help: "The following is a list of commands and their uses:\n"
+  AFKPlus: "\"/afkplus\"\n
+  Shows plugin information"
+  AFKPlusHelp: "\"/afkplus [help]\"\n
+  Displays all of the commands and their uses"
+  AFKPlusUpdate: "\"/afkplus [update]\"\n
+  Checks for and installs any available update"
+  AFKPlusPlayer: "\"/afkplus [PlayerName]\"\n
+  Tells you the AFK status of the player, if they are AFK it will also tell you how long they have been AFK"
   AFK: "\"/afk [PlayerName]\"\n
   Without a players name this will toggle your AFK status\n
   With a name it will attempt to toggle that players AFK status"

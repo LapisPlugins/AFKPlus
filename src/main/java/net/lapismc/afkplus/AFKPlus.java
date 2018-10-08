@@ -16,6 +16,7 @@
 
 package net.lapismc.afkplus;
 
+import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.lapismc.afkplus.util.LapisUpdater;
 import net.lapismc.afkplus.util.Metrics;
 import net.lapismc.lapiscore.LapisCorePlugin;
@@ -37,7 +38,7 @@ public final class AFKPlus extends LapisCorePlugin {
     public void onEnable() {
         saveDefaultConfig();
         update();
-        registerConfiguration(new AFBPlusConfiguration(this));
+        registerConfiguration(new AFKPlusConfiguration(this));
         registerPermissions(new AFKPlusPermissions(this));
         new AFKPlusCommands(this);
         new Metrics(this);

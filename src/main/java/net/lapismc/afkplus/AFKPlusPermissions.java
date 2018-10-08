@@ -19,7 +19,8 @@ package net.lapismc.afkplus;
 import net.lapismc.afkplus.playerdata.Permission;
 import net.lapismc.lapiscore.LapisCorePermissions;
 
-class AFKPlusPermissions extends LapisCorePermissions {
+@SuppressWarnings("WeakerAccess")
+public class AFKPlusPermissions extends LapisCorePermissions {
 
     AFKPlusPermissions(AFKPlus plugin) {
         super(plugin);

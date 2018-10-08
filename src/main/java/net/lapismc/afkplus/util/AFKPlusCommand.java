@@ -17,26 +17,51 @@
 package net.lapismc.afkplus.util;
 
 import net.lapismc.afkplus.AFKPlus;
-import net.lapismc.afkplus.AFKPlusPlayer;
+import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.lapismc.afkplus.playerdata.Permission;
 import net.lapismc.lapiscore.LapisCoreCommand;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.ocpsoft.prettytime.Duration;
+import org.ocpsoft.prettytime.PrettyTime;
+import org.ocpsoft.prettytime.units.JustNow;
+import org.ocpsoft.prettytime.units.Millisecond;
 
-import java.util.ArrayList;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class AFKPlusCommand extends LapisCoreCommand {
 
+    private final PrettyTime prettyTime;
     protected AFKPlus plugin;
 
     public AFKPlusCommand(AFKPlus plugin, String name, String desc, ArrayList<String> aliases) {
         super(plugin, name, desc, aliases);
         this.plugin = plugin;
+        Locale loc = new Locale(plugin.config.getMessage("PrettyTimeLocale"));
+        prettyTime = new PrettyTime(loc);
+        prettyTime.removeUnit(JustNow.class);
+        prettyTime.removeUnit(Millisecond.class);
     }
 
-    protected boolean isPermitted(CommandSender sender, Permission permission) {
-        return isPermitted(sender, permission.getPermission());
+    protected boolean isNotPermitted(CommandSender sender, Permission permission) {
+        return !isPermitted(sender, permission.getPermission());
+    }
+
+    protected String getTimeDifference(Long epoch) {
+        return prettyTime.format(reduceDurationList(prettyTime.calculatePreciseDuration(new Date(epoch))));
+    }
+
+    private List<Duration> reduceDurationList(List<Duration> durationList) {
+        while (durationList.size() > 2) {
+            Duration smallest = null;
+            for (Duration current : durationList) {
+                if (smallest == null || smallest.getUnit().getMillisPerUnit() > current.getUnit().getMillisPerUnit()) {
+                    smallest = current;
+                }
+            }
+            durationList.remove(smallest);
+        }
+        return durationList;
     }
 
     protected AFKPlusPlayer getPlayer(UUID uuid) {

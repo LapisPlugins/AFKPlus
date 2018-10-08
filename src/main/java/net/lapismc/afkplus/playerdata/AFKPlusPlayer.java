@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package net.lapismc.afkplus;
+package net.lapismc.afkplus.playerdata;
 
-import net.lapismc.afkplus.playerdata.Permission;
+import net.lapismc.afkplus.AFKPlus;
 import org.bukkit.Bukkit;
 
 import java.util.UUID;
@@ -31,7 +31,7 @@ public class AFKPlusPlayer {
     private boolean isAFK;
     private boolean isWarned;
 
-    AFKPlusPlayer(AFKPlus plugin, UUID uuid) {
+    public AFKPlusPlayer(AFKPlus plugin, UUID uuid) {
         this.plugin = plugin;
         this.uuid = uuid;
     }
@@ -51,6 +51,10 @@ public class AFKPlusPlayer {
 
     public boolean isAFK() {
         return isAFK;
+    }
+
+    public Long getAFKStart() {
+        return afkStart;
     }
 
     public void startAFK() {
@@ -89,7 +93,7 @@ public class AFKPlusPlayer {
         }
     }
 
-    Runnable getRepeatingTask() {
+    public Runnable getRepeatingTask() {
         return () -> {
             if (Bukkit.getOfflinePlayer(uuid).isOnline()) {
                 if (isAFK) {

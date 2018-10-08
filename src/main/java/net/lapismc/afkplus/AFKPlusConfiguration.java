@@ -19,9 +19,9 @@ package net.lapismc.afkplus;
 import net.lapismc.lapiscore.LapisCoreConfiguration;
 import net.lapismc.lapiscore.LapisCorePlugin;
 
-class AFBPlusConfiguration extends LapisCoreConfiguration {
+class AFKPlusConfiguration extends LapisCoreConfiguration {
 
-    AFBPlusConfiguration(LapisCorePlugin core) {
+    AFKPlusConfiguration(LapisCorePlugin core) {
         super(core, 1, 1);
     }
 
