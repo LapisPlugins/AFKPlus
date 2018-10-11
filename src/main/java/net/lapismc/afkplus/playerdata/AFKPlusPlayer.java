@@ -16,8 +16,11 @@
 
 package net.lapismc.afkplus.playerdata;
 
+import me.kangarko.compatbridge.model.CompSound;
 import net.lapismc.afkplus.AFKPlus;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -40,13 +43,18 @@ public class AFKPlusPlayer {
         return Bukkit.getOfflinePlayer(uuid).getName();
     }
 
-    public boolean isPermitted(Permission perm) {
-        return plugin.permissions.isPermitted(uuid, perm.getPermission());
+    public boolean isNotPermitted(Permission perm) {
+        return !plugin.permissions.isPermitted(uuid, perm.getPermission());
     }
 
     public void warnPlayer() {
         isWarned = true;
-        //TODO make the warning happen
+        if (Bukkit.getOfflinePlayer(uuid).isOnline()) {
+            Player p = Bukkit.getPlayer(uuid);
+            p.sendMessage(plugin.config.getMessage("Warning"));
+            Sound sound = CompSound.convert(plugin.getConfig().getString("WarningSound"));
+            p.playSound(p.getLocation(), sound, 1, 1);
+        }
     }
 
     public boolean isAFK() {
@@ -83,7 +91,10 @@ public class AFKPlusPlayer {
     }
 
     public void takeAction() {
-        //TODO take the action
+        if (isNotPermitted(Permission.ImmuneToAction)) {
+            String command = plugin.getConfig().getString("Action").replace("[PLAYER]", Bukkit.getPlayer(uuid).getName());
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        }
     }
 
     public void interact() {

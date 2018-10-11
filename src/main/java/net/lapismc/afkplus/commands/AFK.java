@@ -43,7 +43,7 @@ public class AFK extends AFKPlusCommand {
             }
             AFKPlusPlayer player = getPlayer((Player) sender);
             //Check that they are permitted to use the command
-            if (!player.isPermitted(Permission.AFKSelf)) {
+            if (player.isNotPermitted(Permission.AFKSelf)) {
                 sendMessage(sender, "Error.NotPermitted");
                 return;
             }

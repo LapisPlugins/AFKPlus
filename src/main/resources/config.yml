@@ -1,4 +1,8 @@
 ConfigVersion: 1
 
+Action: "kick [PLAYER] AFK for too long"
+
+WarningSound: "LEVEL_UP"
+
 #TODO add permissions once they are finalised
 Permissions:

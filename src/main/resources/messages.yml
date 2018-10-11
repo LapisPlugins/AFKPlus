@@ -21,6 +21,8 @@ Player:
   AFK: "&s{PLAYER}&p has been AFK since &s{TIME}"
   NotAFK: "&s{PLAYER}&p is not AFK"
 
+Warning: "&8[&6AFK&4+&8]&p You will be kicked for AFK soon!"
+
 Help:
   Help: "The following is a list of commands and their uses:\n"
   AFKPlus: "\"/afkplus\"\n

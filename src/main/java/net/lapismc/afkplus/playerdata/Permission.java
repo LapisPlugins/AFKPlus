@@ -21,7 +21,7 @@ import net.lapismc.lapiscore.LapisPermission;
 public enum Permission {
 
     Update(new Update()), AFKSelf(new AFKSelf()), AFKOthers(new AFKOthers()), TimeToAFK(new TimeToAFK()),
-    TimeToWarning(new TimeToWarning()), TimeToAction(new TimeToAction());
+    TimeToWarning(new TimeToWarning()), TimeToAction(new TimeToAction()), ImmuneToAction(new ImmuneToAction());
 
     private final LapisPermission permission;
 
@@ -56,6 +56,7 @@ public enum Permission {
 
     private static class TimeToAFK extends LapisPermission {
         //The time in seconds of inactivity required to set a player AFK
+        //setting this to -1 disabled automatic AFK setting
         TimeToAFK() {
             super("TimeToAFK");
         }
@@ -63,6 +64,7 @@ public enum Permission {
 
     private static class TimeToWarning extends LapisPermission {
         //The time in seconds that a player must be AFK before being warned of action
+        //Set this higher than the time to action to disable warning
         TimeToWarning() {
             super("TimeToWarning");
         }
@@ -74,4 +76,12 @@ public enum Permission {
             super("TimeToAction");
         }
     }
+
+    private static class ImmuneToAction extends LapisPermission {
+        //Is the place immune to having action taken upon them
+        ImmuneToAction() {
+            super("ImmuneToAction");
+        }
+    }
+
 }
