@@ -31,8 +31,7 @@ import java.util.logging.Logger;
 public final class AFKPlus extends LapisCorePlugin {
 
     public LapisUpdater updater;
-    public AFKPlusPermissions permissions;
-    Logger logger = getLogger();
+    private Logger logger = getLogger();
     private HashMap<UUID, AFKPlusPlayer> players = new HashMap<>();
 
     @Override
@@ -66,7 +65,7 @@ public final class AFKPlus extends LapisCorePlugin {
             if (getConfig().getBoolean("UpdateDownload")) {
                 updater.downloadUpdate();
             } else {
-                logger.info("A new update is available for AFKPlus");
+                logger.info("A new update is available for AFKPlus, use /afkplus update to download and install it");
             }
         } else {
             logger.info("No update available for AFKPlus");

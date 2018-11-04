@@ -73,10 +73,8 @@ public class AFK extends AFKPlusCommand {
         //If the player is AFK stop it, If they aren't then start it
         if (player.isAFK()) {
             player.stopAFK();
-            broadcast(false, player.getName());
         } else {
             player.startAFK();
-            broadcast(true, player.getName());
         }
     }
 
@@ -85,10 +83,4 @@ public class AFK extends AFKPlusCommand {
         return Bukkit.getOfflinePlayer(name);
     }
 
-    private void broadcast(boolean start, String name) {
-        //Get the appropriate broadcast message and insert the players name
-        String message = plugin.config.getMessage(start ? "Broadcast.Start" : "Broadcast.Stop")
-                .replace("%PLAYER%", name);
-        Bukkit.broadcastMessage(message);
-    }
 }

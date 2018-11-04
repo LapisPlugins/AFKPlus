@@ -58,7 +58,7 @@ public class AFKPlusPlayer {
      * @return Returns true if the player DOESN'T have the permission
      */
     public boolean isNotPermitted(Permission perm) {
-        return !plugin.permissions.isPermitted(uuid, perm.getPermission());
+        return !plugin.perms.isPermitted(uuid, perm.getPermission());
     }
 
     /**
@@ -168,8 +168,8 @@ public class AFKPlusPlayer {
             if (Bukkit.getOfflinePlayer(uuid).isOnline()) {
                 if (isAFK) {
                     //Get the values that need to be met for warnings and action
-                    Integer timeToWarning = plugin.permissions.getPermissionValue(uuid, Permission.TimeToWarning.getPermission());
-                    Integer timeToAction = plugin.permissions.getPermissionValue(uuid, Permission.TimeToAction.getPermission());
+                    Integer timeToWarning = plugin.perms.getPermissionValue(uuid, Permission.TimeToWarning.getPermission());
+                    Integer timeToAction = plugin.perms.getPermissionValue(uuid, Permission.TimeToAction.getPermission());
                     //Get the number of seconds since the player went AFK
                     Long secondsSinceAFKStart = (afkStart - System.currentTimeMillis()) / 1000;
                     //Don't check if we need to warn the player if waring is disabled
@@ -187,7 +187,7 @@ public class AFKPlusPlayer {
                         }
                     }
                 } else {
-                    Integer timeToAFK = plugin.permissions.getPermissionValue(uuid, Permission.TimeToAFK.getPermission());
+                    Integer timeToAFK = plugin.perms.getPermissionValue(uuid, Permission.TimeToAFK.getPermission());
                     if (timeToAFK.equals(-1)) {
                         //This allows player to only be put into AFK by commands
                         return;

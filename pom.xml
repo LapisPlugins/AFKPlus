@@ -58,15 +58,15 @@
                             <relocations>
                                 <relocation>
                                     <pattern>org.ocpsoft.prettytime</pattern>
-                                    <shadedPattern>net.lapismc.afkplus.prettytime</shadedPattern>
+                                    <shadedPattern>net.lapismc.afkplus.util.prettytime</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>net.lapismc.lapiscore</pattern>
-                                    <shadedPattern>net.lapismc.afkplus.core</shadedPattern>
+                                    <shadedPattern>net.lapismc.afkplus.util.core</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>me.kangarko.compatbridge</pattern>
-                                    <shadedPattern>${project.groupId}.${project.artifactId}.bridge</shadedPattern>
+                                    <shadedPattern>net.lapismc.afkplus.util.bridge</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

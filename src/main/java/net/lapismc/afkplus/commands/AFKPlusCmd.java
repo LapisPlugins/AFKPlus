@@ -46,6 +46,7 @@ public class AFKPlusCmd extends AFKPlusCommand {
             sender.sendMessage(primary + "Spigot: " + secondary + "https://goo.gl/yeMGBL");
             sender.sendMessage(primary + "If you need help use " + secondary + "/afkplus help");
             sender.sendMessage(bars + bars + bars);
+            return;
         } else if (args.length == 1) {
             // /afkplus update
             if (args[0].equalsIgnoreCase("update")) {
