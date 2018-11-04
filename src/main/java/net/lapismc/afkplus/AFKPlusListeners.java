@@ -23,18 +23,20 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.*;
 
 public class AFKPlusListeners implements Listener {
 
-    AFKPlus plugin;
+    private AFKPlus plugin;
 
     AFKPlusListeners(AFKPlus plugin) {
         this.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(this, plugin);
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        plugin.getPlayer(e.getPlayer()).interact();
     }
 
     @EventHandler
@@ -63,7 +65,7 @@ public class AFKPlusListeners implements Listener {
 
     @EventHandler
     public void onPlayerCommand(PlayerCommandPreprocessEvent e) {
-        if (plugin.getConfig().getBoolean("EnabledDetections.Command")) {
+        if (!e.getMessage().contains("/afk") && plugin.getConfig().getBoolean("EnabledDetections.Command")) {
             plugin.getPlayer(e.getPlayer()).interact();
         }
     }

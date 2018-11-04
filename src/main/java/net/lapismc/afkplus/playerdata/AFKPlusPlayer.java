@@ -18,6 +18,8 @@ package net.lapismc.afkplus.playerdata;
 
 import me.kangarko.compatbridge.model.CompSound;
 import net.lapismc.afkplus.AFKPlus;
+import net.lapismc.afkplus.api.AFKStartEvent;
+import net.lapismc.afkplus.api.AFKStopEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -100,41 +102,60 @@ public class AFKPlusPlayer {
      * Starts AFK for this player with a broadcast, Use {@link #forceStartAFK()} for silent AFK
      */
     public void startAFK() {
-        //Broadcast the AFK start message
-        String message = plugin.config.getMessage("Broadcast.Start")
-                .replace("%PLAYER%", getName());
-        Bukkit.broadcastMessage(message);
         //Start the AFK
-        forceStartAFK();
+        if (forceStartAFK()) {
+            //Broadcast the AFK start message
+            String message = plugin.config.getMessage("Broadcast.Start")
+                    .replace("%PLAYER%", getName());
+            Bukkit.broadcastMessage(message);
+        }
     }
 
     /**
      * Silently starts AFK for this player
      */
-    public void forceStartAFK() {
+    public boolean forceStartAFK() {
+        //Call the AKFStart event
+        AFKStartEvent event = new AFKStartEvent(this);
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            return false;
+        }
         //Record the time that the player was set AFK
         afkStart = System.currentTimeMillis();
         //Set the player as AFK
         isAFK = true;
+        return true;
     }
 
     /**
      * Stops AFK for this player with a broadcast, Use {@link #forceStopAFK()} for a silent stop
      */
     public void stopAFK() {
-        String message = plugin.config.getMessage("Broadcast.Stop")
-                .replace("%PLAYER%", getName());
-        Bukkit.broadcastMessage(message);
-        forceStopAFK();
+        if (forceStopAFK()) {
+            String message = plugin.config.getMessage("Broadcast.Stop")
+                    .replace("%PLAYER%", getName());
+            Bukkit.broadcastMessage(message);
+        }
     }
 
     /**
      * Silently stops AFK for this player
      */
-    public void forceStopAFK() {
+    public boolean forceStopAFK() {
+        //Call the AKFStop event
+        AFKStopEvent event = new AFKStopEvent(this);
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            return false;
+        }
+        //Reset warning
         isWarned = false;
+        //Set player as no longer AFK
         isAFK = false;
+        //Interact to update the last interact value
         interact();
+        return true;
     }
 
     /**
@@ -171,7 +192,7 @@ public class AFKPlusPlayer {
                     Integer timeToWarning = plugin.perms.getPermissionValue(uuid, Permission.TimeToWarning.getPermission());
                     Integer timeToAction = plugin.perms.getPermissionValue(uuid, Permission.TimeToAction.getPermission());
                     //Get the number of seconds since the player went AFK
-                    Long secondsSinceAFKStart = (afkStart - System.currentTimeMillis()) / 1000;
+                    Long secondsSinceAFKStart = (System.currentTimeMillis() - afkStart) / 1000;
                     //Don't check if we need to warn the player if waring is disabled
                     if (!timeToWarning.equals(-1)) {
                         //Check for warning
@@ -193,9 +214,9 @@ public class AFKPlusPlayer {
                         return;
                     }
                     //Get the number of seconds since the last recorded interact
-                    Long secondsSinceLastInteract = (lastInteract - System.currentTimeMillis()) / 1000;
+                    Long secondsSinceLastInteract = (System.currentTimeMillis() - lastInteract) / 1000;
                     //Set them as AFK if it is the same or longer than the time to AFK
-                    if (secondsSinceLastInteract.intValue() >= timeToAFK) {
+                    if (secondsSinceLastInteract >= timeToAFK) {
                         startAFK();
                     }
                 }

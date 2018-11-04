@@ -16,6 +16,9 @@
 
 package net.lapismc.afkplus;
 
+import net.lapismc.afkplus.api.AFKPlusPlayerAPI;
+import net.lapismc.afkplus.commands.AFK;
+import net.lapismc.afkplus.commands.AFKPlusCmd;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.lapismc.lapiscore.LapisCoreFileWatcher;
 import net.lapismc.lapiscore.LapisCorePlugin;
@@ -41,8 +44,11 @@ public final class AFKPlus extends LapisCorePlugin {
         registerConfiguration(new AFKPlusConfiguration(this));
         registerPermissions(new AFKPlusPermissions(this));
         new LapisCoreFileWatcher(this);
-        new AFKPlusCommands(this);
+        new AFK(this);
+        new AFKPlusCmd(this);
         new AFKPlusListeners(this);
+        //noinspection deprecation
+        new AFKPlusPlayerAPI(this);
         new Metrics(this);
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, runRepeatingTasks(), 20, 20);
         logger.info(getName() + " v." + getDescription().getVersion() + " has been enabled!");
