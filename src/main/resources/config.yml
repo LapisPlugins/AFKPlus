@@ -1,8 +1,81 @@
 ConfigVersion: 1
 
+#Its expected that the action will stop the player from being AFK or remove them from the server
 Action: "kick [PLAYER] AFK for too long"
 
+#The sound to be played when a player is warned
+#Set to blank if you don't want a sound e.g. ""
 WarningSound: "LEVEL_UP"
 
-#TODO add permissions once they are finalised
+#A player will be set as AFK if they don't interact with the world
+#What should be counted as an interaction?
+#Set to false to ignore
+EnabledDetections:
+  #Sending chat messages
+  Chat: true
+  #Moving, this includes looking around
+  Move: true
+  #Attacking entities
+  Attack: true
+  #Running commands
+  Command: true
+  #Right clicking blocks
+  Interact: true
+  #Placing blocks
+  BlockPlace: true
+  #Breaking blocks
+  BlockBreak: true
+
+#Permissions can be true/false/value
+#0 = false, 1 = true or any whole number for a value
+#e.g. AFKSelf = 0 or 1 whereas TimeToAFK can be any number of seconds
+#Action and warning times are how long the player has been AFK, not how long since the last interact
 Permissions:
+  afkplus,player:
+    #Can the player set themselves as AFK with the /afk command
+    AFKSelf: 1
+    #Can the player set others as AFK with the /afk command
+    AFKOthers: 0
+    #How many seconds of inactivity are required before they will automatically be set as AFK
+    #Set to -1 if the player shouldn't be automatically placed in AFK
+    TimeToAFK: 30
+    #How many seconds of AFK are required before the player is warned about action being taken
+    #Set to -1 to disable warnings for this permission
+    TimeToWarning: 90
+    #How many seconds of AFK are required before the player is acted upon
+    #Set to -1 to disable actions for this permission
+    TimeToAction: 120
+    #Can this player use the update command to install new versions
+    CanUpdate: 0
+  afkplus,vip:
+    #Can the player set themselves as AFK with the /afk command
+    AFKSelf: 1
+    #Can the player set others as AFK with the /afk command
+    AFKOthers: 0
+    #How many seconds of inactivity are required before they will automatically be set as AFK
+    #Set to -1 if the player shouldn't be automatically placed in AFK
+    TimeToAFK: 60
+    #How many seconds of AFK are required before the player is warned about action being taken
+    #Set to -1 to disable warnings for this permission
+    TimeToWarning: 120
+    #How many seconds of AFK are required before the player is acted upon
+    #Set to -1 to disable actions for this permission
+    TimeToAction: 150
+    #Can this player use the update command to install new versions
+    CanUpdate: 0
+  afkplus,admin:
+    #Can the player set themselves as AFK with the /afk command
+    AFKSelf: 1
+    #Can the player set others as AFK with the /afk command
+    AFKOthers: 1
+    #How many seconds of inactivity are required before they will automatically be set as AFK
+    #Set to -1 if the player shouldn't be automatically placed in AFK
+    TimeToAFK: 90
+    #How many seconds of AFK are required before the player is warned about action being taken
+    #Set to -1 to disable warnings for this permission
+    TimeToWarning: 120
+    #How many seconds of AFK are required before the player is acted upon
+    #Set to -1 to disable actions for this permission
+    TimeToAction: -1
+    #Can this player use the update command to install new versions
+    CanUpdate: 1

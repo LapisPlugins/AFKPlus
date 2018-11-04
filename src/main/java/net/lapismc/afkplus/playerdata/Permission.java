@@ -20,8 +20,8 @@ import net.lapismc.lapiscore.LapisPermission;
 
 public enum Permission {
 
-    Update(new Update()), AFKSelf(new AFKSelf()), AFKOthers(new AFKOthers()), TimeToAFK(new TimeToAFK()),
-    TimeToWarning(new TimeToWarning()), TimeToAction(new TimeToAction()), ImmuneToAction(new ImmuneToAction());
+    AFKSelf(new AFKSelf()), AFKOthers(new AFKOthers()), TimeToAFK(new TimeToAFK()),
+    TimeToWarning(new TimeToWarning()), TimeToAction(new TimeToAction()), CanUpdate(new Update());
 
     private final LapisPermission permission;
 
@@ -31,13 +31,6 @@ public enum Permission {
 
     public LapisPermission getPermission() {
         return this.permission;
-    }
-
-    private static class Update extends LapisPermission {
-        //Allows a player to update the plugin using /afkplus update
-        Update() {
-            super("Update");
-        }
     }
 
     private static class AFKSelf extends LapisPermission {
@@ -56,7 +49,7 @@ public enum Permission {
 
     private static class TimeToAFK extends LapisPermission {
         //The time in seconds of inactivity required to set a player AFK
-        //setting this to -1 disabled automatic AFK setting
+        //setting this to -1 disables automatic AFK setting
         TimeToAFK() {
             super("TimeToAFK");
         }
@@ -64,7 +57,7 @@ public enum Permission {
 
     private static class TimeToWarning extends LapisPermission {
         //The time in seconds that a player must be AFK before being warned of action
-        //Set this higher than the time to action to disable warning
+        //Set to -1 to disable
         TimeToWarning() {
             super("TimeToWarning");
         }
@@ -72,16 +65,16 @@ public enum Permission {
 
     private static class TimeToAction extends LapisPermission {
         //The time in seconds that a player must be AFK before being acted upon
+        //Action disabled if set to -1
         TimeToAction() {
             super("TimeToAction");
         }
     }
 
-    private static class ImmuneToAction extends LapisPermission {
-        //Is the place immune to having action taken upon them
-        ImmuneToAction() {
-            super("ImmuneToAction");
+    private static class Update extends LapisPermission {
+        //Allows a player to update the plugin using /afkplus update
+        Update() {
+            super("CanUpdate");
         }
     }
-
 }

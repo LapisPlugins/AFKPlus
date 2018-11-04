@@ -49,7 +49,7 @@ public class AFKPlusCmd extends AFKPlusCommand {
         } else if (args.length == 1) {
             // /afkplus update
             if (args[0].equalsIgnoreCase("update")) {
-                if (isNotPermitted(sender, Permission.Update)) {
+                if (isNotPermitted(sender, Permission.CanUpdate)) {
                     sendMessage(sender, "Error.NotPermitted");
                     return;
                 }

@@ -19,7 +19,7 @@
 
     <groupId>net.lapismc</groupId>
     <artifactId>AFKPlus</artifactId>
-    <version>2.1.2</version>
+    <version>3.0.0</version>
     <packaging>jar</packaging>
 
     <name>AFKPlus</name>
