@@ -20,10 +20,7 @@ import net.lapismc.afkplus.api.AFKPlusPlayerAPI;
 import net.lapismc.afkplus.commands.AFK;
 import net.lapismc.afkplus.commands.AFKPlusCmd;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
-import net.lapismc.lapiscore.LapisCoreFileWatcher;
-import net.lapismc.lapiscore.LapisCorePlugin;
-import net.lapismc.lapiscore.LapisUpdater;
-import net.lapismc.lapiscore.Metrics;
+import net.lapismc.lapiscore.*;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -41,7 +38,7 @@ public final class AFKPlus extends LapisCorePlugin {
     public void onEnable() {
         saveDefaultConfig();
         update();
-        registerConfiguration(new AFKPlusConfiguration(this));
+        registerConfiguration(new LapisCoreConfiguration(this, 1, 1));
         registerPermissions(new AFKPlusPermissions(this));
         new LapisCoreFileWatcher(this);
         new AFK(this);

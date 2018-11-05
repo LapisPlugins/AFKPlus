@@ -26,3 +26,5 @@
 - "Added the should collide option for AFK players"
 - "Fixed ignoring detections so that it starts before the commands are run"
 - "Extended the non-detection time to a whole second"
+3.0.0:
+- "Complete rewrite completed!"

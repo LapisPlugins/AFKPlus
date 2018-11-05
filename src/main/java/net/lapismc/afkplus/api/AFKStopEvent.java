@@ -22,7 +22,7 @@ import net.lapismc.lapiscore.LapisCoreCancellableEvent;
 /**
  * A cancellable event to notify plugins when a is exiting AFK
  * Cancelling this event is silent and will simply stop it from happening
- * If the player is still not active it is likely that the event will be fired in 1 seconds time
+ * If this was caused by an event it is likely to happen again very soon
  */
 @SuppressWarnings("unused")
 public class AFKStopEvent extends LapisCoreCancellableEvent {

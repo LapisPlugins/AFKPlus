@@ -26,6 +26,10 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
+/**
+ * This class can be used to start, stop and check AFK as well as the values used to start and stop AFK
+ * Please read the documentation for each method before using it
+ */
 @SuppressWarnings("WeakerAccess")
 public class AFKPlusPlayer {
 
@@ -55,6 +59,7 @@ public class AFKPlusPlayer {
 
     /**
      * Check if the player is permitted to do something
+     * Permissions are stored in {@link Permission} as an Enumeration
      *
      * @param perm The permission you wish to check
      * @return Returns true if the player DOESN'T have the permission
@@ -91,6 +96,7 @@ public class AFKPlusPlayer {
 
     /**
      * Get the system time when the player became AFK
+     * Could be null if the player is not AFK
      *
      * @return Returns the System.currentTimeMillis() when the player was set AFK
      */
@@ -113,6 +119,7 @@ public class AFKPlusPlayer {
 
     /**
      * Silently starts AFK for this player
+     * This can be cancelled with {@link AFKStartEvent}
      */
     public boolean forceStartAFK() {
         //Call the AKFStart event
@@ -141,6 +148,7 @@ public class AFKPlusPlayer {
 
     /**
      * Silently stops AFK for this player
+     * This can be cancelled with {@link AFKStopEvent}
      */
     public boolean forceStopAFK() {
         //Call the AKFStop event
@@ -163,7 +171,7 @@ public class AFKPlusPlayer {
      */
     public void takeAction() {
         String command = plugin.getConfig().getString("Action").replace("[PLAYER]", Bukkit.getPlayer(uuid).getName());
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        Bukkit.getScheduler().runTask(plugin, () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command));
     }
 
     /**

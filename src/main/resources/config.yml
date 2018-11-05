@@ -4,11 +4,13 @@ ConfigVersion: 1
 UpdateDownload: true
 
 #Its expected that the action will stop the player from being AFK or remove them from the server
-Action: "kick [PLAYER] AFK for too long"
+#Failure to do this wil result in the command being run every second
+Action: "kick [PLAYER] You were AFK for too long!"
 
 #The sound to be played when a player is warned
 #Set to blank if you don't want a sound e.g. ""
-WarningSound: "LEVEL_UP"
+#A list of sounds for the latest spigot version is available at https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+WarningSound: "ENTITY_PLAYER_LEVELUP"
 
 #A player will be set as AFK if they don't interact with the world
 #What should be counted as an interaction?

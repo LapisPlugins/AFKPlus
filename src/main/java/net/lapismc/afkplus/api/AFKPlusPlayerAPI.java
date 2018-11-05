@@ -22,6 +22,9 @@ import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
 
+/**
+ * This class can be used to get {@link AFKPlusPlayer} classes to give you access to AFK related methods and values
+ */
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class AFKPlusPlayerAPI {
 
