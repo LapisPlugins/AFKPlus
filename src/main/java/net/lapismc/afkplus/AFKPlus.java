@@ -44,7 +44,6 @@ public final class AFKPlus extends LapisCorePlugin {
         new AFK(this);
         new AFKPlusCmd(this);
         new AFKPlusListeners(this);
-        //noinspection deprecation
         new AFKPlusPlayerAPI(this);
         new Metrics(this);
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, runRepeatingTasks(), 20, 20);
