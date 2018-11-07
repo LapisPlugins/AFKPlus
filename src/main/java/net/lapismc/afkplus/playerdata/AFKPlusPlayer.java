@@ -49,6 +49,15 @@ public class AFKPlusPlayer {
     }
 
     /**
+     * Get the UUID of the player
+     *
+     * @return Returns the UUID of the player
+     */
+    public UUID getUUID() {
+        return uuid;
+    }
+
+    /**
      * Get the players username
      *
      * @return Returns the name of the player
@@ -112,7 +121,7 @@ public class AFKPlusPlayer {
         if (forceStartAFK()) {
             //Broadcast the AFK start message
             String message = plugin.config.getMessage("Broadcast.Start")
-                    .replace("%PLAYER%", getName());
+                    .replace("{PLAYER}", getName());
             Bukkit.broadcastMessage(message);
         }
     }
@@ -141,7 +150,7 @@ public class AFKPlusPlayer {
     public void stopAFK() {
         if (forceStopAFK()) {
             String message = plugin.config.getMessage("Broadcast.Stop")
-                    .replace("%PLAYER%", getName());
+                    .replace("{PLAYER}", getName());
             Bukkit.broadcastMessage(message);
         }
     }

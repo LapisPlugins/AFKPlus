@@ -16,6 +16,7 @@
 
 package net.lapismc.afkplus;
 
+import net.lapismc.afkplus.api.AFKPlusAPI;
 import net.lapismc.afkplus.api.AFKPlusPlayerAPI;
 import net.lapismc.afkplus.commands.AFK;
 import net.lapismc.afkplus.commands.AFKPlusCmd;
@@ -38,12 +39,13 @@ public final class AFKPlus extends LapisCorePlugin {
     public void onEnable() {
         saveDefaultConfig();
         update();
-        registerConfiguration(new LapisCoreConfiguration(this, 1, 1));
+        registerConfiguration(new LapisCoreConfiguration(this, 1, 2));
         registerPermissions(new AFKPlusPermissions(this));
         new LapisCoreFileWatcher(this);
         new AFK(this);
         new AFKPlusCmd(this);
         new AFKPlusListeners(this);
+        new AFKPlusAPI(this);
         new AFKPlusPlayerAPI(this);
         new Metrics(this);
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, runRepeatingTasks(), 20, 20);

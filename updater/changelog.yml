@@ -28,3 +28,8 @@
 - "Extended the non-detection time to a whole second"
 3.0.0:
 - "Complete rewrite completed!"
+3.0.1:
+- "Extended the API to allow access to the main class and to get the UUID of players from AFKPlusPlayer objects"
+- "Added code was implemented to support the new addon AFKPlusBungee"
+- "Normalised messages to use {PLAYER}"
+- "This update will reset the messages.yml"

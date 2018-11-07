@@ -1,4 +1,4 @@
-ConfigVersion: 1
+ConfigVersion: 2
 
 PrimaryColor: "&6"
 SecondaryColor: "&3"
@@ -10,8 +10,8 @@ PrettyTimeLocale: "en"
 
 #These are sent to all players when AFK starts and stops
 Broadcast:
-  Start: "&8[&6AFK&4+&8] &s%PLAYER%&p is now AFK"
-  Stop: "&8[&6AFK&4+&8] &s%PLAYER%&p is no longer AFK"
+  Start: "&8[&6AFK&4+&8] &s{PLAYER}&p is now AFK"
+  Stop: "&8[&6AFK&4+&8] &s{PLAYER}&p is no longer AFK"
 
 Updater:
   NoUpdate: "&pThere is no update available"
