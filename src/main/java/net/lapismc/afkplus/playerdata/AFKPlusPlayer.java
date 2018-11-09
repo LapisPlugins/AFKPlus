@@ -115,64 +115,61 @@ public class AFKPlusPlayer {
 
     /**
      * Starts AFK for this player with a broadcast, Use {@link #forceStartAFK()} for silent AFK
-     */
-    public void startAFK() {
-        //Start the AFK
-        if (forceStartAFK()) {
-            //Broadcast the AFK start message
-            String message = plugin.config.getMessage("Broadcast.Start")
-                    .replace("{PLAYER}", getName());
-            Bukkit.broadcastMessage(message);
-        }
-    }
-
-    /**
-     * Silently starts AFK for this player
      * This can be cancelled with {@link AFKStartEvent}
      */
-    public boolean forceStartAFK() {
+    public void startAFK() {
         //Call the AKFStart event
         AFKStartEvent event = new AFKStartEvent(this);
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
-            return false;
+            return;
         }
+        //Broadcast the AFK start message
+        String message = plugin.config.getMessage("Broadcast.Start")
+                .replace("{PLAYER}", getName());
+        Bukkit.broadcastMessage(message);
+        //Start the AFK
+        forceStartAFK();
+    }
+
+    /**
+     * Silently starts AFK for this player
+     */
+    public void forceStartAFK() {
         //Record the time that the player was set AFK
         afkStart = System.currentTimeMillis();
         //Set the player as AFK
         isAFK = true;
-        return true;
     }
 
     /**
      * Stops AFK for this player with a broadcast, Use {@link #forceStopAFK()} for a silent stop
-     */
-    public void stopAFK() {
-        if (forceStopAFK()) {
-            String message = plugin.config.getMessage("Broadcast.Stop")
-                    .replace("{PLAYER}", getName());
-            Bukkit.broadcastMessage(message);
-        }
-    }
-
-    /**
-     * Silently stops AFK for this player
      * This can be cancelled with {@link AFKStopEvent}
      */
-    public boolean forceStopAFK() {
+    public void stopAFK() {
         //Call the AKFStop event
         AFKStopEvent event = new AFKStopEvent(this);
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
-            return false;
+            return;
         }
+        String message = plugin.config.getMessage("Broadcast.Stop")
+                .replace("{PLAYER}", getName());
+        Bukkit.broadcastMessage(message);
+        forceStopAFK();
+
+    }
+
+    /**
+     * Silently stops AFK for this player
+     */
+    public void forceStopAFK() {
         //Reset warning
         isWarned = false;
         //Set player as no longer AFK
         isAFK = false;
         //Interact to update the last interact value
         interact();
-        return true;
     }
 
     /**
@@ -180,6 +177,7 @@ public class AFKPlusPlayer {
      */
     public void takeAction() {
         String command = plugin.getConfig().getString("Action").replace("[PLAYER]", Bukkit.getPlayer(uuid).getName());
+        forceStopAFK();
         Bukkit.getScheduler().runTask(plugin, () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command));
     }
 

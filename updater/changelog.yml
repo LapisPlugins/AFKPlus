@@ -33,3 +33,7 @@
 - "Added code was implemented to support the new addon AFKPlusBungee"
 - "Normalised messages to use {PLAYER}"
 - "This update will reset the messages.yml"
+3.0.2:
+- "Changed the behaviour of Start and Stop events"
+- "Fixed message of a player no longer being AFK when they join"
+- "Updated to LapisCore 1.1.1"
