@@ -24,11 +24,11 @@ public class AFKPlusPermissions extends LapisCorePermissions {
 
     AFKPlusPermissions(AFKPlus plugin) {
         super(plugin);
-        registerAFKPlusPermissions();
+        registerPermissions();
         loadPermissions();
     }
 
-    private void registerAFKPlusPermissions() {
+    private void registerPermissions() {
         for (Permission permission : Permission.values()) {
             registerPermissions(permission.getPermission());
         }

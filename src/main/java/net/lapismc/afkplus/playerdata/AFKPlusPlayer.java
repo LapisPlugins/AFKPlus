@@ -18,6 +18,7 @@ package net.lapismc.afkplus.playerdata;
 
 import me.kangarko.compatbridge.model.CompSound;
 import net.lapismc.afkplus.AFKPlus;
+import net.lapismc.afkplus.api.AFKActionEvent;
 import net.lapismc.afkplus.api.AFKStartEvent;
 import net.lapismc.afkplus.api.AFKStopEvent;
 import org.bukkit.Bukkit;
@@ -140,6 +141,9 @@ public class AFKPlusPlayer {
         afkStart = System.currentTimeMillis();
         //Set the player as AFK
         isAFK = true;
+        //Disable collision if that setting is enabled
+        if (plugin.getConfig().getBoolean("DisableCollision"))
+            Bukkit.getPlayer(uuid).setCollidable(false);
     }
 
     /**
@@ -168,6 +172,9 @@ public class AFKPlusPlayer {
         isWarned = false;
         //Set player as no longer AFK
         isAFK = false;
+        //Enable collision if that setting is enabled
+        if (plugin.getConfig().getBoolean("DisableCollision"))
+            Bukkit.getPlayer(uuid).setCollidable(true);
         //Interact to update the last interact value
         interact();
     }
@@ -177,8 +184,12 @@ public class AFKPlusPlayer {
      */
     public void takeAction() {
         String command = plugin.getConfig().getString("Action").replace("[PLAYER]", Bukkit.getPlayer(uuid).getName());
-        forceStopAFK();
-        Bukkit.getScheduler().runTask(plugin, () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command));
+        AFKActionEvent event = new AFKActionEvent(this, command);
+        Bukkit.getPluginManager().callEvent(event);
+        if (!event.isCancelled()) {
+            forceStopAFK();
+            Bukkit.getScheduler().runTask(plugin, () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), event.getAction()));
+        }
     }
 
     /**
@@ -187,9 +198,8 @@ public class AFKPlusPlayer {
      */
     public void interact() {
         lastInteract = System.currentTimeMillis();
-        if (isAFK) {
+        if (isAFK)
             stopAFK();
-        }
     }
 
     /**

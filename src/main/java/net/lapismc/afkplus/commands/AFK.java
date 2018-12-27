@@ -57,7 +57,8 @@ public class AFK extends AFKPlusCommand {
                 return;
             }
             //Check that the player is online
-            OfflinePlayer op = getOfflinePlayer(args[0]);
+            //noinspection deprecation
+            OfflinePlayer op = Bukkit.getOfflinePlayer(args[0]);
             if (!op.isOnline()) {
                 sendMessage(sender, "Error.PlayerNotFound");
                 return;
@@ -76,11 +77,6 @@ public class AFK extends AFKPlusCommand {
         } else {
             player.startAFK();
         }
-    }
-
-    private OfflinePlayer getOfflinePlayer(String name) {
-        //noinspection deprecation
-        return Bukkit.getOfflinePlayer(name);
     }
 
 }

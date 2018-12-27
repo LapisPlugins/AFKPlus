@@ -1,39 +1,46 @@
 2.0:
-- "Initial release"
+  - "Initial release"
 2.0.1:
-- "Added permissions"
-- "Added config option to disable certain listeners"
-- "Fixed some smaller bugs here and there"
+  - "Added permissions"
+  - "Added config option to disable certain listeners"
+  - "Fixed some smaller bugs here and there"
 2.0.2:
-- "Fixed java.util.ConcurrentModificationException error"
-- "Improved event listener selection in config"
+  - "Fixed java.util.ConcurrentModificationException error"
+  - "Improved event listener selection in config"
 2.0.3:
-- "Added warn message, timer and sound"
-- "Added option to run multiple commands"
-- "Added option to stop players with the admin permission from getting warnings or having actions used on them"
+  - "Added warn message, timer and sound"
+  - "Added option to run multiple commands"
+  - "Added option to stop players with the admin permission from getting warnings or having actions used on them"
 2.0.4:
-- "Added option to stop players that are AFK from taking damage"
-- "Added listener for if a player is attacking things, for example in a mob grinder. this can be disabled if you would not like players to AFK there"
+  - "Added option to stop players that are AFK from taking damage"
+  - "Added listener for if a player is attacking things, for example in a mob grinder. this can be disabled if you would not like players to AFK there"
 2.0.5:
-- "Added afkplus.check permission, remove this permission to stop players being checked for AFK"
+  - "Added afkplus.check permission, remove this permission to stop players being checked for AFK"
 2.1.0:
-- "Updated for 1.13"
-- "Added AFKPlayer class for better data management"
-- "Added start and stop commands"
+  - "Updated for 1.13"
+  - "Added AFKPlayer class for better data management"
+  - "Added start and stop commands"
 2.1.1:
-- "Fixed a null pointer in /afkplus (player) command"
+  - "Fixed a null pointer in /afkplus (player) command"
 2.1.2:
-- "Added the should collide option for AFK players"
-- "Fixed ignoring detections so that it starts before the commands are run"
-- "Extended the non-detection time to a whole second"
+  - "Added the should collide option for AFK players"
+  - "Fixed ignoring detections so that it starts before the commands are run"
+  - "Extended the non-detection time to a whole second"
 3.0.0:
-- "Complete rewrite completed!"
+  - "Complete rewrite completed!"
 3.0.1:
-- "Extended the API to allow access to the main class and to get the UUID of players from AFKPlusPlayer objects"
-- "Added code was implemented to support the new addon AFKPlusBungee"
-- "Normalised messages to use {PLAYER}"
-- "This update will reset the messages.yml"
+  - "Extended the API to allow access to the main class and to get the UUID of players from AFKPlusPlayer objects"
+  - "Added code was implemented to support the new addon AFKPlusBungee"
+  - "Normalised messages to use {PLAYER}"
+  - "This update will reset the messages.yml"
 3.0.2:
-- "Changed the behaviour of Start and Stop events"
-- "Fixed message of a player no longer being AFK when they join"
-- "Updated to LapisCore 1.1.1"
+  - "Changed the behaviour of Start and Stop events"
+  - "Fixed message of a player no longer being AFK when they join"
+  - "Updated to LapisCore 1.1.1"
+3.0.3:
+  - "Updated to LapisCore 1.3.0"
+  - "Players are now marked as no longer AFK when they disconnect"
+  - "Added support for AFKPlusPrefix"
+  - "Added AFKActionEvent ready for future addons"
+  - "Added DisableCollision setting"
+  - "This version will regenerate config.yml"
