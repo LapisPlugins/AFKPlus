@@ -1,4 +1,4 @@
-ConfigVersion: 2
+ConfigVersion: 1
 
 #Should the plugin auto download and install new versions when they are available
 UpdateDownload: true
@@ -11,10 +11,6 @@ Action: "kick [PLAYER] You were AFK for too long!"
 #Set to blank if you don't want a sound e.g. ""
 #A list of sounds for the latest spigot version is available at https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
 WarningSound: "ENTITY_PLAYER_LEVELUP"
-
-#Should players have collision disabled while they are AFK?
-#Setting this to true will stop players having AFK stopped because they where pushed by another entity
-DisableCollision: true
 
 #A player will be set as AFK if they don't interact with the world
 #What should be counted as an interaction?

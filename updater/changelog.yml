@@ -42,5 +42,3 @@
   - "Players are now marked as no longer AFK when they disconnect"
   - "Added support for AFKPlusPrefix"
   - "Added AFKActionEvent ready for future addons"
-  - "Added DisableCollision setting"
-  - "This version will regenerate config.yml"
