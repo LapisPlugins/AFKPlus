@@ -38,9 +38,9 @@ public final class AFKPlus extends LapisCorePlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        update();
-        registerConfiguration(new LapisCoreConfiguration(this, 1, 2));
+        registerConfiguration(new LapisCoreConfiguration(this, 2, 2));
         registerPermissions(new AFKPlusPermissions(this));
+        update();
         new LapisCoreFileWatcher(this);
         new AFK(this);
         new AFKPlusCmd(this);
@@ -69,10 +69,10 @@ public final class AFKPlus extends LapisCorePlugin {
             if (getConfig().getBoolean("UpdateDownload")) {
                 updater.downloadUpdate();
             } else {
-                logger.info("A new update is available for AFKPlus, use /afkplus update to download and install it");
+                logger.info(config.getMessage("Updater.UpdateFound"));
             }
         } else {
-            logger.info("No update available for AFKPlus");
+            logger.info(config.getMessage("Updater.NoUpdate"));
         }
     }
 

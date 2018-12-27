@@ -60,7 +60,7 @@ public class AFKPlusCmd extends AFKPlusCommand {
                     plugin.updater.downloadUpdate();
                 } else {
                     //no update available
-                    sendMessage(sender, "Update.NoUpdate");
+                    sendMessage(sender, "Updater.NoUpdate");
                 }
                 return;
                 // /afkplus help

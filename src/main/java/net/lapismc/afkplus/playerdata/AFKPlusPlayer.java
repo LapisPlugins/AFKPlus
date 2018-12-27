@@ -141,6 +141,7 @@ public class AFKPlusPlayer {
         afkStart = System.currentTimeMillis();
         //Set the player as AFK
         isAFK = true;
+        //TODO: get this working
         //Disable collision if that setting is enabled
         if (plugin.getConfig().getBoolean("DisableCollision"))
             Bukkit.getPlayer(uuid).setCollidable(false);
@@ -172,6 +173,7 @@ public class AFKPlusPlayer {
         isWarned = false;
         //Set player as no longer AFK
         isAFK = false;
+        //TODO: get this working
         //Enable collision if that setting is enabled
         if (plugin.getConfig().getBoolean("DisableCollision"))
             Bukkit.getPlayer(uuid).setCollidable(true);
