@@ -42,3 +42,5 @@
   - "Players are now marked as no longer AFK when they disconnect"
   - "Added support for AFKPlusPrefix"
   - "Added AFKActionEvent ready for future addons"
+3.0.4:
+  - "This update is just to make sure the file uploaded is correct"
