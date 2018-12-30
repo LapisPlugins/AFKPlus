@@ -39,12 +39,14 @@ public class AFKPlusPlayer {
     private Long lastInteract;
     private Long afkStart;
     private boolean isAFK;
+    private boolean isInactive;
     private boolean isWarned;
 
     public AFKPlusPlayer(AFKPlus plugin, UUID uuid) {
         this.plugin = plugin;
         this.uuid = uuid;
         isAFK = false;
+        isInactive = false;
         isWarned = false;
         lastInteract = System.currentTimeMillis();
     }
@@ -65,6 +67,10 @@ public class AFKPlusPlayer {
      */
     public String getName() {
         return Bukkit.getOfflinePlayer(uuid).getName();
+    }
+
+    public void setInactive(boolean isInactive) {
+        this.isInactive = isInactive;
     }
 
     /**
@@ -191,6 +197,10 @@ public class AFKPlusPlayer {
      * This will stop AFK if a player is AFK and update the lastInteract value
      */
     public void interact() {
+        //Dont allow interact when the player is inactive
+        //Inactive is decided by the listener class checking location data
+        if (isInactive)
+            return;
         lastInteract = System.currentTimeMillis();
         if (isAFK)
             stopAFK();

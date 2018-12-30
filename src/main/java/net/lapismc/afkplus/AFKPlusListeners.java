@@ -17,6 +17,7 @@
 package net.lapismc.afkplus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,12 +26,17 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.*;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 public class AFKPlusListeners implements Listener {
 
     private AFKPlus plugin;
+    private HashMap<UUID, Location> playerLocations = new HashMap<>();
 
     AFKPlusListeners(AFKPlus plugin) {
         this.plugin = plugin;
+        startRunnable();
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -96,4 +102,54 @@ public class AFKPlusListeners implements Listener {
         }
     }
 
+    /*
+    AFK Machine detection
+     */
+
+    private void startRunnable() {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+            playerLocations.clear();
+            //Save all players current locations
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                playerLocations.put(p.getUniqueId(), p.getLocation());
+            }
+            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
+                //Go through each saved location and see if the player is moving
+                for (UUID uuid : playerLocations.keySet()) {
+                    if (Bukkit.getOfflinePlayer(uuid).isOnline()) {
+                        Location savedLoc = playerLocations.get(uuid);
+                        Location loc = Bukkit.getPlayer(uuid).getLocation();
+                        //Check if the player is moving in both rotation and transform
+                        boolean inactive = false;
+                        if (checkRotation(savedLoc, loc))
+                            inactive = true;
+                        if (checkTransform(savedLoc, loc))
+                            inactive = true;
+                        //This is sent to the player object, if the player is deemed to not be moving they will not
+                        //be able to reset their interact timer. This wil force them into AFK even
+                        //if they are triggering move events
+                        plugin.getLogger().info("Inactive: " + inactive);
+                        plugin.getPlayer(uuid).setInactive(inactive);
+
+                    }
+                }
+            }, 20 * 2);
+        }, 20 * 5, 20 * 5);
+    }
+
+    private boolean checkRotation(Location oldLoc, Location newLoc) {
+        boolean yaw = oldLoc.getYaw() == newLoc.getYaw();
+        boolean pitch = oldLoc.getPitch() == newLoc.getPitch();
+        plugin.getLogger().info("Rotation:" + (yaw && pitch));
+        return yaw && pitch;
+    }
+
+
+    private boolean checkTransform(Location oldLoc, Location newLoc) {
+        boolean x = oldLoc.getX() == newLoc.getX();
+        boolean y = oldLoc.getY() == newLoc.getY();
+        boolean z = oldLoc.getZ() == newLoc.getZ();
+        plugin.getLogger().info("Location:" + (x && y && z));
+        return x && y && z;
+    }
 }
