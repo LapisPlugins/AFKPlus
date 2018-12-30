@@ -69,6 +69,12 @@ public class AFKPlusPlayer {
         return Bukkit.getOfflinePlayer(uuid).getName();
     }
 
+    /**
+     * Setting the player as inactive will stop {@link #interact()} from doing anything
+     * This is used to deal with AFK machines
+     *
+     * @param isInactive true to enable blocking of {@link #interact()}
+     */
     public void setInactive(boolean isInactive) {
         this.isInactive = isInactive;
     }

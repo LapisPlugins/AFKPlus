@@ -128,7 +128,6 @@ public class AFKPlusListeners implements Listener {
                         //This is sent to the player object, if the player is deemed to not be moving they will not
                         //be able to reset their interact timer. This wil force them into AFK even
                         //if they are triggering move events
-                        plugin.getLogger().info("Inactive: " + inactive);
                         plugin.getPlayer(uuid).setInactive(inactive);
 
                     }
@@ -140,7 +139,6 @@ public class AFKPlusListeners implements Listener {
     private boolean checkRotation(Location oldLoc, Location newLoc) {
         boolean yaw = oldLoc.getYaw() == newLoc.getYaw();
         boolean pitch = oldLoc.getPitch() == newLoc.getPitch();
-        plugin.getLogger().info("Rotation:" + (yaw && pitch));
         return yaw && pitch;
     }
 
@@ -149,7 +147,6 @@ public class AFKPlusListeners implements Listener {
         boolean x = oldLoc.getX() == newLoc.getX();
         boolean y = oldLoc.getY() == newLoc.getY();
         boolean z = oldLoc.getZ() == newLoc.getZ();
-        plugin.getLogger().info("Location:" + (x && y && z));
         return x && y && z;
     }
 }

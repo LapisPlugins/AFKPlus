@@ -49,3 +49,5 @@
 3.1.0:
   - "Added AFK machine detection"
   - "This also detects things like AFK fish farms and the like"
+3.1.1:
+  - "Removed spamming debug messages"
