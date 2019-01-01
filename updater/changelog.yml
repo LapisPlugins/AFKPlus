@@ -51,3 +51,7 @@
   - "This also detects things like AFK fish farms and the like"
 3.1.1:
   - "Removed spamming debug messages"
+3.1.2:
+  - "Fixed bug where a player could be marked as AFK when they join a server"
+  - "Added option to control the aggressive nature of AFK Machine Detection"
+  - "Added proper shutdown of Async Threads on plugin disable"

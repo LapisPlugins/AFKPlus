@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Benjamin Martin
+ * Copyright 2019 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -181,6 +181,8 @@ public class AFKPlusPlayer {
         isWarned = false;
         //Set player as no longer AFK
         isAFK = false;
+        //Disable inactivity to allow the interact to register
+        isInactive = false;
         //Interact to update the last interact value
         interact();
     }

@@ -1,4 +1,4 @@
-ConfigVersion: 1
+ConfigVersion: 2
 
 #Should the plugin auto download and install new versions when they are available
 UpdateDownload: true
@@ -30,6 +30,11 @@ EnabledDetections:
   BlockPlace: true
   #Breaking blocks
   BlockBreak: true
+
+#Enabling aggressive AFK detection will tighten tolerances on AFK machines but may slow down the reaction time of
+#removing players from AFK and may also mark players as AFK when they are simply not moving much, this should only
+#be enabled if you are having trouble with players using machines like AFK fishing farms
+AggressiveAFKDetection: false
 
 #Permissions can be true/false/value
 #0 = false, 1 = true or any whole number for a value

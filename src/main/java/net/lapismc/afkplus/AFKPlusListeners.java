@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Benjamin Martin
+ * Copyright 2019 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -121,10 +121,21 @@ public class AFKPlusListeners implements Listener {
                         Location loc = Bukkit.getPlayer(uuid).getLocation();
                         //Check if the player is moving in both rotation and transform
                         boolean inactive = false;
-                        if (checkRotation(savedLoc, loc))
-                            inactive = true;
-                        if (checkTransform(savedLoc, loc))
-                            inactive = true;
+                        if (plugin.getConfig().getBoolean("AggressiveAFKDetection")) {
+                            //If aggressive is enabled we want to check if the player isn't moving in one or both
+                            if (checkRotation(savedLoc, loc))
+                                inactive = true;
+                            if (checkTransform(savedLoc, loc))
+                                inactive = true;
+                        } else {
+                            //Without aggressive enabled we only want one to be true,
+                            //if both are false then inactive will be false
+                            //This is achieved by converting true to 1 and false to 0 and summing them
+                            //Inactive is only true when only one of the booleans is true
+                            if ((checkRotation(savedLoc, loc) ? 1 : 0) + (checkTransform(savedLoc, loc) ? 1 : 0) == 1) {
+                                inactive = true;
+                            }
+                        }
                         //This is sent to the player object, if the player is deemed to not be moving they will not
                         //be able to reset their interact timer. This wil force them into AFK even
                         //if they are triggering move events

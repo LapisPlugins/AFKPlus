@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Benjamin Martin
+ * Copyright 2019 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,32 +24,40 @@ import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.lapismc.lapiscore.*;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 public final class AFKPlus extends LapisCorePlugin {
 
     public LapisUpdater updater;
-    private Logger logger = getLogger();
+    private LapisCoreFileWatcher fileWatcher;
+    private BukkitTask repeatingTask;
     private HashMap<UUID, AFKPlusPlayer> players = new HashMap<>();
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        registerConfiguration(new LapisCoreConfiguration(this, 1, 2));
+        registerConfiguration(new LapisCoreConfiguration(this, 2, 2));
         registerPermissions(new AFKPlusPermissions(this));
         update();
-        new LapisCoreFileWatcher(this);
+        fileWatcher = new LapisCoreFileWatcher(this);
         new AFK(this);
         new AFKPlusCmd(this);
         new AFKPlusListeners(this);
         new AFKPlusAPI(this);
         new AFKPlusPlayerAPI(this);
         new Metrics(this);
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, runRepeatingTasks(), 20, 20);
-        logger.info(getName() + " v." + getDescription().getVersion() + " has been enabled!");
+        repeatingTask = Bukkit.getScheduler().runTaskTimerAsynchronously(this, runRepeatingTasks(), 20, 20);
+        getLogger().info(getName() + " v." + getDescription().getVersion() + " has been enabled!");
+    }
+
+    @Override
+    public void onDisable() {
+        fileWatcher.stop();
+        repeatingTask.cancel();
+        getLogger().info(getName() + " has been disabled!");
     }
 
     public AFKPlusPlayer getPlayer(UUID uuid) {
@@ -69,10 +77,10 @@ public final class AFKPlus extends LapisCorePlugin {
             if (getConfig().getBoolean("UpdateDownload")) {
                 updater.downloadUpdate();
             } else {
-                logger.info(config.getMessage("Updater.UpdateFound"));
+                getLogger().info(config.getMessage("Updater.UpdateFound"));
             }
         } else {
-            logger.info(config.getMessage("Updater.NoUpdate"));
+            getLogger().info(config.getMessage("Updater.NoUpdate"));
         }
     }
 
