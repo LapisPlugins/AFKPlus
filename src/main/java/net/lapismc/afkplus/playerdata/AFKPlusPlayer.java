@@ -230,15 +230,15 @@ public class AFKPlusPlayer {
                     Integer timeToAction = plugin.perms.getPermissionValue(uuid, Permission.TimeToAction.getPermission());
                     //Get the number of seconds since the player went AFK
                     Long secondsSinceAFKStart = (System.currentTimeMillis() - afkStart) / 1000;
-                    //Don't check if we need to warn the player if waring is disabled
-                    if (!timeToWarning.equals(-1)) {
+                    //Don't check if we need to warn the player if waring is disabled  or there is a permission error
+                    if (!timeToWarning.equals(-1) && !timeToWarning.equals(0)) {
                         //Check for warning
                         if (!isWarned && secondsSinceAFKStart >= timeToWarning) {
                             warnPlayer();
                         }
                     }
-                    //Check if the player can have an action taken
-                    if (!timeToAction.equals(-1)) {
+                    //Check if the player can have an action taken or if there is a permission error
+                    if (!timeToAction.equals(-1) && !timeToAction.equals(0)) {
                         //Check for action
                         if (secondsSinceAFKStart >= timeToAction) {
                             takeAction();
@@ -246,7 +246,9 @@ public class AFKPlusPlayer {
                     }
                 } else {
                     Integer timeToAFK = plugin.perms.getPermissionValue(uuid, Permission.TimeToAFK.getPermission());
-                    if (timeToAFK.equals(-1)) {
+                    //Check if the permission is 0 or -1
+                    //-1 is for players who shouldn't be put into AFK by timer and 0 is to account for permission errors
+                    if (timeToAFK.equals(-1) || timeToAFK.equals(0)) {
                         //This allows player to only be put into AFK by commands
                         return;
                     }
