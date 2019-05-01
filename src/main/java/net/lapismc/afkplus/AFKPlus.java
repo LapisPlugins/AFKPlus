@@ -24,7 +24,7 @@ import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.lapismc.lapiscore.LapisCoreConfiguration;
 import net.lapismc.lapiscore.LapisCoreFileWatcher;
 import net.lapismc.lapiscore.LapisCorePlugin;
-import net.lapismc.lapiscore.LapisUpdater;
+import net.lapismc.lapiscore.utils.LapisUpdater;
 import net.lapismc.lapiscore.utils.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
