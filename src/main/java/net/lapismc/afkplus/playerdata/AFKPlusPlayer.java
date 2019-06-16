@@ -16,11 +16,11 @@
 
 package net.lapismc.afkplus.playerdata;
 
-import me.kangarko.compatbridge.model.CompSound;
 import net.lapismc.afkplus.AFKPlus;
 import net.lapismc.afkplus.api.AFKActionEvent;
 import net.lapismc.afkplus.api.AFKStartEvent;
 import net.lapismc.afkplus.api.AFKStopEvent;
+import net.lapismc.lapiscore.utils.CompatibleSound;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -96,12 +96,15 @@ public class AFKPlusPlayer {
     public void warnPlayer() {
         isWarned = true;
         Player p = Bukkit.getPlayer(uuid);
+        if (p == null) {
+            return;
+        }
         //Send the player the warning message
         p.sendMessage(plugin.config.getMessage("Warning"));
         //Check if warning sounds are enabled
-        if (!plugin.getConfig().getString("WarningSound").equals("")) {
+        if (!"".equals(plugin.getConfig().getString("WarningSound"))) {
             //Get the sound from Compat Bridge
-            Sound sound = CompSound.convert(plugin.getConfig().getString("WarningSound"));
+            Sound sound = CompatibleSound.valueOf(plugin.getConfig().getString("WarningSound")).getSound(CompatibleSound.LEVEL_UP.getSound());
             //Play the sound at the players current location
             p.playSound(p.getLocation(), sound, 1, 1);
         }
@@ -234,14 +237,14 @@ public class AFKPlusPlayer {
                     if (!timeToWarning.equals(-1) && !timeToWarning.equals(0)) {
                         //Check for warning
                         if (!isWarned && secondsSinceAFKStart >= timeToWarning) {
-                            warnPlayer();
+                            Bukkit.getScheduler().runTask(plugin, this::warnPlayer);
                         }
                     }
                     //Check if the player can have an action taken or if there is a permission error
                     if (!timeToAction.equals(-1) && !timeToAction.equals(0)) {
                         //Check for action
                         if (secondsSinceAFKStart >= timeToAction) {
-                            takeAction();
+                            Bukkit.getScheduler().runTask(plugin, this::takeAction);
                         }
                     }
                 } else {
@@ -256,7 +259,7 @@ public class AFKPlusPlayer {
                     Long secondsSinceLastInteract = (System.currentTimeMillis() - lastInteract) / 1000;
                     //Set them as AFK if it is the same or longer than the time to AFK
                     if (secondsSinceLastInteract >= timeToAFK) {
-                        startAFK();
+                        Bukkit.getScheduler().runTask(plugin, this::startAFK);
                     }
                 }
             }

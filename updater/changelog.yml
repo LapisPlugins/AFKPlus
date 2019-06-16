@@ -55,3 +55,7 @@
   - "Fixed bug where a player could be marked as AFK when they join a server"
   - "Added option to control the aggressive nature of AFK Machine Detection"
   - "Added proper shutdown of Async Threads on plugin disable"
+3.1.3:
+  - "Updated to the latest LapisCore"
+  - "Updated to 1.14.2"
+  - "Minor code cleanup"

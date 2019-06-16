@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Benjamin Martin
+ * Copyright 2019 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,15 +27,18 @@ import org.ocpsoft.prettytime.PrettyTime;
 import org.ocpsoft.prettytime.units.JustNow;
 import org.ocpsoft.prettytime.units.Millisecond;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public abstract class AFKPlusCommand extends LapisCoreCommand {
 
     private final PrettyTime prettyTime;
     protected AFKPlus plugin;
 
-    public AFKPlusCommand(AFKPlus plugin, String name, String desc, ArrayList<String> aliases) {
-        super(plugin, name, desc, aliases);
+    protected AFKPlusCommand(AFKPlus plugin, String name, String desc, ArrayList<String> aliases) {
+        super(plugin, name, desc, aliases, true);
         this.plugin = plugin;
         Locale loc = new Locale(plugin.config.getMessage("PrettyTimeLocale"));
         prettyTime = new PrettyTime(loc);
@@ -62,10 +65,6 @@ public abstract class AFKPlusCommand extends LapisCoreCommand {
             durationList.remove(smallest);
         }
         return durationList;
-    }
-
-    protected AFKPlusPlayer getPlayer(UUID uuid) {
-        return plugin.getPlayer(uuid);
     }
 
     protected AFKPlusPlayer getPlayer(OfflinePlayer op) {

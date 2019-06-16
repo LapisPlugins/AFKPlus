@@ -29,7 +29,7 @@ import org.bukkit.event.player.*;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class AFKPlusListeners implements Listener {
+class AFKPlusListeners implements Listener {
 
     private AFKPlus plugin;
     private HashMap<UUID, Location> playerLocations = new HashMap<>();
