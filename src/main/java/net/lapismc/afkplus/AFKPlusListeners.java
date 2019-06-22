@@ -53,7 +53,7 @@ class AFKPlusListeners implements Listener {
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e) {
         if (plugin.getConfig().getBoolean("EnabledDetections.Chat")) {
-            plugin.getPlayer(e.getPlayer()).interact();
+            Bukkit.getScheduler().runTask(plugin, () -> plugin.getPlayer(e.getPlayer()).interact());
         }
     }
 
