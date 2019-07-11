@@ -24,6 +24,7 @@ import net.lapismc.lapiscore.utils.CompatibleSound;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.MetadataValue;
 
 import java.util.UUID;
 
@@ -141,9 +142,11 @@ public class AFKPlusPlayer {
             return;
         }
         //Broadcast the AFK start message
-        String message = plugin.config.getMessage("Broadcast.Start")
-                .replace("{PLAYER}", getName());
-        Bukkit.broadcastMessage(message);
+        if (isNotVanished()) {
+            String message = plugin.config.getMessage("Broadcast.Start")
+                    .replace("{PLAYER}", getName());
+            Bukkit.broadcastMessage(message);
+        }
         //Start the AFK
         forceStartAFK();
     }
@@ -169,9 +172,11 @@ public class AFKPlusPlayer {
         if (event.isCancelled()) {
             return;
         }
-        String message = plugin.config.getMessage("Broadcast.Stop")
-                .replace("{PLAYER}", getName());
-        Bukkit.broadcastMessage(message);
+        if (isNotVanished()) {
+            String message = plugin.config.getMessage("Broadcast.Stop")
+                    .replace("{PLAYER}", getName());
+            Bukkit.broadcastMessage(message);
+        }
         forceStopAFK();
 
     }
@@ -215,6 +220,22 @@ public class AFKPlusPlayer {
         lastInteract = System.currentTimeMillis();
         if (isAFK)
             stopAFK();
+    }
+
+    /**
+     * Check if a player is currently vanished
+     *
+     * @return Returns true if the player is currently vanished
+     */
+    public boolean isNotVanished() {
+        if (!Bukkit.getOfflinePlayer(getUUID()).isOnline()) {
+            return false;
+        }
+        Player p = Bukkit.getPlayer(getUUID());
+        for (MetadataValue meta : p.getMetadata("vanished")) {
+            if (meta.asBoolean()) return false;
+        }
+        return true;
     }
 
     /**
