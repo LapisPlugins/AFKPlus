@@ -61,3 +61,5 @@
   - "Minor code cleanup"
 3.1.4:
   - "Added hiding of broadcasts while the player is vanished"
+3.1.5:
+  - "Added options for who should receive broadcasts for AFK status changes"

@@ -142,11 +142,9 @@ public class AFKPlusPlayer {
             return;
         }
         //Broadcast the AFK start message
-        if (isNotVanished()) {
-            String message = plugin.config.getMessage("Broadcast.Start")
-                    .replace("{PLAYER}", getName());
-            Bukkit.broadcastMessage(message);
-        }
+        String message = plugin.config.getMessage("Broadcast.Start")
+                .replace("{PLAYER}", getName());
+        broadcast(message);
         //Start the AFK
         forceStartAFK();
     }
@@ -172,11 +170,9 @@ public class AFKPlusPlayer {
         if (event.isCancelled()) {
             return;
         }
-        if (isNotVanished()) {
-            String message = plugin.config.getMessage("Broadcast.Stop")
-                    .replace("{PLAYER}", getName());
-            Bukkit.broadcastMessage(message);
-        }
+        String message = plugin.config.getMessage("Broadcast.Stop")
+                .replace("{PLAYER}", getName());
+        broadcast(message);
         forceStopAFK();
 
     }
@@ -193,6 +189,36 @@ public class AFKPlusPlayer {
         isInactive = false;
         //Interact to update the last interact value
         interact();
+    }
+
+    /**
+     * Broadcast a message using the settings from the config
+     *
+     * @param msg The message you wish to broadcast
+     */
+    public void broadcast(String msg) {
+        boolean vanish = plugin.getConfig().getBoolean("Broadcast.Vanish");
+        if (!vanish && isVanished()) {
+            return;
+        }
+        Player player = Bukkit.getPlayer(getUUID());
+        boolean console = plugin.getConfig().getBoolean("Broadcast.Console");
+        boolean otherPlayers = plugin.getConfig().getBoolean("Broadcast.OtherPlayers");
+        boolean self = plugin.getConfig().getBoolean("Broadcast.Self");
+        if (console) {
+            plugin.getLogger().info(msg);
+        }
+        if (otherPlayers) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (p.equals(player)) {
+                    continue;
+                }
+                p.sendMessage(msg);
+            }
+        }
+        if (self) {
+            player.sendMessage(msg);
+        }
     }
 
     /**
@@ -227,15 +253,15 @@ public class AFKPlusPlayer {
      *
      * @return Returns true if the player is currently vanished
      */
-    public boolean isNotVanished() {
+    public boolean isVanished() {
         if (!Bukkit.getOfflinePlayer(getUUID()).isOnline()) {
             return false;
         }
         Player p = Bukkit.getPlayer(getUUID());
         for (MetadataValue meta : p.getMetadata("vanished")) {
-            if (meta.asBoolean()) return false;
+            if (meta.asBoolean()) return true;
         }
-        return true;
+        return false;
     }
 
     /**

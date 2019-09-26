@@ -1,4 +1,4 @@
-ConfigVersion: 3
+ConfigVersion: 4
 
 #Should the plugin auto download and install new versions when they are available
 UpdateDownload: true
@@ -30,6 +30,15 @@ EnabledDetections:
   BlockPlace: true
   #Breaking blocks
   BlockBreak: true
+
+#Who should receive messages when players AFK status changes
+#Self = the player who's status has changed
+#Vanish = if the player who's status has changed is AFK
+Broadcast:
+  Console: true
+  OtherPlayers: true
+  Self: true
+  Vanish: false
 
 #Enabling aggressive AFK detection will tighten tolerances on AFK machines but may slow down the reaction time of
 #removing players from AFK and may also mark players as AFK when they are simply not moving much, this should only

@@ -43,7 +43,7 @@ public final class AFKPlus extends LapisCorePlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        registerConfiguration(new LapisCoreConfiguration(this, 3, 2));
+        registerConfiguration(new LapisCoreConfiguration(this, 4, 2));
         registerPermissions(new AFKPlusPermissions(this));
         update();
         fileWatcher = new LapisCoreFileWatcher(this);
