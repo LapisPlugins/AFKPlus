@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Benjamin Martin
+ * Copyright 2020 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -197,6 +197,10 @@ public class AFKPlusPlayer {
      * @param msg The message you wish to broadcast
      */
     public void broadcast(String msg) {
+        //Don't broadcast if the message is empty
+        if (msg.isEmpty()) {
+            return;
+        }
         boolean vanish = plugin.getConfig().getBoolean("Broadcast.Vanish");
         if (!vanish && isVanished()) {
             return;
