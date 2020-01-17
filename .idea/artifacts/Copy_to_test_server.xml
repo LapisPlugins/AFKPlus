@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact name="Copy to test server">
+    <output-path>$USER_HOME$/Desktop/Developer Stuff/Java/Test Server/plugins</output-path>
+    <root id="root">
+      <element id="file-copy" path="$PROJECT_DIR$/target/AFKPlus.jar" />
+    </root>
+  </artifact>
+</component>

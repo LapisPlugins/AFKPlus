@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Copy to Server" />
+    </artifacts-to-build>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2fabe7a8-03da-49cc-876d-62a0065dc715" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="PREVIEW_PUSH_ON_COMMIT_AND_PUSH" value="false" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1MinK7aKAzFHA8CQaZofpdRaoGR" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/updater/AFKPlus" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/updater/AFKPlus" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Maven.Build AFKPlus">
+    <configuration name="Run Spigot Server" type="JarApplication">
+      <option name="JAR_PATH" value="$USER_HOME$/Documents/Spigot/Spigot.jar" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Documents/Spigot/" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method v="2">
+        <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="clean package" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="Copy to Server" />
+        </option>
+      </method>
+    </configuration>
+    <configuration name="Build AFKPlus" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list />
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="JAR Application.Run Spigot Server" />
+      <item itemvalue="Maven.Build AFKPlus" />
+    </list>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2fabe7a8-03da-49cc-876d-62a0065dc715" name="Default Changelist" comment="" />
+      <created>1556693194627</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1556693194627</updated>
+      <workItem from="1556693197396" duration="259000" />
+      <workItem from="1559222813168" duration="2241000" />
+      <workItem from="1560676220609" duration="537000" />
+      <workItem from="1561209567524" duration="334000" />
+      <workItem from="1562823858231" duration="330000" />
+      <workItem from="1562825084050" duration="451000" />
+      <workItem from="1562825610883" duration="90000" />
+      <workItem from="1562841260782" duration="1040000" />
+      <workItem from="1569462852043" duration="57000" />
+      <workItem from="1569462938837" duration="3178000" />
+      <workItem from="1569893484643" duration="583000" />
+      <workItem from="1572774498835" duration="20000" />
+      <workItem from="1574310962527" duration="611000" />
+      <workItem from="1578026470868" duration="412000" />
+      <workItem from="1578992251527" duration="19000" />
+      <workItem from="1579256450958" duration="15000" />
+    </task>
+    <task id="LOCAL-00001" summary="Updated to LapisCore 1.7.2">
+      <created>1556693339211</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1556693339211</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Update 3.1.3&#10;Updated to the latest LapisCore&#10;Updated to 1.14.2">
+      <created>1560676667210</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1560676667210</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Updated for putting AsyncPlayerChatEvent onto the main thread">
+      <created>1561209751296</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1561209751297</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Update 3.1.4&#10;Added hiding of broadcasts when the player is vanished&#10;Issue #1">
+      <created>1562842282668</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1562842282668</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Update 3.1.5&#10;Added options for who receives broadcasts about AFK status changes&#10;Fix #">
+      <created>1569466181455</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1569466181455</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Update 3.1.6&#10;Changed broadcasts to not broadcast if the message is empty">
+      <created>1578026786518</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1578026786518</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="UpdateCopyrightCheckinHandler">
+    <option name="UPDATE_COPYRIGHT" value="true" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
+    <MESSAGE value="Updated to LapisCore 1.7.2" />
+    <MESSAGE value="Update 3.1.3&#10;Updated to the latest LapisCore&#10;Updated to 1.14.2" />
+    <MESSAGE value="Updated for putting AsyncPlayerChatEvent onto the main thread" />
+    <MESSAGE value="Update 3.1.4&#10;Added hiding of broadcasts when the player is vanished&#10;Issue #1" />
+    <MESSAGE value="Update 3.1.5&#10;Added options for who receives broadcasts about AFK status changes&#10;Fix #" />
+    <MESSAGE value="Update 3.1.6&#10;Changed broadcasts to not broadcast if the message is empty" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update 3.1.6&#10;Changed broadcasts to not broadcast if the message is empty" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2417" y="100" width="915" height="843" key="CommitChangelistDialog2" timestamp="1578026786150">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2417" y="100" width="915" height="843" key="CommitChangelistDialog2/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1578026786150" />
+    <state width="1878" height="278" key="GridCell.Tab.0.bottom" timestamp="1578026882510">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="278" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1578026882510" />
+    <state width="1878" height="278" key="GridCell.Tab.0.center" timestamp="1578026882510">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="278" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1578026882510" />
+    <state width="1878" height="278" key="GridCell.Tab.0.left" timestamp="1578026882510">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="278" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1578026882510" />
+    <state width="1878" height="278" key="GridCell.Tab.0.right" timestamp="1578026882510">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="278" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1578026882510" />
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>Copy to Server</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

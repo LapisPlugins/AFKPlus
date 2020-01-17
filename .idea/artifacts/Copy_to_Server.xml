@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact name="Copy to Server">
+    <output-path>$USER_HOME$/Documents/Spigot/plugins/</output-path>
+    <root id="root">
+      <element id="file-copy" path="$PROJECT_DIR$/target/AFKPlus.jar" />
+    </root>
+  </artifact>
+</component>
