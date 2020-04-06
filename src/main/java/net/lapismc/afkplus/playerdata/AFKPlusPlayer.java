@@ -20,7 +20,7 @@ import net.lapismc.afkplus.AFKPlus;
 import net.lapismc.afkplus.api.AFKActionEvent;
 import net.lapismc.afkplus.api.AFKStartEvent;
 import net.lapismc.afkplus.api.AFKStopEvent;
-import net.lapismc.lapiscore.utils.CompatibleSound;
+import net.lapismc.lapiscore.compatibility.XSound;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -105,8 +105,9 @@ public class AFKPlusPlayer {
         //Check if warning sounds are enabled
         if (!"".equals(plugin.getConfig().getString("WarningSound"))) {
             //Get the sound from Compat Bridge
-            Sound sound = CompatibleSound.valueOf(plugin.getConfig().getString("WarningSound")).getSound(CompatibleSound.LEVEL_UP.getSound());
+            Sound sound = XSound.valueOf(plugin.getConfig().getString("WarningSound")).parseSound();
             //Play the sound at the players current location
+            sound = sound == null ? XSound.ENTITY_PLAYER_LEVELUP.parseSound() : sound;
             p.playSound(p.getLocation(), sound, 1, 1);
         }
     }

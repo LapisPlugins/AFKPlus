@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Benjamin Martin
+ * Copyright 2020 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import net.lapismc.afkplus.commands.AFK;
 import net.lapismc.afkplus.commands.AFKPlusCmd;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.lapismc.lapiscore.LapisCoreConfiguration;
-import net.lapismc.lapiscore.LapisCoreFileWatcher;
 import net.lapismc.lapiscore.LapisCorePlugin;
+import net.lapismc.lapiscore.utils.LapisCoreFileWatcher;
 import net.lapismc.lapiscore.utils.LapisUpdater;
 import net.lapismc.lapiscore.utils.Metrics;
 import org.bukkit.Bukkit;

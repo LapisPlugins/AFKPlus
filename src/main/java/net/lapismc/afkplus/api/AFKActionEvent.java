@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Benjamin Martin
+ * Copyright 2020 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package net.lapismc.afkplus.api;
 
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
-import net.lapismc.lapiscore.LapisCoreCancellableEvent;
+import net.lapismc.lapiscore.events.LapisCoreCancellableEvent;
 
 /**
  * A cancellable event to notify plugins when a player is acted upon

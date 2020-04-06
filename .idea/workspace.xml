@@ -7,7 +7,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2fabe7a8-03da-49cc-876d-62a0065dc715" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_findbugs_jsr305_3_0_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_lapismc_LapisCore_1_7_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_lapismc_LapisCore_1_7_6.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AFKPlus.iml" beforeDir="false" afterPath="$PROJECT_DIR$/AFKPlus.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/AFKPlus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/AFKPlus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/api/AFKActionEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/api/AFKActionEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/api/AFKStartEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/api/AFKStartEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/api/AFKStopEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/api/AFKStopEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/playerdata/AFKPlusPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/playerdata/AFKPlusPlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/util/AFKPlusCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/util/AFKPlusCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/updater/changelog.yml" beforeDir="false" afterPath="$PROJECT_DIR$/updater/changelog.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/updater/update.yml" beforeDir="false" afterPath="$PROJECT_DIR$/updater/update.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,7 +147,9 @@
       <workItem from="1574310962527" duration="611000" />
       <workItem from="1578026470868" duration="412000" />
       <workItem from="1578992251527" duration="19000" />
-      <workItem from="1579256450958" duration="15000" />
+      <workItem from="1579256450958" duration="90000" />
+      <workItem from="1579830683285" duration="92000" />
+      <workItem from="1586159062729" duration="477000" />
     </task>
     <task id="LOCAL-00001" summary="Updated to LapisCore 1.7.2">
       <created>1556693339211</created>
@@ -179,7 +193,14 @@
       <option name="project" value="LOCAL" />
       <updated>1578026786518</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Added idea files for easy import on other systems">
+      <created>1579256509868</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1579256509868</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -209,32 +230,33 @@
     <MESSAGE value="Update 3.1.4&#10;Added hiding of broadcasts when the player is vanished&#10;Issue #1" />
     <MESSAGE value="Update 3.1.5&#10;Added options for who receives broadcasts about AFK status changes&#10;Fix #" />
     <MESSAGE value="Update 3.1.6&#10;Changed broadcasts to not broadcast if the message is empty" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update 3.1.6&#10;Changed broadcasts to not broadcast if the message is empty" />
+    <MESSAGE value="Added idea files for easy import on other systems" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added idea files for easy import on other systems" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2417" y="100" width="915" height="843" key="CommitChangelistDialog2" timestamp="1578026786150">
+    <state x="2417" y="100" width="915" height="843" key="CommitChangelistDialog2" timestamp="1579256509605">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2417" y="100" width="915" height="843" key="CommitChangelistDialog2/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1578026786150" />
-    <state width="1878" height="278" key="GridCell.Tab.0.bottom" timestamp="1578026882510">
+    <state x="2417" y="100" width="915" height="843" key="CommitChangelistDialog2/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579256509605" />
+    <state width="1878" height="278" key="GridCell.Tab.0.bottom" timestamp="1586159563772">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="278" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1578026882510" />
-    <state width="1878" height="278" key="GridCell.Tab.0.center" timestamp="1578026882510">
+    <state width="1878" height="278" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586159563772" />
+    <state width="1878" height="278" key="GridCell.Tab.0.center" timestamp="1586159563771">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="278" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1578026882510" />
-    <state width="1878" height="278" key="GridCell.Tab.0.left" timestamp="1578026882510">
+    <state width="1878" height="278" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586159563771" />
+    <state width="1878" height="278" key="GridCell.Tab.0.left" timestamp="1586159563771">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="278" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1578026882510" />
-    <state width="1878" height="278" key="GridCell.Tab.0.right" timestamp="1578026882510">
+    <state width="1878" height="278" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586159563771" />
+    <state width="1878" height="278" key="GridCell.Tab.0.right" timestamp="1586159563772">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="278" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1578026882510" />
+    <state width="1878" height="278" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586159563772" />
   </component>
   <component name="masterDetails">
     <states>

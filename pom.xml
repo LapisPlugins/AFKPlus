@@ -19,7 +19,7 @@
 
     <groupId>net.lapismc</groupId>
     <artifactId>AFKPlus</artifactId>
-    <version>3.1.6</version>
+    <version>3.1.7</version>
     <packaging>jar</packaging>
 
     <name>AFKPlus</name>
@@ -77,10 +77,6 @@
                                     <pattern>net.lapismc.lapiscore</pattern>
                                     <shadedPattern>net.lapismc.afkplus.util.core</shadedPattern>
                                 </relocation>
-                                <relocation>
-                                    <pattern>me.kangarko.compatbridge</pattern>
-                                    <shadedPattern>net.lapismc.afkplus.util.bridge</shadedPattern>
-                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -100,10 +96,6 @@
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -116,13 +108,13 @@
         <dependency>
             <groupId>net.lapismc</groupId>
             <artifactId>LapisCore</artifactId>
-            <version>1.7.2</version>
+            <version>1.7.6</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.14.2-R0.1-SNAPSHOT</version>
+            <version>1.15.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

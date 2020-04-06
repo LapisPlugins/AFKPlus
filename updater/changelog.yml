@@ -65,3 +65,5 @@
   - "Added options for who should receive broadcasts for AFK status changes"
 3.1.6:
   - "Changed broadcasts to not run if the message is blank"
+3.1.7:
+  - "Updated to LapisCore 1.7.6"

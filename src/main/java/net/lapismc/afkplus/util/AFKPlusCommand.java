@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Benjamin Martin
+ * Copyright 2020 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package net.lapismc.afkplus.util;
 import net.lapismc.afkplus.AFKPlus;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.lapismc.afkplus.playerdata.Permission;
-import net.lapismc.lapiscore.LapisCoreCommand;
+import net.lapismc.lapiscore.commands.LapisCoreCommand;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.ocpsoft.prettytime.Duration;
