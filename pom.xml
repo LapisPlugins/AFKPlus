@@ -108,7 +108,7 @@
         <dependency>
             <groupId>net.lapismc</groupId>
             <artifactId>LapisCore</artifactId>
-            <version>1.7.6</version>
+            <version>1.7.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
