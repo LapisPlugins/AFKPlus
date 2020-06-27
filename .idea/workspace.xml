@@ -6,20 +6,17 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabe7a8-03da-49cc-876d-62a0065dc715" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_findbugs_jsr305_3_0_2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_lapismc_LapisCore_1_7_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_lapismc_LapisCore_1_7_6.xml" afterDir="false" />
+    <list default="true" id="2fabe7a8-03da-49cc-876d-62a0065dc715" name="Default Changelist" comment="Update 3.1.7&#10;Updated LapisCore to 1.7.6">
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_findbugs_jsr305_3_0_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_lapismc_LapisCore_1_7_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_md_5_bungeecord_chat_1_13_SNAPSHOT.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_spigotmc_spigot_api_1_15_2_R0_1_SNAPSHOT.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_yaml_snakeyaml_1_25.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AFKPlus.iml" beforeDir="false" afterPath="$PROJECT_DIR$/AFKPlus.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/AFKPlus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/AFKPlus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/api/AFKActionEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/api/AFKActionEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/api/AFKStartEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/api/AFKStartEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/api/AFKStopEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/api/AFKStopEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/playerdata/AFKPlusPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/playerdata/AFKPlusPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/util/AFKPlusCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/lapismc/afkplus/util/AFKPlusCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/updater/changelog.yml" beforeDir="false" afterPath="$PROJECT_DIR$/updater/changelog.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/updater/update.yml" beforeDir="false" afterPath="$PROJECT_DIR$/updater/update.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/messages.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/messages.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,21 +28,14 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="PREVIEW_PUSH_ON_COMMIT_AND_PUSH" value="false" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="importingSettings">
-      <MavenImportingSettings>
-        <option name="importAutomatically" value="true" />
-      </MavenImportingSettings>
-    </option>
-  </component>
   <component name="ProjectId" id="1MinK7aKAzFHA8CQaZofpdRaoGR" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -63,7 +53,7 @@
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -110,18 +100,6 @@
       <item itemvalue="Maven.Build AFKPlus" />
     </list>
   </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
-  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -149,7 +127,19 @@
       <workItem from="1578992251527" duration="19000" />
       <workItem from="1579256450958" duration="90000" />
       <workItem from="1579830683285" duration="92000" />
-      <workItem from="1586159062729" duration="477000" />
+      <workItem from="1586159062729" duration="703000" />
+      <workItem from="1586329885011" duration="52000" />
+      <workItem from="1586668915100" duration="341000" />
+      <workItem from="1586918308454" duration="22000" />
+      <workItem from="1586918378114" duration="48000" />
+      <workItem from="1587565591112" duration="66000" />
+      <workItem from="1588050545589" duration="349000" />
+      <workItem from="1588328072130" duration="1820000" />
+      <workItem from="1588331040180" duration="25000" />
+      <workItem from="1589609113047" duration="13000" />
+      <workItem from="1589609253085" duration="610000" />
+      <workItem from="1593242360456" duration="100000" />
+      <workItem from="1593242484615" duration="646000" />
     </task>
     <task id="LOCAL-00001" summary="Updated to LapisCore 1.7.2">
       <created>1556693339211</created>
@@ -200,11 +190,18 @@
       <option name="project" value="LOCAL" />
       <updated>1579256509868</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Update 3.1.7&#10;Updated LapisCore to 1.7.6">
+      <created>1586159633358</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1586159633358</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="2" />
   </component>
   <component name="UpdateCopyrightCheckinHandler">
     <option name="UPDATE_COPYRIGHT" value="true" />
@@ -214,13 +211,12 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
@@ -231,32 +227,45 @@
     <MESSAGE value="Update 3.1.5&#10;Added options for who receives broadcasts about AFK status changes&#10;Fix #" />
     <MESSAGE value="Update 3.1.6&#10;Changed broadcasts to not broadcast if the message is empty" />
     <MESSAGE value="Added idea files for easy import on other systems" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added idea files for easy import on other systems" />
+    <MESSAGE value="Update 3.1.7&#10;Updated LapisCore to 1.7.6" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update 3.1.7&#10;Updated LapisCore to 1.7.6" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2417" y="100" width="915" height="843" key="CommitChangelistDialog2" timestamp="1579256509605">
+    <state x="2563" y="255" width="624" height="533" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1586329937574">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2417" y="100" width="915" height="843" key="CommitChangelistDialog2/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579256509605" />
-    <state width="1878" height="278" key="GridCell.Tab.0.bottom" timestamp="1586159563772">
+    <state x="2563" y="255" width="624" height="533" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586329937574" />
+    <state x="2417" y="100" width="915" height="843" key="CommitChangelistDialog2" timestamp="1586159632972">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="278" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586159563772" />
-    <state width="1878" height="278" key="GridCell.Tab.0.center" timestamp="1586159563771">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="2417" y="100" width="915" height="843" key="CommitChangelistDialog2/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586159632972" />
+    <state width="1878" height="278" key="GridCell.Tab.0.bottom" timestamp="1586918425141">
+      <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1878" height="278" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586159563771" />
-    <state width="1878" height="278" key="GridCell.Tab.0.left" timestamp="1586159563771">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state width="1878" height="278" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@0.0.1920.1050" timestamp="1586918425141" />
+    <state width="1878" height="278" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586329944289" />
+    <state width="1878" height="278" key="GridCell.Tab.0.center" timestamp="1586918425141">
+      <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1878" height="278" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586159563771" />
-    <state width="1878" height="278" key="GridCell.Tab.0.right" timestamp="1586159563772">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state width="1878" height="278" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@0.0.1920.1050" timestamp="1586918425141" />
+    <state width="1878" height="278" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586329944289" />
+    <state width="1878" height="278" key="GridCell.Tab.0.left" timestamp="1586918425141">
+      <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1878" height="278" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586159563772" />
+    <state width="1878" height="278" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@0.0.1920.1050" timestamp="1586918425141" />
+    <state width="1878" height="278" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586329944289" />
+    <state width="1878" height="278" key="GridCell.Tab.0.right" timestamp="1586918425141">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1878" height="278" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@0.0.1920.1050" timestamp="1586918425141" />
+    <state width="1878" height="278" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586329944289" />
+    <state x="456" y="159" key="SettingsEditor" timestamp="1586918335125">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="456" y="159" key="SettingsEditor/0.0.1920.1050/1920.0.1920.1080@0.0.1920.1050" timestamp="1586918335125" />
   </component>
   <component name="masterDetails">
     <states>

@@ -33,7 +33,7 @@ Help:
   Displays all of the commands and their uses"
   AFKPlusUpdate: "\"/afkplus [update]\"\n
   Checks for and installs any available update"
-  AFKPlusPlayer: "\"/afkplus [PlayerName]\"\n
+  AFKPlusPlayer: "\"/afkplus player [PlayerName]\"\n
   Tells you the AFK status of the player, if they are AFK it will also tell you how long they have been AFK"
   AFK: "\"/afk [PlayerName]\"\n
   Without a players name this will toggle your AFK status\n
