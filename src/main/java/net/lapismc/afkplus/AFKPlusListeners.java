@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Benjamin Martin
+ * Copyright 2020 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,14 +25,16 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.UUID;
 
 class AFKPlusListeners implements Listener {
 
-    private AFKPlus plugin;
-    private HashMap<UUID, Location> playerLocations = new HashMap<>();
+    private final AFKPlus plugin;
+    private final HashMap<UUID, Location> playerLocations = new HashMap<>();
+    private BukkitTask AfkMachineDetectionTask;
 
     AFKPlusListeners(AFKPlus plugin) {
         this.plugin = plugin;
@@ -106,8 +108,17 @@ class AFKPlusListeners implements Listener {
     AFK Machine detection
      */
 
+    /**
+     * This task should be canceled on disable, this is the task that attempts to stop AFK machines from working
+     *
+     * @return The AFK machine detection task being run by Bukkit
+     */
+    public BukkitTask getAfkMachineDetectionTask() {
+        return AfkMachineDetectionTask;
+    }
+
     private void startRunnable() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+        AfkMachineDetectionTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
             playerLocations.clear();
             //Save all players current locations
             for (Player p : Bukkit.getOnlinePlayers()) {

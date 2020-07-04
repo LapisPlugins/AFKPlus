@@ -37,8 +37,9 @@ public final class AFKPlus extends LapisCorePlugin {
 
     public LapisUpdater updater;
     private LapisCoreFileWatcher fileWatcher;
+    private final HashMap<UUID, AFKPlusPlayer> players = new HashMap<>();
     private BukkitTask repeatingTask;
-    private HashMap<UUID, AFKPlusPlayer> players = new HashMap<>();
+    private AFKPlusListeners listeners;
 
     @Override
     public void onEnable() {
@@ -49,7 +50,7 @@ public final class AFKPlus extends LapisCorePlugin {
         fileWatcher = new LapisCoreFileWatcher(this);
         new AFK(this);
         new AFKPlusCmd(this);
-        new AFKPlusListeners(this);
+        listeners = new AFKPlusListeners(this);
         new AFKPlusAPI(this);
         new AFKPlusPlayerAPI(this);
         new Metrics(this);
@@ -60,7 +61,10 @@ public final class AFKPlus extends LapisCorePlugin {
     @Override
     public void onDisable() {
         fileWatcher.stop();
+        //Stop the AFK repeating task
         repeatingTask.cancel();
+        //Also stop the AFK Machine detection task
+        listeners.getAfkMachineDetectionTask().cancel();
         getLogger().info(getName() + " has been disabled!");
     }
 
