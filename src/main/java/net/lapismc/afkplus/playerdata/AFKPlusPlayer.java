@@ -35,8 +35,8 @@ import java.util.UUID;
 @SuppressWarnings("WeakerAccess")
 public class AFKPlusPlayer {
 
-    private AFKPlus plugin;
-    private UUID uuid;
+    private final AFKPlus plugin;
+    private final UUID uuid;
     private Long lastInteract;
     private Long afkStart;
     private boolean isAFK;
@@ -222,7 +222,10 @@ public class AFKPlusPlayer {
             }
         }
         if (self) {
-            player.sendMessage(msg);
+            //Null check since there are reports of this throwing a null pointer somehow
+            //See issue #6
+            if (player != null)
+                player.sendMessage(msg);
         }
     }
 

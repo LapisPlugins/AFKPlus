@@ -20,14 +20,14 @@ import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.lapismc.lapiscore.events.LapisCoreCancellableEvent;
 
 /**
- * A cancellable event to notify plugins when a is exiting AFK
+ * A cancellable event to notify plugins when a player is exiting AFK
  * Cancelling this event is silent and will simply stop it from happening
  * If this was caused by an event it is likely to happen again very soon
  */
 @SuppressWarnings("unused")
 public class AFKStopEvent extends LapisCoreCancellableEvent {
 
-    private AFKPlusPlayer player;
+    private final AFKPlusPlayer player;
 
     public AFKStopEvent(AFKPlusPlayer player) {
         this.player = player;
