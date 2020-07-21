@@ -136,6 +136,10 @@ public class AFKPlusPlayer {
      * This can be cancelled with {@link AFKStartEvent}
      */
     public void startAFK() {
+        if (Bukkit.getPlayer(getUUID()) == null) {
+            //Player isn't online, stop here
+            return;
+        }
         //Call the AKFStart event
         AFKStartEvent event = new AFKStartEvent(this);
         Bukkit.getPluginManager().callEvent(event);
@@ -165,6 +169,10 @@ public class AFKPlusPlayer {
      * This can be cancelled with {@link AFKStopEvent}
      */
     public void stopAFK() {
+        if (Bukkit.getPlayer(getUUID()) == null) {
+            //Player isn't online, stop here
+            return;
+        }
         //Call the AKFStop event
         AFKStopEvent event = new AFKStopEvent(this);
         Bukkit.getPluginManager().callEvent(event);
@@ -222,10 +230,7 @@ public class AFKPlusPlayer {
             }
         }
         if (self) {
-            //Null check since there are reports of this throwing a null pointer somehow
-            //See issue #6
-            if (player != null)
-                player.sendMessage(msg);
+            player.sendMessage(msg);
         }
     }
 
@@ -281,7 +286,7 @@ public class AFKPlusPlayer {
      */
     public Runnable getRepeatingTask() {
         return () -> {
-            if (Bukkit.getOfflinePlayer(uuid).isOnline()) {
+            if (Bukkit.getOfflinePlayer(getUUID()).isOnline()) {
                 if (isAFK) {
                     //Get the values that need to be met for warnings and action
                     Integer timeToWarning = plugin.perms.getPermissionValue(uuid, Permission.TimeToWarning.getPermission());
