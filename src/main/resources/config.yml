@@ -10,7 +10,7 @@ Action: "kick [PLAYER] You were AFK for too long!"
 #The sound to be played when a player is warned
 #Set to blank if you don't want a sound e.g. ""
 #A list of sounds for the latest spigot version is available at https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
-WarningSound: "LEVEL_UP"
+WarningSound: "ENTITY_PLAYER_LEVELUP"
 
 #A player will be set as AFK if they don't interact with the world
 #What should be counted as an interaction?

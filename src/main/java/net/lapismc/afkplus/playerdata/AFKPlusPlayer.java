@@ -105,9 +105,13 @@ public class AFKPlusPlayer {
         //Check if warning sounds are enabled
         if (!"".equals(plugin.getConfig().getString("WarningSound"))) {
             //Get the sound from Compat Bridge
-            Sound sound = XSound.valueOf(plugin.getConfig().getString("WarningSound")).parseSound();
+            Sound sound;
+            try {
+                sound = XSound.valueOf(plugin.getConfig().getString("WarningSound")).parseSound();
+            } catch (IllegalArgumentException e) {
+                sound = XSound.ENTITY_PLAYER_LEVELUP.parseSound();
+            }
             //Play the sound at the players current location
-            sound = sound == null ? XSound.ENTITY_PLAYER_LEVELUP.parseSound() : sound;
             p.playSound(p.getLocation(), sound, 1, 1);
         }
     }
