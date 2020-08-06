@@ -73,3 +73,6 @@
   - "Fixed stopping running tasks"
 3.1.9:
   - "Fix for null player objects"
+3.2.0:
+  - "Fixed a bug with the new compatible sound API"
+  - "Added a variable to have the time a player was AFK when their AFK stop is announced"

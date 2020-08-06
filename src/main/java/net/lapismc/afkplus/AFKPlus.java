@@ -29,12 +29,19 @@ import net.lapismc.lapiscore.utils.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitTask;
+import org.ocpsoft.prettytime.Duration;
+import org.ocpsoft.prettytime.PrettyTime;
+import org.ocpsoft.prettytime.units.JustNow;
+import org.ocpsoft.prettytime.units.Millisecond;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 public final class AFKPlus extends LapisCorePlugin {
 
+    public PrettyTime prettyTime;
     public LapisUpdater updater;
     private LapisCoreFileWatcher fileWatcher;
     private final HashMap<UUID, AFKPlusPlayer> players = new HashMap<>();
@@ -48,6 +55,10 @@ public final class AFKPlus extends LapisCorePlugin {
         registerPermissions(new AFKPlusPermissions(this));
         update();
         fileWatcher = new LapisCoreFileWatcher(this);
+        Locale loc = new Locale(config.getMessage("PrettyTimeLocale"));
+        prettyTime = new PrettyTime(loc);
+        prettyTime.removeUnit(JustNow.class);
+        prettyTime.removeUnit(Millisecond.class);
         new AFK(this);
         new AFKPlusCmd(this);
         listeners = new AFKPlusListeners(this);
@@ -98,6 +109,19 @@ public final class AFKPlus extends LapisCorePlugin {
                 player.getRepeatingTask().run();
             }
         };
+    }
+
+    public List<Duration> reduceDurationList(List<Duration> durationList) {
+        while (durationList.size() > 2) {
+            Duration smallest = null;
+            for (Duration current : durationList) {
+                if (smallest == null || smallest.getUnit().getMillisPerUnit() > current.getUnit().getMillisPerUnit()) {
+                    smallest = current;
+                }
+            }
+            durationList.remove(smallest);
+        }
+        return durationList;
     }
 
 }

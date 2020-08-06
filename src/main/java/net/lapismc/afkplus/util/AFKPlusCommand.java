@@ -22,28 +22,17 @@ import net.lapismc.afkplus.playerdata.Permission;
 import net.lapismc.lapiscore.commands.LapisCoreCommand;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.ocpsoft.prettytime.Duration;
-import org.ocpsoft.prettytime.PrettyTime;
-import org.ocpsoft.prettytime.units.JustNow;
-import org.ocpsoft.prettytime.units.Millisecond;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 public abstract class AFKPlusCommand extends LapisCoreCommand {
 
-    private final PrettyTime prettyTime;
     protected AFKPlus plugin;
 
     protected AFKPlusCommand(AFKPlus plugin, String name, String desc, ArrayList<String> aliases) {
         super(plugin, name, desc, aliases, true);
         this.plugin = plugin;
-        Locale loc = new Locale(plugin.config.getMessage("PrettyTimeLocale"));
-        prettyTime = new PrettyTime(loc);
-        prettyTime.removeUnit(JustNow.class);
-        prettyTime.removeUnit(Millisecond.class);
     }
 
     protected boolean isNotPermitted(CommandSender sender, Permission permission) {
@@ -51,20 +40,7 @@ public abstract class AFKPlusCommand extends LapisCoreCommand {
     }
 
     protected String getTimeDifference(Long epoch) {
-        return prettyTime.format(reduceDurationList(prettyTime.calculatePreciseDuration(new Date(epoch))));
-    }
-
-    private List<Duration> reduceDurationList(List<Duration> durationList) {
-        while (durationList.size() > 2) {
-            Duration smallest = null;
-            for (Duration current : durationList) {
-                if (smallest == null || smallest.getUnit().getMillisPerUnit() > current.getUnit().getMillisPerUnit()) {
-                    smallest = current;
-                }
-            }
-            durationList.remove(smallest);
-        }
-        return durationList;
+        return plugin.prettyTime.format(plugin.reduceDurationList(plugin.prettyTime.calculatePreciseDuration(new Date(epoch))));
     }
 
     protected AFKPlusPlayer getPlayer(OfflinePlayer op) {

@@ -26,6 +26,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -183,8 +184,12 @@ public class AFKPlusPlayer {
         if (event.isCancelled()) {
             return;
         }
+        //Get a string that is the user friendly version of how long the player was AFK
+        //This will replace the {TIME} variable, if present
+        String afkTime = plugin.prettyTime.format(plugin.reduceDurationList
+                (plugin.prettyTime.calculatePreciseDuration(new Date(afkStart))));
         String message = plugin.config.getMessage("Broadcast.Stop")
-                .replace("{PLAYER}", getName());
+                .replace("{PLAYER}", getName()).replace("{TIME}", afkTime);
         broadcast(message);
         forceStopAFK();
 

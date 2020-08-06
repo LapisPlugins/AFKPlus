@@ -11,6 +11,7 @@ PrettyTimeLocale: "en"
 #These are sent to all players when AFK starts and stops
 Broadcast:
   Start: "&8[&6AFK&4+&8] &s{PLAYER}&p is now AFK"
+  #You may also add a {TIME} variable that will be replaced by how long the player was AFK
   Stop: "&8[&6AFK&4+&8] &s{PLAYER}&p is no longer AFK"
 
 Updater:
