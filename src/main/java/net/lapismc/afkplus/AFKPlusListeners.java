@@ -18,6 +18,7 @@ package net.lapismc.afkplus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -61,18 +62,53 @@ class AFKPlusListeners implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
-        if (plugin.getConfig().getBoolean("EnabledDetections.Move")) {
+        //Check if the player has looked and/or moved
+        Location from = e.getFrom();
+        Location to = e.getTo();
+        boolean look = to.getPitch() != from.getPitch() || to.getYaw() != from.getYaw();
+        boolean move = to.getX() != from.getX() || to.getY() != from.getY() || to.getZ() != from.getZ();
+
+        //Check if bump protection is enabled and the player has only moved but not looked
+        if (plugin.getConfig().getBoolean("Protections.Bump") && plugin.getPlayer(e.getPlayer()).isAFK() && (move && !look)) {
+            //Make sure they haven't moved up in the Y direction (this allows jumping but not falling)
+            if (to.getY() <= from.getY()) {
+                //The players has only moved in the X or Z directions so we cancel the event since it could be a bump
+                e.setCancelled(true);
+                return;
+            }
+        }
+
+        //Only interact if the player performed the action and the detection is enabled for it
+        if ((look && plugin.getConfig().getBoolean("EnabledDetections.Look")) ||
+                (move && plugin.getConfig().getBoolean("EnabledDetections.Move"))) {
             plugin.getPlayer(e.getPlayer()).interact();
         }
     }
 
     @EventHandler
-    public void onPlayerAttack(EntityDamageByEntityEvent e) {
-        if (plugin.getConfig().getBoolean("EnabledDetections.Attack")) {
-            if (e.getDamager() instanceof Player) {
-                Player p = (Player) e.getDamager();
-                plugin.getPlayer(p).interact();
+    public void onEntityDamage(EntityDamageByEntityEvent e) {
+        //Check if the damager is a player or an arrow shot by a player
+        boolean damageCausedByPlayer = false;
+        if (e.getDamager() instanceof Player)
+            damageCausedByPlayer = true;
+        if (e.getDamager() instanceof Arrow)
+            damageCausedByPlayer = ((Arrow) e.getDamager()).getShooter() instanceof Player;
+
+        //Check if the attacked is a player and if we should be protecting them
+        //TODO: Test this with environment damage
+        if (e.getEntity() instanceof Player && plugin.getPlayer((Player) e.getEntity()).isAFK()) {
+            if (plugin.getConfig().getBoolean("Protections.HurtByPlayer") && damageCausedByPlayer) {
+                e.setCancelled(true);
             }
+            if (plugin.getConfig().getBoolean("Protections.HurtByMob") && !damageCausedByPlayer) {
+                e.setCancelled(true);
+            }
+        }
+
+        //Run the attack detection if the attacker is a player
+        if (plugin.getConfig().getBoolean("EnabledDetections.Attack") && damageCausedByPlayer) {
+            Player p = (Player) e.getDamager();
+            plugin.getPlayer(p).interact();
         }
     }
 

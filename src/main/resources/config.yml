@@ -1,4 +1,4 @@
-ConfigVersion: 4
+ConfigVersion: 5
 
 #Should the plugin auto download and install new versions when they are available
 UpdateDownload: true
@@ -18,7 +18,9 @@ WarningSound: "ENTITY_PLAYER_LEVELUP"
 EnabledDetections:
   #Sending chat messages
   Chat: true
-  #Moving, this includes looking around
+  #The players head/body rotating in place
+  Look: true
+  #Moving in the x,y,z directions
   Move: true
   #Attacking entities
   Attack: true
@@ -31,9 +33,20 @@ EnabledDetections:
   #Breaking blocks
   BlockBreak: true
 
+Protections:
+  #When enabled AFK players will not be able to move in the x and z directions while AFK.
+  #This stops them being pushed out of AFK by players bumping into them
+  #This is implemented better in AFKPlusPrefix, but that addon is not compatible with all servers
+  #so this is a different implementation of the fix
+  Bump: false
+  #When enabled AFK players will be invincible to attacks from other players
+  HurtByPlayer: false
+  #Same as HurtByPlayer but stops any non-player damage
+  HurtByOther: true
+
 #Who should receive messages when players AFK status changes
 #Self = the player who's status has changed
-#Vanish = if the player who's status has changed is AFK
+#Vanish = if the player who's status has changed is vanished
 Broadcast:
   Console: true
   OtherPlayers: true
