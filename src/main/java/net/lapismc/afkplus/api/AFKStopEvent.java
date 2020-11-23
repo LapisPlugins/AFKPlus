@@ -17,7 +17,6 @@
 package net.lapismc.afkplus.api;
 
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
-import net.lapismc.lapiscore.events.LapisCoreCancellableEvent;
 
 /**
  * A cancellable event to notify plugins when a player is exiting AFK
@@ -25,11 +24,16 @@ import net.lapismc.lapiscore.events.LapisCoreCancellableEvent;
  * If this was caused by an event it is likely to happen again very soon
  */
 @SuppressWarnings("unused")
-public class AFKStopEvent extends LapisCoreCancellableEvent {
+public class AFKStopEvent extends AFKCommandEvent {
 
     private final AFKPlusPlayer player;
 
-    public AFKStopEvent(AFKPlusPlayer player) {
+    /**
+     * @param player  The player being set as AFK
+     * @param command The command to be run after the event has finished
+     */
+    public AFKStopEvent(AFKPlusPlayer player, String command) {
+        super(command);
         this.player = player;
     }
 

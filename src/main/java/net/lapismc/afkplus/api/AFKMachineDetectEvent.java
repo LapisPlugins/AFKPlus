@@ -17,30 +17,22 @@
 package net.lapismc.afkplus.api;
 
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
+import net.lapismc.lapiscore.events.LapisCoreEvent;
 
 /**
- * A cancellable event to notify plugins when a player is acted upon
- * Cancelling this event is silent and will simply stop it from happening
- * If the player is still not active it is likely that the event will be fired in 1 seconds time
- * The action command can be changed
+ * An event to notify plugins when a player is deemed to be avoiding afk
+ * This can be fired by normal activity so don't do anything drastic with just one trigger
  */
-public class AFKActionEvent extends AFKCommandEvent {
+public class AFKMachineDetectEvent extends LapisCoreEvent {
 
     private final AFKPlusPlayer player;
 
-    public AFKActionEvent(AFKPlusPlayer player, String command) {
-        super(command);
+    public AFKMachineDetectEvent(AFKPlusPlayer player) {
         this.player = player;
     }
 
-    /**
-     * Get the player that is being acted upon
-     *
-     * @return Returns the {@link AFKPlusPlayer} for the events target
-     */
     public AFKPlusPlayer getPlayer() {
         return player;
     }
-
 
 }

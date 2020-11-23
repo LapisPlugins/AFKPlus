@@ -145,16 +145,20 @@ public class AFKPlusPlayer {
             //Player isn't online, stop here
             return;
         }
+        String command = plugin.getConfig().getString("Commands.AFKStart");
         //Call the AKFStart event
-        AFKStartEvent event = new AFKStartEvent(this);
+        AFKStartEvent event = new AFKStartEvent(this, command);
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
             return;
         }
+        //Run AFK command
+        runCommand(event.getCommand());
         //Broadcast the AFK start message
         String message = plugin.config.getMessage("Broadcast.Start")
                 .replace("{PLAYER}", getName());
         broadcast(message);
+        //TODO: Play sound for AFK start/stop
         //Start the AFK
         forceStartAFK();
     }
@@ -163,6 +167,7 @@ public class AFKPlusPlayer {
      * Silently starts AFK for this player
      */
     public void forceStartAFK() {
+        //TODO: start timer for counting AFK time statistic
         //Record the time that the player was set AFK
         afkStart = System.currentTimeMillis();
         //Set the player as AFK
@@ -178,12 +183,14 @@ public class AFKPlusPlayer {
             //Player isn't online, stop here
             return;
         }
+        String command = plugin.getConfig().getString("Commands.AFKStop");
         //Call the AKFStop event
-        AFKStopEvent event = new AFKStopEvent(this);
+        AFKStopEvent event = new AFKStopEvent(this, command);
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
             return;
         }
+        runCommand(event.getCommand());
         //Get a string that is the user friendly version of how long the player was AFK
         //This will replace the {TIME} variable, if present
         String afkTime = plugin.prettyTime.format(plugin.reduceDurationList
@@ -191,6 +198,8 @@ public class AFKPlusPlayer {
         String message = plugin.config.getMessage("Broadcast.Stop")
                 .replace("{PLAYER}", getName()).replace("{TIME}", afkTime);
         broadcast(message);
+        //TODO: Play sound for AFK start/stop
+        //Stop the AFK status
         forceStopAFK();
 
     }
@@ -199,6 +208,7 @@ public class AFKPlusPlayer {
      * Silently stops AFK for this player
      */
     public void forceStopAFK() {
+        //TODO: Stop the AFK time status counter
         //Reset warning
         isWarned = false;
         //Set player as no longer AFK
@@ -220,13 +230,14 @@ public class AFKPlusPlayer {
             return;
         }
         boolean vanish = plugin.getConfig().getBoolean("Broadcast.Vanish");
-        if (!vanish && isVanished()) {
-            return;
-        }
-        Player player = Bukkit.getPlayer(getUUID());
         boolean console = plugin.getConfig().getBoolean("Broadcast.Console");
         boolean otherPlayers = plugin.getConfig().getBoolean("Broadcast.OtherPlayers");
         boolean self = plugin.getConfig().getBoolean("Broadcast.Self");
+        if (!vanish && isVanished()) {
+            //Stop the broadcast from going to other players, but it still shows to the player and console
+            otherPlayers = false;
+        }
+        Player player = Bukkit.getPlayer(getUUID());
         if (console) {
             plugin.getLogger().info(msg);
         }
@@ -247,12 +258,12 @@ public class AFKPlusPlayer {
      * Runs the action command on this player
      */
     public void takeAction() {
-        String command = plugin.getConfig().getString("Action").replace("[PLAYER]", Bukkit.getPlayer(uuid).getName());
+        String command = plugin.getConfig().getString("Commands.Action");
         AFKActionEvent event = new AFKActionEvent(this, command);
         Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
             forceStopAFK();
-            Bukkit.getScheduler().runTask(plugin, () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), event.getAction()));
+            runCommand(event.getCommand());
         }
     }
 
@@ -284,6 +295,13 @@ public class AFKPlusPlayer {
             if (meta.asBoolean()) return true;
         }
         return false;
+    }
+
+    private void runCommand(String command) {
+        if (command.equals(""))
+            return;
+        String cmd = command.replace("[PLAYER]", getName());
+        Bukkit.getScheduler().runTask(plugin, () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd));
     }
 
     /**

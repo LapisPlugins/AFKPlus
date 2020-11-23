@@ -16,6 +16,7 @@
 
 package net.lapismc.afkplus;
 
+import net.lapismc.afkplus.api.AFKMachineDetectEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
@@ -95,7 +96,7 @@ class AFKPlusListeners implements Listener {
             damageCausedByPlayer = ((Arrow) e.getDamager()).getShooter() instanceof Player;
 
         //Check if the attacked is a player and if we should be protecting them
-        //TODO: Test this with environment damage
+        //TODO: Test this with environment damage, probably need another event for this
         if (e.getEntity() instanceof Player && plugin.getPlayer((Player) e.getEntity()).isAFK()) {
             if (plugin.getConfig().getBoolean("Protections.HurtByPlayer") && damageCausedByPlayer) {
                 e.setCancelled(true);
@@ -186,6 +187,10 @@ class AFKPlusListeners implements Listener {
                         //This is sent to the player object, if the player is deemed to not be moving they will not
                         //be able to reset their interact timer. This wil force them into AFK even
                         //if they are triggering move events
+                        if (inactive) {
+                            //Trigger the AFKMachine event if the player is deemed to be avoiding AFK
+                            Bukkit.getPluginManager().callEvent(new AFKMachineDetectEvent(plugin.getPlayer(uuid)));
+                        }
                         plugin.getPlayer(uuid).setInactive(inactive);
 
                     }

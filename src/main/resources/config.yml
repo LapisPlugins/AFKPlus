@@ -1,11 +1,17 @@
-ConfigVersion: 5
+ConfigVersion: 6
 
 #Should the plugin auto download and install new versions when they are available
 UpdateDownload: true
 
-#Its expected that the action will stop the player from being AFK or remove them from the server
-#Failure to do this wil result in the command being run every second
-Action: "kick [PLAYER] You were AFK for too long!"
+#Leave a command blank if you dont wish to use one, the commands are run during the process of setting the player to AFK
+#this may cause issues if you attempt to teleport or move the player etc.
+#The action command must either make the player no longer AFK or remove them from the server
+Commands:
+  Action: "kick [PLAYER] You were AFK for too long!"
+  AFKStart: ""
+  AFKStop: ""
+  Warn: ""
+
 
 #The sound to be played when a player is warned
 #Set to blank if you don't want a sound e.g. ""
