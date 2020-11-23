@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Benjamin Martin
+ * Copyright 2020 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,17 +62,17 @@ public class AFKPlusCmd extends AFKPlusCommand {
                     //no update available
                     sendMessage(sender, "Updater.NoUpdate");
                 }
-                return;
                 // /afkplus help
             } else if (!args[0].equalsIgnoreCase("player")) {
                 sendHelp(sender);
             }
             // /afkplus player
-        }
-        if (args[0].equalsIgnoreCase("player")) {
-            playerCommand(sender, args);
         } else {
-            sendHelp(sender);
+            if (args[0].equalsIgnoreCase("player")) {
+                playerCommand(sender, args);
+            } else {
+                sendHelp(sender);
+            }
         }
     }
 
