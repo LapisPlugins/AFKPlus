@@ -65,7 +65,7 @@ public final class AFKPlus extends LapisCorePlugin {
         new AFKPlusAPI(this);
         new AFKPlusPlayerAPI(this);
         new Metrics(this);
-        repeatingTask = Bukkit.getScheduler().runTaskTimerAsynchronously(this, runRepeatingTasks(), 20, 20);
+        repeatingTask = Bukkit.getScheduler().runTaskTimerAsynchronously(this, getRepeatingTasks(), 20, 20);
         getLogger().info(getName() + " v." + getDescription().getVersion() + " has been enabled!");
     }
 
@@ -76,6 +76,8 @@ public final class AFKPlus extends LapisCorePlugin {
         repeatingTask.cancel();
         //Also stop the AFK Machine detection task
         listeners.getAfkMachineDetectionTask().cancel();
+        //Safely handle the stopping of AFKPlus in regards to player data
+        disposeOfPlayers();
         getLogger().info(getName() + " has been disabled!");
     }
 
@@ -103,7 +105,14 @@ public final class AFKPlus extends LapisCorePlugin {
         }
     }
 
-    private Runnable runRepeatingTasks() {
+    private void disposeOfPlayers() {
+        //Stop all AFK sessions for the sake of AFK time statistics
+        for (AFKPlusPlayer p : players.values()) {
+            p.forceStopAFK();
+        }
+    }
+
+    private Runnable getRepeatingTasks() {
         return () -> {
             for (AFKPlusPlayer player : players.values()) {
                 player.getRepeatingTask().run();

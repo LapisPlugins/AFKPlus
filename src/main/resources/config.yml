@@ -15,8 +15,13 @@ Commands:
 
 #The sound to be played when a player is warned
 #Set to blank if you don't want a sound e.g. ""
-#A list of sounds for the latest spigot version is available at https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+#A list of sounds for the latest spigot version is available at
+#https://github.com/CryptoMorin/XSeries/blob/master/src/main/java/com/cryptomorin/xseries/XSound.java#L64
 WarningSound: "ENTITY_PLAYER_LEVELUP"
+
+#The sound to be played to a player when they become AFK
+#Set to blank if you don't want a sound
+AFKStartSound: "BLOCK_ANVIL_HIT"
 
 #A player will be set as AFK if they don't interact with the world
 #What should be counted as an interaction?

@@ -22,11 +22,14 @@ import net.lapismc.afkplus.api.AFKStartEvent;
 import net.lapismc.afkplus.api.AFKStopEvent;
 import net.lapismc.lapiscore.compatibility.XSound;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -103,18 +106,8 @@ public class AFKPlusPlayer {
         }
         //Send the player the warning message
         p.sendMessage(plugin.config.getMessage("Warning"));
-        //Check if warning sounds are enabled
-        if (!"".equals(plugin.getConfig().getString("WarningSound"))) {
-            //Get the sound from Compat Bridge
-            Sound sound;
-            try {
-                sound = XSound.valueOf(plugin.getConfig().getString("WarningSound")).parseSound();
-            } catch (IllegalArgumentException e) {
-                sound = XSound.ENTITY_PLAYER_LEVELUP.parseSound();
-            }
-            //Play the sound at the players current location
-            p.playSound(p.getLocation(), sound, 1, 1);
-        }
+        //Play the warning sound from the config
+        playSound("WarningSound", XSound.ENTITY_PLAYER_LEVELUP);
     }
 
     /**
@@ -158,7 +151,8 @@ public class AFKPlusPlayer {
         String message = plugin.config.getMessage("Broadcast.Start")
                 .replace("{PLAYER}", getName());
         broadcast(message);
-        //TODO: Play sound for AFK start/stop
+        //Play the AFK start sound
+        playSound("AFKStartSound", XSound.BLOCK_ANVIL_HIT);
         //Start the AFK
         forceStartAFK();
     }
@@ -167,7 +161,6 @@ public class AFKPlusPlayer {
      * Silently starts AFK for this player
      */
     public void forceStartAFK() {
-        //TODO: start timer for counting AFK time statistic
         //Record the time that the player was set AFK
         afkStart = System.currentTimeMillis();
         //Set the player as AFK
@@ -198,7 +191,6 @@ public class AFKPlusPlayer {
         String message = plugin.config.getMessage("Broadcast.Stop")
                 .replace("{PLAYER}", getName()).replace("{TIME}", afkTime);
         broadcast(message);
-        //TODO: Play sound for AFK start/stop
         //Stop the AFK status
         forceStopAFK();
 
@@ -208,7 +200,8 @@ public class AFKPlusPlayer {
      * Silently stops AFK for this player
      */
     public void forceStopAFK() {
-        //TODO: Stop the AFK time status counter
+        //Record the new value for the time AFK statistic
+        recordTimeStatistic();
         //Reset warning
         isWarned = false;
         //Set player as no longer AFK
@@ -297,11 +290,66 @@ public class AFKPlusPlayer {
         return false;
     }
 
+    /**
+     * Handles the running of a command with a player variable, this is used for AFK start/stop/warn/action commands
+     *
+     * @param command The command to be run with "[PLAYER]" in place of the players name
+     */
     private void runCommand(String command) {
+        //Ignore the command if it is blank, this is so that start/stop/warn events dont need to have commands
         if (command.equals(""))
             return;
+        //Replace the player variable with the players name
         String cmd = command.replace("[PLAYER]", getName());
+        //Dispatch the command on the next game tick
         Bukkit.getScheduler().runTask(plugin, () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd));
+    }
+
+    /**
+     * Plays a sound from the config or the default sound if its not available
+     *
+     * @param pathToSound The path to the sounds name in the config.yml
+     * @param def         The sound to be used if the sound in the config isn't valid
+     */
+    private void playSound(String pathToSound, XSound def) {
+        Player p = Bukkit.getPlayer(getUUID());
+        if (p == null || !p.isOnline())
+            return;
+        String soundName = plugin.getConfig().getString(pathToSound);
+        if ("".equals(soundName) || soundName == null)
+            return;
+        XSound sound;
+        Optional<XSound> retrievedSound = XSound.matchXSound(soundName);
+        sound = retrievedSound.orElse(def);
+        sound.playSound(p);
+    }
+
+    /**
+     * Records the time spent AFK and adds it to the already existing value in the statistics file
+     */
+    private void recordTimeStatistic() {
+        //Get or create the statistics file
+        File f = new File(plugin.getDataFolder(), "statistics.yml");
+        if (!f.exists()) {
+            try {
+                f.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        YamlConfiguration statistics = YamlConfiguration.loadConfiguration(f);
+        //Grab the current value of the statistic so that we can add to it, or get 0L if there is no current value
+        Long currentTimeSpendAFK = statistics.getLong(getName() + ".TimeSpentAFK", 0L);
+        //Calculate the amount of time that the player was AFK for
+        Long timeAFK = System.currentTimeMillis() - afkStart;
+        //Set the value to be the old value plus the most recent amount of time AFK
+        statistics.set(getName() + ".TimeSpentAFK", currentTimeSpendAFK + timeAFK);
+        //Save the file
+        try {
+            statistics.save(f);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
