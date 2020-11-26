@@ -291,6 +291,23 @@ public class AFKPlusPlayer {
     }
 
     /**
+     * Get the total time that a player has been AFK
+     * This is the sum of all time that the player has been AFK
+     *
+     * @return The total time spent AFK, 0 if there is no record for this player
+     */
+    public long getTotalTimeAFK() {
+        //Get or create the statistics file
+        File f = new File(plugin.getDataFolder(), "statistics.yml");
+        if (!f.exists()) {
+            return 0L;
+        }
+        YamlConfiguration statistics = YamlConfiguration.loadConfiguration(f);
+        //Grab the current value of the statistic so that we can add to it, or get 0L if there is no current value
+        return statistics.getLong(getName() + ".TimeSpentAFK", 0L);
+    }
+
+    /**
      * Handles the running of a command with a player variable, this is used for AFK start/stop/warn/action commands
      *
      * @param command The command to be run with "[PLAYER]" in place of the players name
@@ -376,6 +393,7 @@ public class AFKPlusPlayer {
                         }
                     }
                     //Check if the player can have an action taken or if there is a permission error
+                    //TODO: check if the server has reached the action level of players
                     if (!timeToAction.equals(-1) && !timeToAction.equals(0)) {
                         //Check for action
                         if (secondsSinceAFKStart >= timeToAction) {

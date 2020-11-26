@@ -17,6 +17,7 @@
 package net.lapismc.afkplus;
 
 import net.lapismc.afkplus.api.AFKMachineDetectEvent;
+import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
@@ -25,7 +26,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -96,7 +99,6 @@ class AFKPlusListeners implements Listener {
             damageCausedByPlayer = ((Arrow) e.getDamager()).getShooter() instanceof Player;
 
         //Check if the attacked is a player and if we should be protecting them
-        //TODO: Test this with environment damage, probably need another event for this
         if (e.getEntity() instanceof Player && plugin.getPlayer((Player) e.getEntity()).isAFK()) {
             if (plugin.getConfig().getBoolean("Protections.HurtByPlayer") && damageCausedByPlayer) {
                 e.setCancelled(true);
@@ -111,6 +113,23 @@ class AFKPlusListeners implements Listener {
             Player p = (Player) e.getDamager();
             plugin.getPlayer(p).interact();
         }
+    }
+
+    @EventHandler
+    public void onPlayerHurt(EntityDamageEvent e) {
+        if ((e instanceof EntityDamageByEntityEvent) || !(e.getEntity() instanceof Player))
+            return;
+        //We should have a player that is being damaged by something other than en entity
+        AFKPlusPlayer p = plugin.getPlayer(e.getEntity().getUniqueId());
+        if (plugin.getConfig().getBoolean("Protections.HurtByOther") && p.isAFK())
+            e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onMonsterSpawn(CreatureSpawnEvent e) {
+        //TODO: find nearby players and check if they are AFK
+        //https://github.com/kickash32/DistributedMobSpawns/blob/version-2/src/main/java/me/kickash32/distributedmobspawns/EventListener.java#L22
+        //https://github.com/kickash32/DistributedMobSpawns/blob/version-2/src/main/java/me/kickash32/distributedmobspawns/EntityProcessor.java#L51
     }
 
     @EventHandler
