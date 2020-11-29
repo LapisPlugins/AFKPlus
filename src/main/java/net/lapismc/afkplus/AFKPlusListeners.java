@@ -18,9 +18,11 @@ package net.lapismc.afkplus;
 
 import net.lapismc.afkplus.api.AFKMachineDetectEvent;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
+import net.lapismc.afkplus.util.EntitySpawnManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,10 +42,12 @@ class AFKPlusListeners implements Listener {
     private final AFKPlus plugin;
     private final HashMap<UUID, Location> playerLocations = new HashMap<>();
     private BukkitTask AfkMachineDetectionTask;
+    private final EntitySpawnManager spawnManager;
 
     AFKPlusListeners(AFKPlus plugin) {
         this.plugin = plugin;
         startRunnable();
+        spawnManager = new EntitySpawnManager(plugin);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -127,9 +131,14 @@ class AFKPlusListeners implements Listener {
 
     @EventHandler
     public void onMonsterSpawn(CreatureSpawnEvent e) {
-        //TODO: find nearby players and check if they are AFK
-        //https://github.com/kickash32/DistributedMobSpawns/blob/version-2/src/main/java/me/kickash32/distributedmobspawns/EventListener.java#L22
-        //https://github.com/kickash32/DistributedMobSpawns/blob/version-2/src/main/java/me/kickash32/distributedmobspawns/EntityProcessor.java#L51
+        if (!plugin.getConfig().getBoolean("Protections.MobSpawning"))
+            return;
+        //TODO: Test this
+        if (!(e.getEntity() instanceof Monster))
+            return;
+        boolean shouldSpawn = spawnManager.shouldSpawn(e.getLocation(), e.getSpawnReason());
+        if (!shouldSpawn)
+            e.setCancelled(false);
     }
 
     @EventHandler

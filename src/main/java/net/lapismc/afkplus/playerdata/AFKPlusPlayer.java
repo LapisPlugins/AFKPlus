@@ -105,7 +105,7 @@ public class AFKPlusPlayer {
             return;
         }
         //Send the player the warning message
-        p.sendMessage(plugin.config.getMessage("Warning"));
+        p.sendMessage(getMessage("Warning"));
         //Play the warning sound from the config
         playSound("WarningSound", XSound.ENTITY_PLAYER_LEVELUP);
     }
@@ -148,8 +148,7 @@ public class AFKPlusPlayer {
         //Run AFK command
         runCommand(event.getCommand());
         //Broadcast the AFK start message
-        String message = plugin.config.getMessage("Broadcast.Start")
-                .replace("{PLAYER}", getName());
+        String message = getMessage("Broadcast.Start").replace("{PLAYER}", getName());
         broadcast(message);
         //Play the AFK start sound
         playSound("AFKStartSound", XSound.BLOCK_ANVIL_HIT);
@@ -188,8 +187,7 @@ public class AFKPlusPlayer {
         //This will replace the {TIME} variable, if present
         String afkTime = plugin.prettyTime.format(plugin.reduceDurationList
                 (plugin.prettyTime.calculatePreciseDuration(new Date(afkStart))));
-        String message = plugin.config.getMessage("Broadcast.Stop")
-                .replace("{PLAYER}", getName()).replace("{TIME}", afkTime);
+        String message = getMessage("Broadcast.Stop").replace("{PLAYER}", getName()).replace("{TIME}", afkTime);
         broadcast(message);
         //Stop the AFK status
         forceStopAFK();
@@ -320,6 +318,16 @@ public class AFKPlusPlayer {
         String cmd = command.replace("[PLAYER]", getName());
         //Dispatch the command on the next game tick
         Bukkit.getScheduler().runTask(plugin, () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd));
+    }
+
+    /**
+     * Uses the PAPI LapisCore integration to attempt placeholder replacement
+     *
+     * @param key The key for the message in the messages.yml
+     * @return the formatted message
+     */
+    private String getMessage(String key) {
+        return plugin.config.getMessage(key, Bukkit.getOfflinePlayer(getUUID()));
     }
 
     /**

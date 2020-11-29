@@ -54,6 +54,9 @@ Protections:
   HurtByPlayer: false
   #Same as HurtByPlayer but stops any non-player damage
   HurtByOther: true
+  #When enabled, mobs will not spawn if the AFK player is the cause of the spawning
+  #This only applies to natural and spawner spawning
+  MobSpawning: true
 
 #Who should receive messages when players AFK status changes
 #Self = the player who's status has changed
