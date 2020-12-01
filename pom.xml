@@ -19,7 +19,7 @@
 
     <groupId>net.lapismc</groupId>
     <artifactId>AFKPlus</artifactId>
-    <version>3.2.0</version>
+    <version>3.2.1</version>
     <packaging>jar</packaging>
 
     <name>AFKPlus</name>
@@ -108,7 +108,7 @@
         <dependency>
             <groupId>net.lapismc</groupId>
             <artifactId>LapisCore</artifactId>
-            <version>1.7.9</version>
+            <version>1.7.10</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

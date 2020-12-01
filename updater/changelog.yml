@@ -76,7 +76,6 @@
 3.2.0:
   - "Fixed a bug with the new compatible sound API"
   - "Added a variable to have the time a player was AFK when their AFK stop is announced"
-3.3.0:
-  - "Added bump protection to the core plugin (previously only available in AFKPlusPrefix)"
-  - "Added damage protections from players or other"
-  - "Split move detection into look and move detections"
+3.2.1:
+  - "This is a beta update, new features have not been rigorously tested"
+  - "Added all improvements listed in https://github.com/LapisPlugins/AFKPlus/issues/14"
