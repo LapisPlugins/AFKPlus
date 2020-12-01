@@ -108,7 +108,8 @@ public final class AFKPlus extends LapisCorePlugin {
     private void disposeOfPlayers() {
         //Stop all AFK sessions for the sake of AFK time statistics
         for (AFKPlusPlayer p : players.values()) {
-            p.forceStopAFK();
+            if (p.isAFK())
+                p.forceStopAFK();
         }
     }
 

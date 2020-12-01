@@ -79,3 +79,5 @@
 3.2.1:
   - "This is a beta update, new features have not been rigorously tested"
   - "Added all improvements listed in https://github.com/LapisPlugins/AFKPlus/issues/14"
+3.2.2:
+  - "Fixed a bug with clearing players on plugin shutdown"
