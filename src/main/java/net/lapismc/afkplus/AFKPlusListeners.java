@@ -217,7 +217,8 @@ class AFKPlusListeners implements Listener {
                         //if they are triggering move events
                         if (inactive) {
                             //Trigger the AFKMachine event if the player is deemed to be avoiding AFK
-                            Bukkit.getPluginManager().callEvent(new AFKMachineDetectEvent(plugin.getPlayer(uuid)));
+                            Bukkit.getScheduler().runTask(plugin, () ->
+                                    Bukkit.getPluginManager().callEvent(new AFKMachineDetectEvent(plugin.getPlayer(uuid))));
                         }
                         plugin.getPlayer(uuid).setInactive(inactive);
 

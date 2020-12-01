@@ -81,3 +81,5 @@
   - "Added all improvements listed in https://github.com/LapisPlugins/AFKPlus/issues/14"
 3.2.2:
   - "Fixed a bug with clearing players on plugin shutdown"
+3.2.3:
+  - "Fixed a bug with not firing AFKMachine events from the main thread"
