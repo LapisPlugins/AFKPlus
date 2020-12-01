@@ -388,6 +388,13 @@ public class AFKPlusPlayer {
         return () -> {
             if (Bukkit.getOfflinePlayer(getUUID()).isOnline()) {
                 if (isAFK) {
+                    boolean isAtPlayerRequirement;
+                    int playersRequired = plugin.getConfig().getInt("ActionPlayerRequirement");
+                    if (playersRequired != 0) {
+                        isAtPlayerRequirement = true;
+                    } else {
+                        isAtPlayerRequirement = Bukkit.getOnlinePlayers().size() > playersRequired;
+                    }
                     //Get the values that need to be met for warnings and action
                     Integer timeToWarning = plugin.perms.getPermissionValue(uuid, Permission.TimeToWarning.getPermission());
                     Integer timeToAction = plugin.perms.getPermissionValue(uuid, Permission.TimeToAction.getPermission());
@@ -401,10 +408,9 @@ public class AFKPlusPlayer {
                         }
                     }
                     //Check if the player can have an action taken or if there is a permission error
-                    //TODO: check if the server has reached the action level of players
                     if (!timeToAction.equals(-1) && !timeToAction.equals(0)) {
-                        //Check for action
-                        if (secondsSinceAFKStart >= timeToAction) {
+                        //Check for action and if we are taking action yet
+                        if (secondsSinceAFKStart >= timeToAction && isAtPlayerRequirement) {
                             Bukkit.getScheduler().runTask(plugin, this::takeAction);
                         }
                     }

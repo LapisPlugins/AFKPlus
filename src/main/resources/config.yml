@@ -12,6 +12,11 @@ Commands:
   AFKStop: ""
   Warn: ""
 
+#The server must have this many player before the action command will be run
+#When the server hits this limit the players who have been AFK longer than the normal action time will be kicked
+#Its also recommended that you edit the warning message to tell players that they will be kicked when the server reaches x players
+#Setting to 0 means that players will always be acted upon when they reach their time to action
+ActionPlayerRequirement: 0
 
 #The sound to be played when a player is warned
 #Set to blank if you don't want a sound e.g. ""
