@@ -199,7 +199,8 @@ public class AFKPlusPlayer {
      */
     public void forceStopAFK() {
         //Record the new value for the time AFK statistic
-        recordTimeStatistic();
+        if (isAFK())
+            recordTimeStatistic();
         //Reset warning
         isWarned = false;
         //Set player as no longer AFK
