@@ -83,3 +83,7 @@
   - "Fixed a bug with clearing players on plugin shutdown"
 3.2.3:
   - "Fixed a bug with not firing AFKMachine events from the main thread"
+3.2.4:
+  - "Fixed the console output of AFK state to be more pretty"
+  - "Added PlaceholderAPI as a soft dependency to avoid console warnings"
+  - "Fixed class cast exception in EntityHurtByEntityEvent"

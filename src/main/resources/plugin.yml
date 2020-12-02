@@ -2,5 +2,6 @@ name: AFKPlus
 version: ${project.version}
 main: net.lapismc.afkplus.AFKPlus
 api-version: 1.13
+softdepend: [ PlaceholderAPI ]
 authors: [Dart2112]
 description: AFK for professional servers

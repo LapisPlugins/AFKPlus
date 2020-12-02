@@ -231,7 +231,7 @@ public class AFKPlusPlayer {
         }
         Player player = Bukkit.getPlayer(getUUID());
         if (console) {
-            plugin.getLogger().info(msg);
+            Bukkit.getLogger().info(msg);
         }
         if (otherPlayers) {
             for (Player p : Bukkit.getOnlinePlayers()) {
