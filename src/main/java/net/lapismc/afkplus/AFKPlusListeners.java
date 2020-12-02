@@ -113,7 +113,7 @@ class AFKPlusListeners implements Listener {
         }
 
         //Run the attack detection if the attacker is a player
-        if (plugin.getConfig().getBoolean("EnabledDetections.Attack") && damageCausedByPlayer) {
+        if (plugin.getConfig().getBoolean("EnabledDetections.Attack") && e.getDamager() instanceof Player) {
             Player p = (Player) e.getDamager();
             plugin.getPlayer(p).interact();
         }
