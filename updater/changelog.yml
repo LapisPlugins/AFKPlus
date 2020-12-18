@@ -87,3 +87,5 @@
   - "Fixed the console output of AFK state to be more pretty"
   - "Added PlaceholderAPI as a soft dependency to avoid console warnings"
   - "Fixed class cast exception in EntityHurtByEntityEvent"
+3.2.5:
+  - "Added to event API for editing start and stop broadcast messages"

@@ -29,14 +29,17 @@ import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 public class AFKStartEvent extends AFKCommandEvent {
 
     private final AFKPlusPlayer player;
+    private String broadcastMessage;
 
     /**
-     * @param player  The player being set as AFK
-     * @param command The command to be run after the event has finished
+     * @param player           The player being set as AFK
+     * @param command          The command to be run after the event has finished
+     * @param broadcastMessage The message that will be broadcast if the event succeeds
      */
-    public AFKStartEvent(AFKPlusPlayer player, String command) {
+    public AFKStartEvent(AFKPlusPlayer player, String command, String broadcastMessage) {
         super(command);
         this.player = player;
+        this.broadcastMessage = broadcastMessage;
     }
 
     /**
@@ -48,4 +51,21 @@ public class AFKStartEvent extends AFKCommandEvent {
         return player;
     }
 
+    /**
+     * Get the message that will be broadcast if the event succeeds
+     *
+     * @return The message to be broadcast
+     */
+    public String getBroadcastMessage() {
+        return broadcastMessage;
+    }
+
+    /**
+     * Set the message that will be broadcast if the event succeeds
+     *
+     * @param broadcastMessage a String with color codes already parsed
+     */
+    public void setBroadcastMessage(String broadcastMessage) {
+        this.broadcastMessage = broadcastMessage;
+    }
 }
