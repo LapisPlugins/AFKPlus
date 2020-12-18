@@ -89,3 +89,6 @@
   - "Fixed class cast exception in EntityHurtByEntityEvent"
 3.2.5:
   - "Added to event API for editing start and stop broadcast messages"
+3.2.6:
+  - "Changed the {TIME} variable for AFKStop to have no tense"
+  - "Made a fix to AFKStop messages not being changed by the API changes last update"
