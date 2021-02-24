@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Benjamin Martin
+ * Copyright 2021 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Class used to detect if entity spawning should occor near players who are AFK
+ * Class used to detect if entity spawning should occur near players who are AFK
  * Uses code from the following classes
  * <p>
  * https://github.com/kickash32/DistributedMobSpawns/blob/version-2/src/main/java/me/kickash32/distributedmobspawns/EventListener.java#L22

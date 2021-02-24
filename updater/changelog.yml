@@ -92,3 +92,8 @@
 3.2.6:
   - "Changed the {TIME} variable for AFKStop to have no tense"
   - "Made a fix to AFKStop messages not being changed by the API changes last update"
+3.2.7:
+  - "This should be the last beta update since the new features seem to be stable now"
+  - "Moved updating to a separate thread to fix lockups during boot"
+  - "Fixed config.yml to have the hurt by mobs setting"
+  - "Added temporary bump protection to players after they are protected from mob attacks"

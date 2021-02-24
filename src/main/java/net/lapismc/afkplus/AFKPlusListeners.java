@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Benjamin Martin
+ * Copyright 2021 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 package net.lapismc.afkplus;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.lapismc.afkplus.api.AFKMachineDetectEvent;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.lapismc.afkplus.util.EntitySpawnManager;
@@ -36,10 +38,13 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 class AFKPlusListeners implements Listener {
 
     private final AFKPlus plugin;
+    private final Cache<UUID, String> attackedPlayers = CacheBuilder.newBuilder()
+            .expireAfterWrite(1, TimeUnit.SECONDS).build();
     private final HashMap<UUID, Location> playerLocations = new HashMap<>();
     private BukkitTask AfkMachineDetectionTask;
     private final EntitySpawnManager spawnManager;
@@ -77,7 +82,9 @@ class AFKPlusListeners implements Listener {
         boolean move = to.getX() != from.getX() || to.getY() != from.getY() || to.getZ() != from.getZ();
 
         //Check if bump protection is enabled and the player has only moved but not looked
-        if (plugin.getConfig().getBoolean("Protections.Bump") && plugin.getPlayer(e.getPlayer()).isAFK() && (move && !look)) {
+        boolean isBumpProtected = plugin.getConfig().getBoolean("Protections.Bump") ||
+                attackedPlayers.getIfPresent(e.getPlayer().getUniqueId()) != null;
+        if (isBumpProtected && plugin.getPlayer(e.getPlayer()).isAFK() && (move && !look)) {
             //Make sure they haven't moved up in the Y direction (this allows jumping but not falling)
             if (to.getY() <= from.getY()) {
                 //The players has only moved in the X or Z directions so we cancel the event since it could be a bump
@@ -108,6 +115,9 @@ class AFKPlusListeners implements Listener {
                 e.setCancelled(true);
             }
             if (plugin.getConfig().getBoolean("Protections.HurtByMob") && !damageCausedByPlayer) {
+                //Mobs will bump players
+                //so we should not allow movement to count for afk detection shortly after this detection
+                attackedPlayers.put(e.getEntity().getUniqueId(), "");
                 e.setCancelled(true);
             }
         }

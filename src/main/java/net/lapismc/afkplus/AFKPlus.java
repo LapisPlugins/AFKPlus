@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Benjamin Martin
+ * Copyright 2021 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public final class AFKPlus extends LapisCorePlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        registerConfiguration(new LapisCoreConfiguration(this, 6, 2));
+        registerConfiguration(new LapisCoreConfiguration(this, 7, 2));
         registerPermissions(new AFKPlusPermissions(this));
         update();
         fileWatcher = new LapisCoreFileWatcher(this);
@@ -94,15 +94,17 @@ public final class AFKPlus extends LapisCorePlugin {
 
     private void update() {
         updater = new LapisUpdater(this, "AFKPlus", "Dart2112", "AFKPlus", "master");
-        if (updater.checkUpdate()) {
-            if (getConfig().getBoolean("UpdateDownload")) {
-                updater.downloadUpdate();
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+            if (updater.checkUpdate()) {
+                if (getConfig().getBoolean("UpdateDownload")) {
+                    updater.downloadUpdate();
+                } else {
+                    getLogger().info(config.getMessage("Updater.UpdateFound"));
+                }
             } else {
-                getLogger().info(config.getMessage("Updater.UpdateFound"));
+                getLogger().info(config.getMessage("Updater.NoUpdate"));
             }
-        } else {
-            getLogger().info(config.getMessage("Updater.NoUpdate"));
-        }
+        });
     }
 
     private void disposeOfPlayers() {

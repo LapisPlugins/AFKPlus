@@ -1,4 +1,4 @@
-ConfigVersion: 6
+ConfigVersion: 7
 
 #Should the plugin auto download and install new versions when they are available
 UpdateDownload: true
@@ -57,6 +57,8 @@ Protections:
   Bump: false
   #When enabled AFK players will be invincible to attacks from other players
   HurtByPlayer: false
+  #When enabled AFK players will be invincible to attacks from mobs
+  HurtByMob: true
   #Same as HurtByPlayer but stops any non-player damage
   HurtByOther: true
   #When enabled, mobs will not spawn if the AFK player is the cause of the spawning
