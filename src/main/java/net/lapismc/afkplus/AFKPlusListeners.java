@@ -16,14 +16,13 @@
 
 package net.lapismc.afkplus;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import net.lapismc.afkplus.api.AFKMachineDetectEvent;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.lapismc.afkplus.util.EntitySpawnManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,13 +37,10 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 class AFKPlusListeners implements Listener {
 
     private final AFKPlus plugin;
-    private final Cache<UUID, String> attackedPlayers = CacheBuilder.newBuilder()
-            .expireAfterWrite(1, TimeUnit.SECONDS).build();
     private final HashMap<UUID, Location> playerLocations = new HashMap<>();
     private BukkitTask AfkMachineDetectionTask;
     private final EntitySpawnManager spawnManager;
@@ -82,8 +78,7 @@ class AFKPlusListeners implements Listener {
         boolean move = to.getX() != from.getX() || to.getY() != from.getY() || to.getZ() != from.getZ();
 
         //Check if bump protection is enabled and the player has only moved but not looked
-        boolean isBumpProtected = plugin.getConfig().getBoolean("Protections.Bump") ||
-                attackedPlayers.getIfPresent(e.getPlayer().getUniqueId()) != null;
+        boolean isBumpProtected = isMovementCausedByMobBump(e.getPlayer());
         if (isBumpProtected && plugin.getPlayer(e.getPlayer()).isAFK() && (move && !look)) {
             //Make sure they haven't moved up in the Y direction (this allows jumping but not falling)
             if (to.getY() <= from.getY()) {
@@ -98,6 +93,40 @@ class AFKPlusListeners implements Listener {
                 (move && plugin.getConfig().getBoolean("EnabledDetections.Move"))) {
             plugin.getPlayer(e.getPlayer()).interact();
         }
+    }
+
+    private boolean isMovementCausedByMobBump(Player p) {
+        //How close does the mob need to be to the player before they are considered to be "bumping" the player
+        double requiredDistance = 0.5;
+
+        //If both bump and hurt by mob protections are disabled then we can just ignore this
+        if (!(plugin.getConfig().getBoolean("Protections.Bump") || plugin.getConfig().getBoolean("Protections.HurtByMob")))
+            return false;
+
+        //Check if the player has been attacked by a mob in bump range
+        boolean playerAttacked = false;
+        EntityDamageEvent event = p.getLastDamageCause();
+        Entity damager = null;
+        if (event instanceof EntityDamageByEntityEvent) {
+            damager = ((EntityDamageByEntityEvent) event).getDamager();
+        }
+
+        boolean isMobClose = false;
+        //Find all entities within the required range
+        for (Entity e : p.getNearbyEntities(requiredDistance, requiredDistance, requiredDistance)) {
+            if (e instanceof Monster) {
+                if (e.equals(damager)) {
+                    playerAttacked = true;
+                }
+                isMobClose = true;
+                break;
+            }
+        }
+        //If bump is enabled and the player was bumped by a mob then we report as a bump
+        if (plugin.getConfig().getBoolean("Protections.Bump") && isMobClose)
+            return true;
+        //Report as bump is mob protection is on and they were attacked or a mob is close
+        return plugin.getConfig().getBoolean("Protections.HurtByMob") && (playerAttacked || isMobClose);
     }
 
     @EventHandler
@@ -115,9 +144,6 @@ class AFKPlusListeners implements Listener {
                 e.setCancelled(true);
             }
             if (plugin.getConfig().getBoolean("Protections.HurtByMob") && !damageCausedByPlayer) {
-                //Mobs will bump players
-                //so we should not allow movement to count for afk detection shortly after this detection
-                attackedPlayers.put(e.getEntity().getUniqueId(), "");
                 e.setCancelled(true);
             }
         }
