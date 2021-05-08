@@ -317,9 +317,10 @@ public class AFKPlusPlayer {
      */
     private void updateEssentialsAFKState() {
         //Update the AFK state with essentials if it is installed
+        if (!Bukkit.getPluginManager().isPluginEnabled("Essentials"))
+            return;
         EssentialsAFKHook essHook = new EssentialsAFKHook();
-        if (essHook.isEssentialsInstalled)
-            essHook.setAFK(getUUID(), isAFK);
+        essHook.setAFK(getUUID(), isAFK);
     }
 
     /**

@@ -18,29 +18,22 @@ package net.lapismc.afkplus.util;
 
 import net.ess3.api.IEssentials;
 import net.ess3.api.IUser;
-import net.ess3.api.events.AfkStatusChangeEvent;
 import org.bukkit.Bukkit;
 
 import java.util.UUID;
 
 public class EssentialsAFKHook {
 
-    public boolean isEssentialsInstalled;
-    private IEssentials essentials;
+    private final IEssentials essentials;
 
     public EssentialsAFKHook() {
-        if (Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
-            isEssentialsInstalled = true;
-            essentials = (IEssentials) Bukkit.getPluginManager().getPlugin("Essentials");
-        } else {
-            isEssentialsInstalled = false;
-        }
+        essentials = (IEssentials) Bukkit.getPluginManager().getPlugin("Essentials");
     }
 
     public void setAFK(UUID uuid, boolean state) {
         IUser user = essentials.getUser(uuid);
         user.setAfkMessage("");
-        user.setAfk(state, AfkStatusChangeEvent.Cause.UNKNOWN);
+        user.setAfk(state, net.ess3.api.events.AfkStatusChangeEvent.Cause.UNKNOWN);
     }
 
 
