@@ -1,4 +1,4 @@
-ConfigVersion: 7
+ConfigVersion: 8
 
 #Should the plugin auto download and install new versions when they are available
 UpdateDownload: true
@@ -83,6 +83,9 @@ AggressiveAFKDetection: false
 #0 = false, 1 = true or any whole number for a value
 #e.g. AFKSelf = 0 or 1 whereas TimeToAFK can be any number of seconds
 #Action and warning times are how long the player has been AFK, not how long since the last interact
+
+#You no longer need to list values that differ from the default values below
+# Default=0, Priority=0, AFKSelf=1, AFKOthers=0, TimeToAFK=30, TimeToWarning=90, TimeToAction=120 and CanUpdate=0
 Permissions:
   afkplus,player:
     #Who should get this permission without it being given, 0 = no one, 1 = everyone, 2 = Ops
@@ -105,14 +108,8 @@ Permissions:
     #Can this player use the update command to install new versions
     CanUpdate: 0
   afkplus,vip:
-    #Who should get this permission without it being given, 0 = no one, 1 = everyone, 2 = Ops
-    Default: 0
     #If a player has more than 1 permission they will be given the one with the highest priority
     Priority: 2
-    #Can the player set themselves as AFK with the /afk command
-    AFKSelf: 1
-    #Can the player set others as AFK with the /afk command
-    AFKOthers: 0
     #How many seconds of inactivity are required before they will automatically be set as AFK
     #Set to -1 if the player shouldn't be automatically placed in AFK
     TimeToAFK: 60
@@ -122,15 +119,11 @@ Permissions:
     #How many seconds of AFK are required before the player is acted upon
     #Set to -1 to disable actions for this permission
     TimeToAction: 150
-    #Can this player use the update command to install new versions
-    CanUpdate: 0
   afkplus,admin:
     #Who should get this permission without it being given, 0 = no one, 1 = everyone, 2 = Ops
     Default: 2
     #If a player has more than 1 permission they will be given the one with the highest priority
     Priority: 3
-    #Can the player set themselves as AFK with the /afk command
-    AFKSelf: 1
     #Can the player set others as AFK with the /afk command
     AFKOthers: 1
     #How many seconds of inactivity are required before they will automatically be set as AFK

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Benjamin Martin
+ * Copyright 2021 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,14 +37,14 @@ public enum Permission {
     private static class AFKSelf extends LapisPermission {
         //Allows a player to set their own AFK status
         AFKSelf() {
-            super("AFKSelf");
+            super("AFKSelf", 1);
         }
     }
 
     private static class AFKOthers extends LapisPermission {
         //Allows a player to set the AFK status of other players
         AFKOthers() {
-            super("AFKOthers");
+            super("AFKOthers", 0);
         }
     }
 
@@ -52,7 +52,7 @@ public enum Permission {
         //The time in seconds of inactivity required to set a player AFK
         //setting this to -1 disables automatic AFK setting
         TimeToAFK() {
-            super("TimeToAFK");
+            super("TimeToAFK", 30);
         }
     }
 
@@ -60,7 +60,7 @@ public enum Permission {
         //The time in seconds that a player must be AFK before being warned of action
         //Set to -1 to disable
         TimeToWarning() {
-            super("TimeToWarning");
+            super("TimeToWarning", 90);
         }
     }
 
@@ -68,14 +68,14 @@ public enum Permission {
         //The time in seconds that a player must be AFK before being acted upon
         //Action disabled if set to -1
         TimeToAction() {
-            super("TimeToAction");
+            super("TimeToAction", 120);
         }
     }
 
     private static class Update extends LapisPermission {
         //Allows a player to update the plugin using /afkplus update
         Update() {
-            super("CanUpdate");
+            super("CanUpdate", 0);
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Benjamin Martin
+ * Copyright 2021 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import net.lapismc.afkplus.AFKPlus;
 import net.lapismc.afkplus.api.AFKActionEvent;
 import net.lapismc.afkplus.api.AFKStartEvent;
 import net.lapismc.afkplus.api.AFKStopEvent;
+import net.lapismc.afkplus.util.EssentialsAFKHook;
 import net.lapismc.lapiscore.compatibility.XSound;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -165,6 +166,8 @@ public class AFKPlusPlayer {
         afkStart = System.currentTimeMillis();
         //Set the player as AFK
         isAFK = true;
+        //Update the players AFK status with the essentials plugin
+        updateEssentialsAFKState();
     }
 
     /**
@@ -193,7 +196,6 @@ public class AFKPlusPlayer {
         broadcast(event.getBroadcastMessage().replace("{PLAYER}", getName()).replace("{TIME}", afkTime));
         //Stop the AFK status
         forceStopAFK();
-
     }
 
     /**
@@ -211,6 +213,8 @@ public class AFKPlusPlayer {
         isInactive = false;
         //Interact to update the last interact value
         interact();
+        //Update the players AFK status with the essentials plugin
+        updateEssentialsAFKState();
     }
 
     /**
@@ -309,6 +313,16 @@ public class AFKPlusPlayer {
     }
 
     /**
+     * Updates the players current AFK State within the essentials plugin
+     */
+    private void updateEssentialsAFKState() {
+        //Update the AFK state with essentials if it is installed
+        EssentialsAFKHook essHook = new EssentialsAFKHook();
+        if (essHook.isEssentialsInstalled)
+            essHook.setAFK(getUUID(), isAFK);
+    }
+
+    /**
      * Handles the running of a command with a player variable, this is used for AFK start/stop/warn/action commands
      *
      * @param command The command to be run with "[PLAYER]" in place of the players name
@@ -402,16 +416,16 @@ public class AFKPlusPlayer {
                     Integer timeToWarning = plugin.perms.getPermissionValue(uuid, Permission.TimeToWarning.getPermission());
                     Integer timeToAction = plugin.perms.getPermissionValue(uuid, Permission.TimeToAction.getPermission());
                     //Get the number of seconds since the player went AFK
-                    Long secondsSinceAFKStart = (System.currentTimeMillis() - afkStart) / 1000;
-                    //Don't check if we need to warn the player if waring is disabled  or there is a permission error
-                    if (!timeToWarning.equals(-1) && !timeToWarning.equals(0)) {
+                    long secondsSinceAFKStart = (System.currentTimeMillis() - afkStart) / 1000;
+                    //Don't check if we need to warn the player if waring is disabled
+                    if (!timeToWarning.equals(-1)) {
                         //Check for warning
                         if (!isWarned && secondsSinceAFKStart >= timeToWarning) {
                             Bukkit.getScheduler().runTask(plugin, this::warnPlayer);
                         }
                     }
-                    //Check if the player can have an action taken or if there is a permission error
-                    if (!timeToAction.equals(-1) && !timeToAction.equals(0)) {
+                    //Check if the player can have an action taken
+                    if (!timeToAction.equals(-1)) {
                         //Check for action and if we are taking action yet
                         if (secondsSinceAFKStart >= timeToAction && isAtPlayerRequirement) {
                             Bukkit.getScheduler().runTask(plugin, this::takeAction);
@@ -426,7 +440,7 @@ public class AFKPlusPlayer {
                         return;
                     }
                     //Get the number of seconds since the last recorded interact
-                    Long secondsSinceLastInteract = (System.currentTimeMillis() - lastInteract) / 1000;
+                    long secondsSinceLastInteract = (System.currentTimeMillis() - lastInteract) / 1000;
                     //Set them as AFK if it is the same or longer than the time to AFK
                     if (secondsSinceLastInteract >= timeToAFK) {
                         Bukkit.getScheduler().runTask(plugin, this::startAFK);
