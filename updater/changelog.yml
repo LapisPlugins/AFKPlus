@@ -97,3 +97,8 @@
   - "Moved updating to a separate thread to fix lockups during boot"
   - "Fixed config.yml to have the hurt by mobs setting"
   - "Added temporary bump protection to players after they are protected from mob attacks"
+3.3.0:
+  - "Better mob bump protection"
+  - "Added essentials hook to keep the essentials plugin updated on the players AFK state"
+  - "Added defaults for permissions meaning that they dont all need to be listed"
+  - "Updated to latest LapisCore, which includes hex color codes in messages (use #6464ff format)"
