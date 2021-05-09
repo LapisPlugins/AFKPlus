@@ -102,3 +102,5 @@
   - "Added essentials hook to keep the essentials plugin updated on the players AFK state"
   - "Added defaults for permissions meaning that they dont all need to be listed"
   - "Updated to latest LapisCore, which includes hex color codes in messages (use #6464ff format)"
+3.3.1:
+  - "Fixed EssentialsAFKHook for when Essentials isn't installed"
