@@ -21,7 +21,7 @@ import net.lapismc.lapiscore.permissions.LapisPermission;
 
 public enum Permission {
 
-    AFKSelf(new AFKSelf()), AFKOthers(new AFKOthers()), TimeToAFK(new TimeToAFK()),
+    AFKSelf(new AFKSelf()), AFKOthers(new AFKOthers()), FakeAFK(new FakeAFK()), TimeToAFK(new TimeToAFK()),
     TimeToWarning(new TimeToWarning()), TimeToAction(new TimeToAction()), CanUpdate(new Update());
 
     private final LapisPermission permission;
@@ -45,6 +45,14 @@ public enum Permission {
         //Allows a player to set the AFK status of other players
         AFKOthers() {
             super("AFKOthers", 0);
+        }
+    }
+
+    private static class FakeAFK extends LapisPermission {
+        //Allows a player to enable a fake AFK state in an attempt to avoid user interactions
+        //Suggested in issue #27 AFK+ Mod-Relief suggestion
+        public FakeAFK() {
+            super("FakeAFK", 0);
         }
     }
 

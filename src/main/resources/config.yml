@@ -85,7 +85,7 @@ AggressiveAFKDetection: false
 #Action and warning times are how long the player has been AFK, not how long since the last interact
 
 #You no longer need to list values that differ from the default values below
-# Default=0, Priority=0, AFKSelf=1, AFKOthers=0, TimeToAFK=30, TimeToWarning=90, TimeToAction=120 and CanUpdate=0
+# Default=0, Priority=0, AFKSelf=1, AFKOthers=0, FakeAFK=0, TimeToAFK=30, TimeToWarning=90, TimeToAction=120 and CanUpdate=0
 Permissions:
   afkplus,player:
     #Who should get this permission without it being given, 0 = no one, 1 = everyone, 2 = Ops
@@ -126,6 +126,8 @@ Permissions:
     Priority: 3
     #Can the player set others as AFK with the /afk command
     AFKOthers: 1
+    #Can the player enable a FakeAFK state to hide from players by appearing as AFK
+    FakeAFK: 1
     #How many seconds of inactivity are required before they will automatically be set as AFK
     #Set to -1 if the player shouldn't be automatically placed in AFK
     TimeToAFK: 90

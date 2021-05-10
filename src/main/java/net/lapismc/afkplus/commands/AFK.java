@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Benjamin Martin
+ * Copyright 2021 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,6 +56,17 @@ public class AFK extends AFKPlusCommand {
                 sendMessage(sender, "Error.NotPermitted");
                 return;
             }
+            //Check if the user is attempting to toggle their fake AFK status
+            if (args[0].equalsIgnoreCase("-fake")) {
+                //Check that they are permitted to use FakeAFK
+                if (isNotPermitted(sender, Permission.FakeAFK)) {
+                    sendMessage(sender, "Error.NotPermitted");
+                    return;
+                }
+                //Now we can toggle their FakeAFK status
+                toggleFakeAFK(getPlayer((Player) sender));
+                return;
+            }
             //Check that the player is online
             //noinspection deprecation
             OfflinePlayer op = Bukkit.getOfflinePlayer(args[0]);
@@ -70,12 +81,31 @@ public class AFK extends AFKPlusCommand {
         }
     }
 
+    /**
+     * Toggle the AFK state of a player
+     *
+     * @param player The player who's AFK state should be toggled
+     */
     private void toggleAFK(AFKPlusPlayer player) {
         //If the player is AFK stop it, If they aren't then start it
         if (player.isAFK()) {
             player.stopAFK();
         } else {
             player.startAFK();
+        }
+    }
+
+    /**
+     * Toggle the fake AFK state of the player
+     *
+     * @param player The player who's fake AFK state should be toggled
+     */
+    private void toggleFakeAFK(AFKPlusPlayer player) {
+        //Like a normal AFK toggle but only effects the fake status
+        if (player.isFakeAFK()) {
+            player.stopAFK();
+        } else {
+            player.startAFK(true);
         }
     }
 

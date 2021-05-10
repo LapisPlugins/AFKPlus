@@ -19,6 +19,7 @@ package net.lapismc.afkplus;
 import net.lapismc.afkplus.api.AFKMachineDetectEvent;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.lapismc.afkplus.util.EntitySpawnManager;
+import net.lapismc.afkplus.util.PlayerMovementStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
@@ -38,7 +39,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.HashMap;
 import java.util.UUID;
 
-class AFKPlusListeners implements Listener {
+public class AFKPlusListeners implements Listener {
 
     private final AFKPlus plugin;
     private final HashMap<UUID, Location> playerLocations = new HashMap<>();
@@ -51,6 +52,10 @@ class AFKPlusListeners implements Listener {
         spawnManager = new EntitySpawnManager(plugin);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
+
+    /*
+    AFK management and interact events
+     */
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
@@ -71,27 +76,68 @@ class AFKPlusListeners implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
-        //Check if the player has looked and/or moved
-        Location from = e.getFrom();
-        Location to = e.getTo();
-        boolean look = to.getPitch() != from.getPitch() || to.getYaw() != from.getYaw();
-        boolean move = to.getX() != from.getX() || to.getY() != from.getY() || to.getZ() != from.getZ();
+        PlayerMovementStorage movement = new PlayerMovementStorage(e);
+
+        //Only interact if the player performed the action and the detection is enabled for it
+        if ((movement.didLook && plugin.getConfig().getBoolean("EnabledDetections.Look")) ||
+                (movement.didMove && plugin.getConfig().getBoolean("EnabledDetections.Move"))) {
+            plugin.getPlayer(e.getPlayer()).interact();
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageByEntityEvent e) {
+        //Run the attack detection if the attacker is a player
+        if (plugin.getConfig().getBoolean("EnabledDetections.Attack") && e.getDamager() instanceof Player) {
+            Player p = (Player) e.getDamager();
+            plugin.getPlayer(p).interact();
+        }
+    }
+
+    @EventHandler
+    public void onPlayerCommand(PlayerCommandPreprocessEvent e) {
+        if (!e.getMessage().contains("/afk") && plugin.getConfig().getBoolean("EnabledDetections.Command")) {
+            plugin.getPlayer(e.getPlayer()).interact();
+        }
+    }
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent e) {
+        if (plugin.getConfig().getBoolean("EnabledDetections.Interact")) {
+            plugin.getPlayer(e.getPlayer()).interact();
+        }
+    }
+
+    @EventHandler
+    public void onPlayerBlockPlace(BlockPlaceEvent e) {
+        if (plugin.getConfig().getBoolean("EnabledDetections.BlockPlace")) {
+            plugin.getPlayer(e.getPlayer()).interact();
+        }
+    }
+
+    @EventHandler
+    public void onPlayerBlockBreak(BlockBreakEvent e) {
+        if (plugin.getConfig().getBoolean("EnabledDetections.BlockBreak")) {
+            plugin.getPlayer(e.getPlayer()).interact();
+        }
+    }
+
+    /*
+    AFK protection events
+     */
+
+    @EventHandler
+    public void onPlayerMoveProtect(PlayerMoveEvent e) {
+        PlayerMovementStorage movement = new PlayerMovementStorage(e);
 
         //Check if bump protection is enabled and the player has only moved but not looked
         boolean isBumpProtected = isMovementCausedByMobBump(e.getPlayer());
-        if (isBumpProtected && plugin.getPlayer(e.getPlayer()).isAFK() && (move && !look)) {
+        if (isBumpProtected && plugin.getPlayer(e.getPlayer()).isAFK() && (movement.didMove && !movement.didLook)) {
             //Make sure they haven't moved up in the Y direction (this allows jumping but not falling)
-            if (to.getY() <= from.getY()) {
+            if (movement.to.getY() <= movement.from.getY()) {
                 //The players has only moved in the X or Z directions so we cancel the event since it could be a bump
                 e.setCancelled(true);
-                return;
             }
-        }
-
-        //Only interact if the player performed the action and the detection is enabled for it
-        if ((look && plugin.getConfig().getBoolean("EnabledDetections.Look")) ||
-                (move && plugin.getConfig().getBoolean("EnabledDetections.Move"))) {
-            plugin.getPlayer(e.getPlayer()).interact();
         }
     }
 
@@ -130,11 +176,9 @@ class AFKPlusListeners implements Listener {
     }
 
     @EventHandler
-    public void onEntityDamage(EntityDamageByEntityEvent e) {
+    public void onEntityDamageProtection(EntityDamageByEntityEvent e) {
         //Check if the damager is a player or an arrow shot by a player
-        boolean damageCausedByPlayer = false;
-        if (e.getDamager() instanceof Player)
-            damageCausedByPlayer = true;
+        boolean damageCausedByPlayer = e.getDamager() instanceof Player;
         if (e.getDamager() instanceof Arrow)
             damageCausedByPlayer = ((Arrow) e.getDamager()).getShooter() instanceof Player;
 
@@ -147,19 +191,13 @@ class AFKPlusListeners implements Listener {
                 e.setCancelled(true);
             }
         }
-
-        //Run the attack detection if the attacker is a player
-        if (plugin.getConfig().getBoolean("EnabledDetections.Attack") && e.getDamager() instanceof Player) {
-            Player p = (Player) e.getDamager();
-            plugin.getPlayer(p).interact();
-        }
     }
 
     @EventHandler
     public void onPlayerHurt(EntityDamageEvent e) {
         if ((e instanceof EntityDamageByEntityEvent) || !(e.getEntity() instanceof Player))
             return;
-        //We should have a player that is being damaged by something other than en entity
+        //We should have a player that is being damaged by something other than an entity
         AFKPlusPlayer p = plugin.getPlayer(e.getEntity().getUniqueId());
         if (plugin.getConfig().getBoolean("Protections.HurtByOther") && p.isAFK())
             e.setCancelled(true);
@@ -175,34 +213,6 @@ class AFKPlusListeners implements Listener {
         boolean shouldSpawn = spawnManager.shouldSpawn(e.getLocation(), e.getSpawnReason());
         if (!shouldSpawn)
             e.setCancelled(false);
-    }
-
-    @EventHandler
-    public void onPlayerCommand(PlayerCommandPreprocessEvent e) {
-        if (!e.getMessage().contains("/afk") && plugin.getConfig().getBoolean("EnabledDetections.Command")) {
-            plugin.getPlayer(e.getPlayer()).interact();
-        }
-    }
-
-    @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent e) {
-        if (plugin.getConfig().getBoolean("EnabledDetections.Interact")) {
-            plugin.getPlayer(e.getPlayer()).interact();
-        }
-    }
-
-    @EventHandler
-    public void onPlayerBlockPlace(BlockPlaceEvent e) {
-        if (plugin.getConfig().getBoolean("EnabledDetections.BlockPlace")) {
-            plugin.getPlayer(e.getPlayer()).interact();
-        }
-    }
-
-    @EventHandler
-    public void onPlayerBlockBreak(BlockBreakEvent e) {
-        if (plugin.getConfig().getBoolean("EnabledDetections.BlockBreak")) {
-            plugin.getPlayer(e.getPlayer()).interact();
-        }
     }
 
     /*

@@ -45,6 +45,7 @@ public class AFKPlusPlayer {
     private Long lastInteract;
     private Long afkStart;
     private boolean isAFK;
+    private boolean isFakeAFK;
     private boolean isInactive;
     private boolean isWarned;
 
@@ -52,6 +53,7 @@ public class AFKPlusPlayer {
         this.plugin = plugin;
         this.uuid = uuid;
         isAFK = false;
+        isFakeAFK = false;
         isInactive = false;
         isWarned = false;
         lastInteract = System.currentTimeMillis();
@@ -121,6 +123,15 @@ public class AFKPlusPlayer {
     }
 
     /**
+     * Check if the players AFK state is fake
+     *
+     * @return returns true if the player is both AFK and the AFK state is faked
+     */
+    public boolean isFakeAFK() {
+        return isAFK && isFakeAFK;
+    }
+
+    /**
      * Get the system time when the player became AFK
      * Could be null if the player is not AFK
      *
@@ -156,6 +167,18 @@ public class AFKPlusPlayer {
         playSound("AFKStartSound", XSound.BLOCK_ANVIL_HIT);
         //Start the AFK
         forceStartAFK();
+    }
+
+    /**
+     * Overloads {@link #startAFK()} to set the AFK as fake
+     *
+     * @param isFake true if the player is to be set as "fake" AFK
+     */
+    public void startAFK(boolean isFake) {
+        startAFK();
+        //Check to make sure that AFK did start e.g. wasn't cancelled by the event API
+        if (isAFK)
+            isFakeAFK = isFake;
     }
 
     /**
@@ -209,6 +232,7 @@ public class AFKPlusPlayer {
         isWarned = false;
         //Set player as no longer AFK
         isAFK = false;
+        isFakeAFK = false;
         //Disable inactivity to allow the interact to register
         isInactive = false;
         //Interact to update the last interact value
@@ -275,7 +299,8 @@ public class AFKPlusPlayer {
         if (isInactive)
             return;
         lastInteract = System.currentTimeMillis();
-        if (isAFK)
+        //Only take AFK stopping action if the player is AFK and not fake AFK
+        if (isAFK && !isFakeAFK)
             stopAFK();
     }
 
@@ -444,7 +469,7 @@ public class AFKPlusPlayer {
                     long secondsSinceLastInteract = (System.currentTimeMillis() - lastInteract) / 1000;
                     //Set them as AFK if it is the same or longer than the time to AFK
                     if (secondsSinceLastInteract >= timeToAFK) {
-                        Bukkit.getScheduler().runTask(plugin, this::startAFK);
+                        Bukkit.getScheduler().runTask(plugin, (Runnable) this::startAFK);
                     }
                 }
             }
