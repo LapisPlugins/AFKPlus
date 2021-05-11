@@ -1,0 +1,134 @@
+/*
+ * Copyright 2021 Benjamin Martin
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+plugins {
+    id 'java'
+    id 'maven'
+    id 'signing'
+    id "com.github.johnrengelman.shadow" version "5.2.0"
+    id 'io.codearte.nexus-staging' version '0.30.0'
+}
+
+group = 'net.lapismc'
+archivesBaseName = "AFKPlus"
+version = '3.3.1'
+description = 'AFK for professional servers'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    //Spigot Repo
+    maven {
+        url = uri('https://hub.spigotmc.org/nexus/content/groups/public/')
+    }
+    //Essentials Repo
+    maven {
+        url = uri('https://repo.essentialsx.net/releases/')
+    }
+}
+
+dependencies {
+    compile 'net.lapismc:LapisCore:1.7.12'
+    compile 'org.ocpsoft.prettytime:prettytime:4.0.5.Final'
+    compileOnly 'net.ess3:EssentialsX:2.18.2'
+    compileOnly 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
+}
+
+processResources {
+    filter {
+        it.replace('${project.version}', project.version)
+    }
+}
+
+shadowJar {
+    archiveFileName.set(archivesBaseName + ".jar")
+    exclude 'javax/**'
+    relocate("org.ocpsoft.prettytime", "net.lapismc.afkplus.util.prettytime")
+    relocate("net.lapismc.lapiscore", "net.lapismc.afkplus.util.core")
+}
+
+task javadocJar(type: Jar) {
+    archiveClassifier.set('javadoc')
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+nexusStaging {
+    packageGroup = "net.lapismc" //optional if packageGroup == project.getGroup()
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name = project.archivesBaseName
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description = project.description
+                url 'https://github.com/LapisPlugins/AFKPlus'
+
+                scm {
+                    connection 'git@github.com:LapisPlugins/AFKPlus.git'
+                    developerConnection 'git@github.com:LapisPlugins/AFKPlus.git'
+                    url 'https://github.com/LapisPlugins/AFKPlus'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'Dart2112'
+                        name 'Benjamin Martin'
+                        email 'dart2112@lapismc.net'
+                    }
+                }
+            }
+        }
+    }
+}

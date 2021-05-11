@@ -1,2 +1,6 @@
+#Idea files
 /.idea/workspace.xml
-/target
+
+#Gradle files
+/.gradle
+/build
