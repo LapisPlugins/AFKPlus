@@ -104,3 +104,7 @@
   - "Updated to latest LapisCore, which includes hex color codes in messages (use #6464ff format)"
 3.3.1:
   - "Fixed EssentialsAFKHook for when Essentials isn't installed"
+3.3.2:
+  - "Added fake AFK system based on a suggestion from github"
+  - "Improvements to bump protection"
+  - "Build system changed from maven to gradle"
