@@ -131,7 +131,7 @@ public class AFKPlusListeners implements Listener {
         PlayerMovementStorage movement = new PlayerMovementStorage(e);
 
         //Check if bump protection is enabled and the player has only moved but not looked
-        boolean isBumpProtected = isMovementCausedByMobBump(e.getPlayer());
+        boolean isBumpProtected = isMovementCausedByEntityBump(e.getPlayer());
         if (isBumpProtected && plugin.getPlayer(e.getPlayer()).isAFK() && (movement.didMove && !movement.didLook)) {
             //Make sure they haven't moved up in the Y direction (this allows jumping but not falling)
             if (movement.to.getY() <= movement.from.getY()) {
@@ -141,7 +141,7 @@ public class AFKPlusListeners implements Listener {
         }
     }
 
-    private boolean isMovementCausedByMobBump(Player p) {
+    private boolean isMovementCausedByEntityBump(Player p) {
         //How close does the mob need to be to the player before they are considered to be "bumping" the player
         double requiredDistance = 0.5;
 
@@ -157,22 +157,22 @@ public class AFKPlusListeners implements Listener {
             damager = ((EntityDamageByEntityEvent) event).getDamager();
         }
 
-        boolean isMobClose = false;
+        boolean isEntityClose = false;
         //Find all entities within the required range
         for (Entity e : p.getNearbyEntities(requiredDistance, requiredDistance, requiredDistance)) {
-            if (e instanceof Monster) {
+            if (e instanceof Monster || e instanceof Player) {
                 if (e.equals(damager)) {
                     playerAttacked = true;
                 }
-                isMobClose = true;
+                isEntityClose = true;
                 break;
             }
         }
-        //If bump is enabled and the player was bumped by a mob then we report as a bump
-        if (plugin.getConfig().getBoolean("Protections.Bump") && isMobClose)
+        //If bump is enabled and the player was bumped by an entity then we report as a bump
+        if (plugin.getConfig().getBoolean("Protections.Bump") && isEntityClose)
             return true;
         //Report as bump is mob protection is on and they were attacked or a mob is close
-        return plugin.getConfig().getBoolean("Protections.HurtByMob") && (playerAttacked || isMobClose);
+        return plugin.getConfig().getBoolean("Protections.HurtByMob") && (playerAttacked || isEntityClose);
     }
 
     @EventHandler
