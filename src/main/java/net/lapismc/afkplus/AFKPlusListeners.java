@@ -48,7 +48,7 @@ public class AFKPlusListeners implements Listener {
 
     AFKPlusListeners(AFKPlus plugin) {
         this.plugin = plugin;
-        startRunnable();
+        startAFKMachineDetection();
         spawnManager = new EntitySpawnManager(plugin);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
@@ -228,7 +228,7 @@ public class AFKPlusListeners implements Listener {
         return AfkMachineDetectionTask;
     }
 
-    private void startRunnable() {
+    private void startAFKMachineDetection() {
         AfkMachineDetectionTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
             playerLocations.clear();
             //Save all players current locations

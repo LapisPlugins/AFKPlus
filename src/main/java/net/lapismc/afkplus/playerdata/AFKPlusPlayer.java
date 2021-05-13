@@ -400,7 +400,8 @@ public class AFKPlusPlayer {
         File f = new File(plugin.getDataFolder(), "statistics.yml");
         if (!f.exists()) {
             try {
-                f.createNewFile();
+                if (!f.createNewFile())
+                    throw new IOException("Failed to create " + f.getName());
             } catch (IOException e) {
                 e.printStackTrace();
             }

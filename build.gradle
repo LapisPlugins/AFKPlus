@@ -26,8 +26,8 @@ group = 'net.lapismc'
 archivesBaseName = "AFKPlus"
 version = '3.3.2'
 description = 'AFK for professional servers'
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+sourceCompatibility = '1.11'
+targetCompatibility = '1.11'
 
 repositories {
     mavenCentral()
@@ -43,7 +43,7 @@ repositories {
 }
 
 dependencies {
-    compile 'net.lapismc:LapisCore:1.7.12'
+    compile 'net.lapismc:LapisCore:1.8.0'
     compile 'org.ocpsoft.prettytime:prettytime:4.0.5.Final'
     compileOnly 'net.ess3:EssentialsX:2.18.2'
     compileOnly 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'

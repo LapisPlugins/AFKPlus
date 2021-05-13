@@ -89,8 +89,4 @@ public class EntitySpawnManager {
         return filteredPlayers;
     }
 
-    enum SpawnType {
-
-    }
-
 }

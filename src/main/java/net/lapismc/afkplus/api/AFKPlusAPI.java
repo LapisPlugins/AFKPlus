@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Benjamin Martin
+ * Copyright 2021 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import net.lapismc.afkplus.AFKPlus;
 /**
  * This class is for extensions to get the main class of AFKPlus
  */
+@SuppressWarnings("unused")
 public class AFKPlusAPI {
 
     private static AFKPlus plugin;
