@@ -51,7 +51,7 @@ dependencies {
 
 processResources {
     filter {
-        it.replace('${project.version}', project.version)
+        it.replace('${project.version}', project.getVersion())
     }
 }
 
