@@ -434,7 +434,7 @@ public class AFKPlusPlayer {
                 if (isAFK) {
                     boolean isAtPlayerRequirement;
                     int playersRequired = plugin.getConfig().getInt("ActionPlayerRequirement");
-                    if (playersRequired != 0) {
+                    if (playersRequired == 0) {
                         isAtPlayerRequirement = true;
                     } else {
                         isAtPlayerRequirement = Bukkit.getOnlinePlayers().size() > playersRequired;
