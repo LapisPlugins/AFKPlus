@@ -108,3 +108,6 @@
   - "Added fake AFK system based on a suggestion from github"
   - "Improvements to bump protection"
   - "Build system changed from maven to gradle"
+3.3.3:
+  - "Update to latest LapisCore"
+  - "Fixed player number for action requirement"
