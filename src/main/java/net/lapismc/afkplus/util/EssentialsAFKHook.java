@@ -32,6 +32,8 @@ public class EssentialsAFKHook {
 
     public void setAFK(UUID uuid, boolean state) {
         IUser user = essentials.getUser(uuid);
+        if (user == null)
+            return;
         user.setAfkMessage("");
         user.setAfk(state, net.ess3.api.events.AfkStatusChangeEvent.Cause.UNKNOWN);
     }

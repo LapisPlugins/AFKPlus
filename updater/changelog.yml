@@ -111,3 +111,5 @@
 3.3.3:
   - "Update to latest LapisCore"
   - "Fixed player number for action requirement"
+3.3.4:
+  - "Fixed a null pointer with Essentials hook"
