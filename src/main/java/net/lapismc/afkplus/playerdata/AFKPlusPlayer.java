@@ -191,6 +191,14 @@ public class AFKPlusPlayer {
         isAFK = true;
         //Update the players AFK status with the essentials plugin
         updateEssentialsAFKState();
+        //Set if the player should be ignored for sleeping
+        //TODO replace with check to config variable
+        if (plugin.prettyTime != null) {
+            Player p = Bukkit.getPlayer(getUUID());
+            if (p != null) {
+                p.setSleepingIgnored(true);
+            }
+        }
     }
 
     /**
@@ -212,7 +220,7 @@ public class AFKPlusPlayer {
             return;
         }
         runCommand(event.getCommand());
-        //Get a string that is the user friendly version of how long the player was AFK
+        //Get a string that is the user-friendly version of how long the player was AFK
         //This will replace the {TIME} variable, if present
         String afkTime = plugin.prettyTime.formatDuration(plugin.reduceDurationList
                 (plugin.prettyTime.calculatePreciseDuration(new Date(afkStart))));
@@ -233,12 +241,20 @@ public class AFKPlusPlayer {
         //Set player as no longer AFK
         isAFK = false;
         isFakeAFK = false;
-        //Disable inactivity to allow the interact to register
+        //Disable inactivity to allow the interact events to register
         isInactive = false;
         //Interact to update the last interact value
         interact();
         //Update the players AFK status with the essentials plugin
         updateEssentialsAFKState();
+        //Set the player back to being counted for sleep counts
+        //TODO also add this check
+        if (plugin.prettyTime != null) {
+            Player p = Bukkit.getPlayer(getUUID());
+            if (p != null) {
+                p.setSleepingIgnored(false);
+            }
+        }
     }
 
     /**
