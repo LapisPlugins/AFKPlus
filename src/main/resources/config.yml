@@ -1,4 +1,4 @@
-ConfigVersion: 8
+ConfigVersion: 9
 
 #Should the plugin auto download and install new versions when they are available
 UpdateDownload: true
@@ -78,6 +78,11 @@ Broadcast:
 #removing players from AFK and may also mark players as AFK when they are simply not moving much, this should only
 #be enabled if you are having trouble with players using machines like AFK fishing farms
 AggressiveAFKDetection: false
+
+#Setting this to true will mean AFK players are ignored when calculating if night should be skipped
+#See this page for info on how it works
+#https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Player.html#setSleepingIgnored(boolean)
+IgnoreAFKPlayersForSleep: true
 
 #Permissions can be true/false/value
 #0 = false, 1 = true or any whole number for a value

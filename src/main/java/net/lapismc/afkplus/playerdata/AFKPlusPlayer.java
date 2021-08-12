@@ -192,8 +192,7 @@ public class AFKPlusPlayer {
         //Update the players AFK status with the essentials plugin
         updateEssentialsAFKState();
         //Set if the player should be ignored for sleeping
-        //TODO replace with check to config variable
-        if (plugin.prettyTime != null) {
+        if (plugin.getConfig().getBoolean("IgnoreAFKPlayersForSleep")) {
             Player p = Bukkit.getPlayer(getUUID());
             if (p != null) {
                 p.setSleepingIgnored(true);
@@ -248,8 +247,7 @@ public class AFKPlusPlayer {
         //Update the players AFK status with the essentials plugin
         updateEssentialsAFKState();
         //Set the player back to being counted for sleep counts
-        //TODO also add this check
-        if (plugin.prettyTime != null) {
+        if (plugin.getConfig().getBoolean("IgnoreAFKPlayersForSleep")) {
             Player p = Bukkit.getPlayer(getUUID());
             if (p != null) {
                 p.setSleepingIgnored(false);

@@ -44,8 +44,8 @@ repositories {
 }
 
 dependencies {
-    compile 'net.lapismc:LapisCore:1.8.2'
-    compile 'org.ocpsoft.prettytime:prettytime:4.0.5.Final'
+    compile 'net.lapismc:LapisCore:1.9.0'
+    compile 'org.ocpsoft.prettytime:prettytime:5.0.1.Final'
     compileOnly 'net.ess3:EssentialsX:2.18.2'
     compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
 }
