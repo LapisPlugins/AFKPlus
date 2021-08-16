@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Benjamin Martin
+ * Copyright 2021 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,10 +27,18 @@ public class AFKMachineDetectEvent extends LapisCoreEvent {
 
     private final AFKPlusPlayer player;
 
+    /**
+     * @param player The player that is triggering this event
+     */
     public AFKMachineDetectEvent(AFKPlusPlayer player) {
         this.player = player;
     }
 
+    /**
+     * Get the player who has triggered this event
+     *
+     * @return The AFKPlusPlayer object for the player who has triggered this event
+     */
     public AFKPlusPlayer getPlayer() {
         return player;
     }

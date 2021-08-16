@@ -19,6 +19,9 @@ package net.lapismc.afkplus.playerdata;
 
 import net.lapismc.lapiscore.permissions.LapisPermission;
 
+/**
+ * This class is used to store the LapisPermissions that this plugin can access
+ */
 public enum Permission {
 
     AFKSelf(new AFKSelf()), AFKOthers(new AFKOthers()), FakeAFK(new FakeAFK()), TimeToAFK(new TimeToAFK()),
@@ -30,6 +33,11 @@ public enum Permission {
         this.permission = permission;
     }
 
+    /**
+     * Get the permission class for this enum item
+     *
+     * @return A LapisPermission class for this permission item
+     */
     public LapisPermission getPermission() {
         return this.permission;
     }

@@ -49,6 +49,10 @@ public class AFKPlusPlayer {
     private boolean isInactive;
     private boolean isWarned;
 
+    /**
+     * @param plugin The plugin instance for config and permissions access
+     * @param uuid   The UUID of the player that this class should control
+     */
     public AFKPlusPlayer(AFKPlus plugin, UUID uuid) {
         this.plugin = plugin;
         this.uuid = uuid;

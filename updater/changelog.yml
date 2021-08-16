@@ -113,3 +113,7 @@
   - "Fixed player number for action requirement"
 3.3.4:
   - "Fixed a null pointer with Essentials hook"
+3.3.5:
+  - "AFK Players can now be ignored when the server calculates if enough players are sleeping"
+  - "Update to 1.9.0 LapisCore means that the new config updater is now in place"
+  - "Updated to latest PrettyTime"
