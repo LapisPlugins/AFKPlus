@@ -24,7 +24,7 @@ plugins {
 
 group = 'net.lapismc'
 archivesBaseName = "AFKPlus"
-version = '3.3.5'
+version = '3.3.6'
 description = 'AFK for professional servers'
 sourceCompatibility = '11'
 targetCompatibility = '11'
@@ -44,7 +44,7 @@ repositories {
 }
 
 dependencies {
-    compile 'net.lapismc:LapisCore:1.9.0'
+    compile 'net.lapismc:LapisCore:1.9.1'
     compile 'org.ocpsoft.prettytime:prettytime:5.0.1.Final'
     compileOnly 'net.ess3:EssentialsX:2.18.2'
     compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'

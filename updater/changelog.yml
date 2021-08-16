@@ -117,3 +117,6 @@
   - "AFK Players can now be ignored when the server calculates if enough players are sleeping"
   - "Update to 1.9.0 LapisCore means that the new config updater is now in place"
   - "Updated to latest PrettyTime"
+3.3.6:
+  - "Critical hot-fix to config updater"
+  - "Stops the updater from resetting permissions"
