@@ -20,6 +20,7 @@ import net.lapismc.afkplus.api.AFKMachineDetectEvent;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.lapismc.afkplus.util.EntitySpawnManager;
 import net.lapismc.afkplus.util.PlayerMovementStorage;
+import net.lapismc.lapiscore.commands.CommandRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
@@ -96,7 +97,15 @@ public class AFKPlusListeners implements Listener {
 
     @EventHandler
     public void onPlayerCommand(PlayerCommandPreprocessEvent e) {
-        if (!e.getMessage().contains("/afk") && plugin.getConfig().getBoolean("EnabledDetections.Command")) {
+        if (plugin.getConfig().getBoolean("EnabledDetections.Command")) {
+            //Check if the player is running an alias of /AFK
+            if (e.getMessage().contains("afk"))
+                return;
+            for (String command : CommandRegistry.getCommand("afk").getTakenAliases()) {
+                if (e.getMessage().contains(command)) {
+                    return;
+                }
+            }
             plugin.getPlayer(e.getPlayer()).interact();
         }
     }
