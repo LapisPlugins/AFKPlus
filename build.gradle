@@ -44,10 +44,10 @@ repositories {
 }
 
 dependencies {
-    compile 'net.lapismc:LapisCore:1.9.4'
+    compile 'net.lapismc:LapisCore:1.9.5'
     compile 'org.ocpsoft.prettytime:prettytime:5.0.2.Final'
-    compileOnly 'net.ess3:EssentialsX:2.18.2'
-    compileOnly 'org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT'
+    compileOnly 'net.essentialsx:EssentialsX:2.19.0'
+    compileOnly 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
 }
 
 processResources {
