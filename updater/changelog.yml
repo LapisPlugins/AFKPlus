@@ -120,3 +120,6 @@
 3.3.6:
   - "Critical hot-fix to config updater"
   - "Stops the updater from resetting permissions"
+3.3.7:
+  - "Updated to Latest LapisCore and Spigot 1.18"
+  - "Fixed issue with exiting AFK with a taken alias (e.g. /eafk)"
