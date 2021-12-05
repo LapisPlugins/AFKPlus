@@ -1,4 +1,4 @@
-ConfigVersion: 9
+ConfigVersion: 10
 
 #Should the plugin auto download and install new versions when they are available
 UpdateDownload: true
@@ -48,6 +48,15 @@ EnabledDetections:
   BlockPlace: true
   #Breaking blocks
   BlockBreak: true
+
+#Movement magnitude means that players need to move or look a certain distance before they will be marked as not AFK
+MovementMagnitude:
+  #Should the movement magnitude system be enabled
+  Enabled: false
+  #How far does the player need to move every second to be counted as moving
+  PositionTrigger: 0.5
+  #What angle does the player need to look every second to be counted as looking
+  LookTrigger: 10.0
 
 Protections:
   #When enabled AFK players will not be able to move in the x and z directions while AFK.

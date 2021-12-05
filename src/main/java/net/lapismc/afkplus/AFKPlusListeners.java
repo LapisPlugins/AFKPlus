@@ -19,6 +19,7 @@ package net.lapismc.afkplus;
 import net.lapismc.afkplus.api.AFKMachineDetectEvent;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.lapismc.afkplus.util.EntitySpawnManager;
+import net.lapismc.afkplus.util.PlayerMovementMonitoring;
 import net.lapismc.afkplus.util.PlayerMovementStorage;
 import net.lapismc.lapiscore.commands.CommandRegistry;
 import org.bukkit.Bukkit;
@@ -46,9 +47,11 @@ public class AFKPlusListeners implements Listener {
     private final HashMap<UUID, Location> playerLocations = new HashMap<>();
     private BukkitTask AfkMachineDetectionTask;
     private final EntitySpawnManager spawnManager;
+    private final PlayerMovementMonitoring monitoring;
 
     AFKPlusListeners(AFKPlus plugin) {
         this.plugin = plugin;
+        monitoring = new PlayerMovementMonitoring();
         startAFKMachineDetection();
         spawnManager = new EntitySpawnManager(plugin);
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -78,6 +81,13 @@ public class AFKPlusListeners implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
         PlayerMovementStorage movement = new PlayerMovementStorage(e);
+
+        if (plugin.getConfig().getBoolean("MovementMagnitude.Enabled")) {
+            //This will update the didLook and didMove values based on the config settings
+            double posTrigger = plugin.getConfig().getDouble("MovementMagnitude.PositionTrigger");
+            float lookTrigger = (float) plugin.getConfig().getDouble("MovementMagnitude.LookTrigger");
+            monitoring.logAndCheckMovement(e.getPlayer().getUniqueId(), movement, posTrigger, lookTrigger);
+        }
 
         //Only interact if the player performed the action and the detection is enabled for it
         if ((movement.didLook && plugin.getConfig().getBoolean("EnabledDetections.Look")) ||
