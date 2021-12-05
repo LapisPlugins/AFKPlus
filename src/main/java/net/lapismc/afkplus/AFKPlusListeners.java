@@ -226,7 +226,7 @@ public class AFKPlusListeners implements Listener {
     public void onMonsterSpawn(CreatureSpawnEvent e) {
         if (!plugin.getConfig().getBoolean("Protections.MobSpawning"))
             return;
-        //TODO: Test this
+        //TODO: Test that monsters aren't spawning
         if (!(e.getEntity() instanceof Monster))
             return;
         boolean shouldSpawn = spawnManager.shouldSpawn(e.getLocation(), e.getSpawnReason());

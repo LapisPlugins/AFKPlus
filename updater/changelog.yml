@@ -123,3 +123,6 @@
 3.3.7:
   - "Updated to Latest LapisCore and Spigot 1.18"
   - "Fixed issue with exiting AFK with a taken alias (e.g. /eafk)"
+3.3.8:
+  - "Added move thresholds for look and position"
+  - "Better repeating task management via LapisCore"

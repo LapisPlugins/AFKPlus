@@ -3,7 +3,7 @@ ConfigVersion: 10
 #Should the plugin auto download and install new versions when they are available
 UpdateDownload: true
 
-#Leave a command blank if you dont wish to use one, the commands are run during the process of setting the player to AFK
+#Leave a command blank if you don't wish to use one, the commands are run during the process of setting the player to AFK
 #this may cause issues if you attempt to teleport or move the player etc.
 #The action command must either make the player no longer AFK or remove them from the server
 Commands:
@@ -30,7 +30,7 @@ AFKStartSound: "BLOCK_ANVIL_HIT"
 
 #A player will be set as AFK if they don't interact with the world
 #What should be counted as an interaction?
-#Set to false to ignore
+#Set too false to ignore
 EnabledDetections:
   #Sending chat messages
   Chat: true
@@ -42,7 +42,7 @@ EnabledDetections:
   Attack: true
   #Running commands
   Command: true
-  #Right clicking blocks
+  #Right-clicking blocks
   Interact: true
   #Placing blocks
   BlockPlace: true
@@ -75,8 +75,8 @@ Protections:
   MobSpawning: true
 
 #Who should receive messages when players AFK status changes
-#Self = the player who's status has changed
-#Vanish = if the player who's status has changed is vanished
+#Self = the player whose status has changed
+#Vanish = if the player whose status has changed is vanished
 Broadcast:
   Console: true
   OtherPlayers: true

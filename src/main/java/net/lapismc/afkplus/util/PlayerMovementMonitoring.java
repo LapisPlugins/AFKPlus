@@ -25,15 +25,27 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
+/**
+ * This class is used to only count players as moving if they move a certain amount
+ */
 public class PlayerMovementMonitoring {
 
     private final HashMap<UUID, RollingLocations> playerRollingTotals = new HashMap<>();
 
     public PlayerMovementMonitoring() {
-        //TODO: setup a way to cancel this task onDisable
-        Bukkit.getScheduler().runTaskTimerAsynchronously(AFKPlus.getInstance(), getRepeatingTask(), 5, 5);
+        //Register our repeating task for dealing with still players
+        AFKPlus.getInstance().tasks.addTask(Bukkit.getScheduler()
+                .runTaskTimerAsynchronously(AFKPlus.getInstance(), getRepeatingTask(), 5, 5));
     }
 
+    /**
+     * Log the players current location and update the didMove and didLook methods to match
+     *
+     * @param uuid        The UUID of the player we are handling
+     * @param movement    The movement class we should pull the location from and update
+     * @param posTrigger  How far a player must have moved to trigger a movement
+     * @param lookTrigger How far a player must have looked to trigger a look
+     */
     public void logAndCheckMovement(UUID uuid, PlayerMovementStorage movement, double posTrigger, float lookTrigger) {
         //Log movement
         logMovement(uuid, movement.to);
@@ -49,6 +61,12 @@ public class PlayerMovementMonitoring {
             movement.didLook = locs.checkLook(lookTrigger);
     }
 
+    /**
+     * Just update the location of a player and not run checks
+     *
+     * @param uuid The UUID of the player
+     * @param loc  The players current location
+     */
     public void logMovement(UUID uuid, Location loc) {
         RollingLocations locs = getPlayerRollingTotal(uuid);
         locs.addLocation(loc);
@@ -122,7 +140,7 @@ public class PlayerMovementMonitoring {
                 }
             }
             totalMovement = Math.sqrt(totalMovement);
-            return totalMovement > trigger;
+            return totalMovement >= trigger;
         }
 
         /**

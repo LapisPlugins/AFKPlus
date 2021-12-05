@@ -28,7 +28,6 @@ import net.lapismc.lapiscore.utils.LapisUpdater;
 import net.lapismc.lapiscore.utils.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.scheduler.BukkitTask;
 import org.ocpsoft.prettytime.Duration;
 import org.ocpsoft.prettytime.PrettyTime;
 import org.ocpsoft.prettytime.units.JustNow;
@@ -45,7 +44,6 @@ public final class AFKPlus extends LapisCorePlugin {
     public LapisUpdater updater;
     private LapisCoreFileWatcher fileWatcher;
     private final HashMap<UUID, AFKPlusPlayer> players = new HashMap<>();
-    private BukkitTask repeatingTask;
     private AFKPlusListeners listeners;
 
     @Override
@@ -65,18 +63,18 @@ public final class AFKPlus extends LapisCorePlugin {
         new AFKPlusAPI(this);
         new AFKPlusPlayerAPI(this);
         new Metrics(this);
-        repeatingTask = Bukkit.getScheduler().runTaskTimerAsynchronously(this, getRepeatingTasks(), 20, 20);
+        tasks.addTask(Bukkit.getScheduler().runTaskTimerAsynchronously(this, getRepeatingTasks(), 20, 20));
         getLogger().info(getName() + " v." + getDescription().getVersion() + " has been enabled!");
     }
 
     @Override
     public void onDisable() {
         fileWatcher.stop();
-        //Stop the AFK repeating task
-        repeatingTask.cancel();
+        //Stop the repeating tasks
+        tasks.stopALlTasks();
         //Also stop the AFK Machine detection task
         listeners.getAfkMachineDetectionTask().cancel();
-        //Safely handle the stopping of AFKPlus in regards to player data
+        //Safely handle the stopping of AFKPlus in regard to player data
         disposeOfPlayers();
         getLogger().info(getName() + " has been disabled!");
     }
