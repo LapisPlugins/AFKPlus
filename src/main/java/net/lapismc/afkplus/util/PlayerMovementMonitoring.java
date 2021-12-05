@@ -16,8 +16,12 @@
 
 package net.lapismc.afkplus.util;
 
+import net.lapismc.afkplus.AFKPlus;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -25,17 +29,19 @@ public class PlayerMovementMonitoring {
 
     private final HashMap<UUID, RollingLocations> playerRollingTotals = new HashMap<>();
 
+    public PlayerMovementMonitoring() {
+        //TODO: setup a way to cancel this task onDisable
+        Bukkit.getScheduler().runTaskTimerAsynchronously(AFKPlus.getInstance(), getRepeatingTask(), 5, 5);
+    }
+
     public void logAndCheckMovement(UUID uuid, PlayerMovementStorage movement, double posTrigger, float lookTrigger) {
         //Log movement
-        if (!playerRollingTotals.containsKey(uuid)) {
-            playerRollingTotals.put(uuid, new PlayerMovementMonitoring.RollingLocations());
-        }
-        RollingLocations locs = playerRollingTotals.get(uuid);
-        locs.addLocation(movement.to);
+        logMovement(uuid, movement.to);
 
         //Check movement
         //Only change it if they might have moved only a little
         //Don't let them just sit there
+        RollingLocations locs = getPlayerRollingTotal(uuid);
         if (movement.didMove)
             movement.didMove = locs.checkPosition(posTrigger);
 
@@ -43,12 +49,38 @@ public class PlayerMovementMonitoring {
             movement.didLook = locs.checkLook(lookTrigger);
     }
 
+    public void logMovement(UUID uuid, Location loc) {
+        RollingLocations locs = getPlayerRollingTotal(uuid);
+        locs.addLocation(loc);
+    }
+
+    private RollingLocations getPlayerRollingTotal(UUID uuid) {
+        if (!playerRollingTotals.containsKey(uuid)) {
+            playerRollingTotals.put(uuid, new PlayerMovementMonitoring.RollingLocations());
+        }
+        return playerRollingTotals.get(uuid);
+    }
+
+    private Runnable getRepeatingTask() {
+        return () -> {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                RollingLocations locs = getPlayerRollingTotal(p.getUniqueId());
+                //Number of ticks the players must stop for before we update
+                long allowedTime = 2 * 50L;
+                if (locs.time + allowedTime < new Date().getTime()) {
+                    //The players' location hasn't updated in 2 ticks
+                    logMovement(p.getUniqueId(), p.getLocation());
+                }
+            }
+        };
+    }
+
     private static class RollingLocations {
 
-        //TODO: Refine this
-        private final int samples = 20;
+        private final int samples = 10;
         private final Location[] locations = new Location[samples];
         private int i = 0;
+        protected long time;
 
         /**
          * Add the location to the locations array
@@ -56,6 +88,8 @@ public class PlayerMovementMonitoring {
          * @param l the location to be added
          */
         public void addLocation(Location l) {
+            //Log the current time for stationary updating
+            time = new Date().getTime();
             //Put the location in
             locations[i] = l;
             //Increment the index

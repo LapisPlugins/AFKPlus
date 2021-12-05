@@ -54,9 +54,9 @@ MovementMagnitude:
   #Should the movement magnitude system be enabled
   Enabled: false
   #How far does the player need to move every second to be counted as moving
-  PositionTrigger: 0.5
+  PositionTrigger: 1.0
   #What angle does the player need to look every second to be counted as looking
-  LookTrigger: 10.0
+  LookTrigger: 3.0
 
 Protections:
   #When enabled AFK players will not be able to move in the x and z directions while AFK.
