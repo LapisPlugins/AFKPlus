@@ -126,3 +126,5 @@
 3.3.8:
   - "Added move thresholds for look and position"
   - "Better repeating task management via LapisCore"
+3.3.9:
+  - "Updated to newest LapisCore for PAPI extension"
