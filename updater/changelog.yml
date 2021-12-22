@@ -128,3 +128,5 @@
   - "Better repeating task management via LapisCore"
 3.3.9:
   - "Updated to newest LapisCore for PAPI extension"
+3.3.10:
+  - "Updated build script to be accurate for addons"
