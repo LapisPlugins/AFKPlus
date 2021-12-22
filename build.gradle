@@ -24,7 +24,7 @@ plugins {
 
 group = 'net.lapismc'
 archivesBaseName = "AFKPlus"
-version = '3.3.10'
+version = '3.3.11'
 description = 'AFK for professional servers'
 sourceCompatibility = '11'
 targetCompatibility = '11'
@@ -57,7 +57,7 @@ processResources {
 }
 
 shadowJar {
-    archiveFileName.set(archivesBaseName + "-" + project.getVersion() + ".jar")
+    archiveFileName.set(archivesBaseName + "-" + project.getVersion() + "-shadow.jar")
     exclude 'javax/**'
     relocate("org.ocpsoft.prettytime", "net.lapismc.afkplus.util.prettytime")
     relocate("net.lapismc.lapiscore", "net.lapismc.afkplus.util.core")
