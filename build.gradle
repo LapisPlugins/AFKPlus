@@ -24,7 +24,7 @@ plugins {
 
 group = 'net.lapismc'
 archivesBaseName = "AFKPlus"
-version = '3.3.11'
+version = '3.3.13'
 description = 'AFK for professional servers'
 sourceCompatibility = '11'
 targetCompatibility = '11'
@@ -57,7 +57,7 @@ processResources {
 }
 
 shadowJar {
-    archiveFileName.set(archivesBaseName + "-" + project.getVersion() + "-shadow.jar")
+    archiveFileName.set(archivesBaseName + "-" + project.getVersion() + ".jar")
     exclude 'javax/**'
     relocate("org.ocpsoft.prettytime", "net.lapismc.afkplus.util.prettytime")
     relocate("net.lapismc.lapiscore", "net.lapismc.afkplus.util.core")
@@ -79,8 +79,14 @@ task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
 }
 
+task copyToUpdate(type: Copy) {
+    from "$buildDir/libs/" + archivesBaseName + "-" + project.getVersion() + ".jar"
+    into "./updater/AFKPlus"
+    rename(archivesBaseName + "-" + project.getVersion() + ".jar", archivesBaseName + ".jar")
+}
+
 artifacts {
-    archives javadocJar, sourcesJar
+    archives javadocJar, sourcesJar, shadowJar
 }
 
 signing {

@@ -130,3 +130,5 @@
   - "Updated to newest LapisCore for PAPI extension"
 3.3.11:
   - "Updated build script to be accurate for addons"
+3.3.13:
+  - "Gradle building fixed"
