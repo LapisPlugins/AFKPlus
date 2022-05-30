@@ -132,3 +132,5 @@
   - "Updated build script to be accurate for addons"
 3.3.13:
   - "Gradle building fixed"
+3.3.14:
+  - "Fixed fake AFK for players without the AFKOthers permission"

@@ -51,13 +51,12 @@ public class AFK extends AFKPlusCommand {
             toggleAFK(player);
         } else if (args.length == 1) {
             // /afk [PlayerName]
-            //Check that they are permitted to use this command
-            if (isNotPermitted(sender, Permission.AFKOthers)) {
-                sendMessage(sender, "Error.NotPermitted");
-                return;
-            }
             //Check if the user is attempting to toggle their fake AFK status
             if (args[0].equalsIgnoreCase("-fake")) {
+                //Check that it is a player
+                if (isNotPlayer(sender, "Error.MustBePlayer")) {
+                    return;
+                }
                 //Check that they are permitted to use FakeAFK
                 if (isNotPermitted(sender, Permission.FakeAFK)) {
                     sendMessage(sender, "Error.NotPermitted");
@@ -65,6 +64,11 @@ public class AFK extends AFKPlusCommand {
                 }
                 //Now we can toggle their FakeAFK status
                 toggleFakeAFK(getPlayer((Player) sender));
+                return;
+            }
+            //Check that they are permitted to use this command
+            if (isNotPermitted(sender, Permission.AFKOthers)) {
+                sendMessage(sender, "Error.NotPermitted");
                 return;
             }
             //Check that the player is online
