@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Benjamin Martin
+ * Copyright 2022 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import net.lapismc.afkplus.api.AFKPlusPlayerAPI;
 import net.lapismc.afkplus.commands.AFK;
 import net.lapismc.afkplus.commands.AFKPlusCmd;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
+import net.lapismc.afkplus.util.AFKPlusContext;
 import net.lapismc.lapiscore.LapisCoreConfiguration;
 import net.lapismc.lapiscore.LapisCorePlugin;
 import net.lapismc.lapiscore.utils.LapisCoreFileWatcher;
@@ -42,7 +43,6 @@ public final class AFKPlus extends LapisCorePlugin {
 
     public PrettyTime prettyTime;
     public LapisUpdater updater;
-    private LapisCoreFileWatcher fileWatcher;
     private final HashMap<UUID, AFKPlusPlayer> players = new HashMap<>();
     private AFKPlusListeners listeners;
 
@@ -51,8 +51,10 @@ public final class AFKPlus extends LapisCorePlugin {
         saveDefaultConfig();
         registerConfiguration(new LapisCoreConfiguration(this, 10, 2));
         registerPermissions(new AFKPlusPermissions(this));
+        registerLuckPermsContext();
         update();
-        fileWatcher = new LapisCoreFileWatcher(this);
+        LapisCoreFileWatcher fileWatcher = new LapisCoreFileWatcher(this);
+        tasks.addShutdownTask(fileWatcher::stop);
         Locale loc = new Locale(config.getMessage("PrettyTimeLocale"));
         prettyTime = new PrettyTime(loc);
         prettyTime.removeUnit(JustNow.class);
@@ -63,19 +65,18 @@ public final class AFKPlus extends LapisCorePlugin {
         new AFKPlusAPI(this);
         new AFKPlusPlayerAPI(this);
         new Metrics(this);
+        //Safely handle the stopping of AFKPlus in regard to player data
+        tasks.addShutdownTask(() -> players.values().forEach(AFKPlusPlayer::forceStopAFK));
         tasks.addTask(Bukkit.getScheduler().runTaskTimerAsynchronously(this, getRepeatingTasks(), 20, 20));
         getLogger().info(getName() + " v." + getDescription().getVersion() + " has been enabled!");
     }
 
     @Override
     public void onDisable() {
-        fileWatcher.stop();
         //Stop the repeating tasks
         tasks.stopALlTasks();
         //Also stop the AFK Machine detection task
         listeners.getAfkMachineDetectionTask().cancel();
-        //Safely handle the stopping of AFKPlus in regard to player data
-        disposeOfPlayers();
         getLogger().info(getName() + " has been disabled!");
     }
 
@@ -105,10 +106,9 @@ public final class AFKPlus extends LapisCorePlugin {
         });
     }
 
-    private void disposeOfPlayers() {
-        //Stop all AFK sessions for the sake of AFK time statistics
-        for (AFKPlusPlayer p : players.values()) {
-            p.forceStopAFK();
+    private void registerLuckPermsContext() {
+        if (getServer().getPluginManager().getPlugin("LuckPerms") != null) {
+            new AFKPlusContext();
         }
     }
 

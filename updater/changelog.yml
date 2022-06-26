@@ -134,3 +134,6 @@
   - "Gradle building fixed"
 3.3.14:
   - "Fixed fake AFK for players without the AFKOthers permission"
+3.3.15:
+  - "Fixed null pointer on shutdown on systems that do no support file watching"
+  - "Added LuckPerms context afkstate"
