@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Benjamin Martin
+ * Copyright 2022 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -378,7 +378,12 @@ public class AFKPlusPlayer {
         //Replace the player variable with the players name
         String cmd = command.replace("[PLAYER]", getName());
         //Dispatch the command on the next game tick
-        Bukkit.getScheduler().runTask(plugin, () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd));
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            boolean activeState = isInactive;
+            isInactive = true;
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+            isInactive = activeState;
+        });
     }
 
     /**

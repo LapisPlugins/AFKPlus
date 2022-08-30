@@ -66,7 +66,10 @@ public final class AFKPlus extends LapisCorePlugin {
         new AFKPlusPlayerAPI(this);
         new Metrics(this);
         //Safely handle the stopping of AFKPlus in regard to player data
-        tasks.addShutdownTask(() -> players.values().forEach(AFKPlusPlayer::forceStopAFK));
+        tasks.addShutdownTask(() -> {
+            players.values().forEach(AFKPlusPlayer::forceStopAFK);
+            players.clear();
+        });
         tasks.addTask(Bukkit.getScheduler().runTaskTimerAsynchronously(this, getRepeatingTasks(), 20, 20));
         getLogger().info(getName() + " v." + getDescription().getVersion() + " has been enabled!");
     }
