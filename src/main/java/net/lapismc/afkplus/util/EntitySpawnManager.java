@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Benjamin Martin
+ * Copyright 2022 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,24 +17,24 @@
 package net.lapismc.afkplus.util;
 
 import net.lapismc.afkplus.AFKPlus;
+import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
  * Class used to detect if entity spawning should occur near players who are AFK
  * Uses code from the following classes
  * <p>
- * https://github.com/kickash32/DistributedMobSpawns/blob/version-2/src/main/java/me/kickash32/distributedmobspawns/EventListener.java#L22
- * https://github.com/kickash32/DistributedMobSpawns/blob/version-2/src/main/java/me/kickash32/distributedmobspawns/EntityProcessor.java#L51
+ * <a href="https://github.com/kickash32/DistributedMobSpawns/blob/version-2/src/main/java/me/kickash32/distributedmobspawns/EventListener.java#L22">...</a>
+ * <a href="https://github.com/kickash32/DistributedMobSpawns/blob/version-2/src/main/java/me/kickash32/distributedmobspawns/EntityProcessor.java#L51">...</a>
  */
 public class EntitySpawnManager {
 
@@ -55,38 +55,51 @@ public class EntitySpawnManager {
         }
     }
 
-    public boolean shouldSpawn(Location loc, CreatureSpawnEvent.SpawnReason reason) {
-        Collection<Player> nearbyPlayers;
-        if (reason.equals(CreatureSpawnEvent.SpawnReason.NATURAL))
-            nearbyPlayers = getPlayersInSquareRange(loc, spawnRange * 16, false);
-        else if (reason.equals(CreatureSpawnEvent.SpawnReason.SPAWNER))
-            nearbyPlayers = getPlayersInSquareRange(loc, 16, true);
-        else
-            return true;
-        for (Player p : nearbyPlayers) {
-            if (!plugin.getPlayer(p).isAFK())
-                return true;
-        }
-        return nearbyPlayers.size() == 0;
-    }
-
-    public List<Player> getPlayersInSquareRange(Location location, int range, boolean checkY) {
-
-        List<Player> players = location.getWorld().getPlayers();
-        List<Player> filteredPlayers = new ArrayList<>();
-
-        for (Player player : players) {
-            Location playerLocation = player.getLocation();
-
-            if (player.getGameMode() != GameMode.SPECTATOR &&
-                    Math.abs(playerLocation.getBlockX() - location.getBlockX()) < range &&
-                    Math.abs(playerLocation.getBlockZ() - location.getBlockZ()) < range) {
-                if (!checkY || Math.abs(playerLocation.getBlockY() - location.getBlockY()) < range) {
-                    filteredPlayers.add(player);
+    public boolean shouldNaturalSpawn(Location loc) {
+        //for all chunks in spawnRange-1 chunk radius of location
+        //Get all player entities and add them to nearbyPlayers
+        //This code is derived from information provided in this spigot post
+        //https://www.spigotmc.org/threads/what-exactly-does-mob-spawn-range-do.176889/#post-3221175
+        for (int i = -(spawnRange - 1); i < (spawnRange - 1); i++) {
+            for (int j = -(spawnRange - 1); j < (spawnRange - 1); j++) {
+                Chunk chunk = loc.getWorld().getChunkAt(loc.getChunk().getX() + i, loc.getChunk().getZ() + j);
+                for (Entity e : chunk.getEntities()) {
+                    if (!(e instanceof Player))
+                        continue;
+                    Player p = (Player) e;
+                    //Ignore players who are in spectator mode as they cannot spawn mobs
+                    if (p.getGameMode() == GameMode.SPECTATOR)
+                        continue;
+                    //We have found a player in the spawn radius, If they aren't AFK then the mob spawn is valid
+                    if (!plugin.getPlayer(p).isAFK())
+                        return true;
                 }
             }
         }
-        return filteredPlayers;
+        //If the code reaches this point, then no player has been found in the spawn radius who is not AFK
+        //Hence the spawn should be cancelled
+        return false;
+    }
+
+    public boolean shouldSpawnerSpawn(CreatureSpawner spawner) {
+        double range = 16;
+        List<Player> players = spawner.getLocation().getWorld().getPlayers();
+        //Remove players who are in spectator mode
+        players.removeIf(p -> p.getGameMode().equals(GameMode.SPECTATOR));
+        //Remove players who are AFK
+        players.removeIf(p -> plugin.getPlayer(p).isAFK());
+
+        //Spawner mechanics information from the following page
+        //https://minecraft.fandom.com/wiki/Monster_Spawner#Mechanics
+
+        //Get the exact location at the center of the spawner block
+        Location centerOfSpawner = spawner.getLocation().add(0.5, -0.5, 0.5);
+        //Remove players who are outside the range of the spawner
+        players.removeIf(p -> p.getLocation().distance(centerOfSpawner) > range);
+
+        //All players who cannot or should not trigger this spawner have been removed
+        //Therefore it should only spawn if the list is still populated with players
+        return players.size() > 0;
     }
 
 }

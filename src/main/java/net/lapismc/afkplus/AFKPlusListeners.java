@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Benjamin Martin
+ * Copyright 2022 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.SpawnerSpawnEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -222,14 +223,30 @@ public class AFKPlusListeners implements Listener {
             e.setCancelled(true);
     }
 
+    /*
+    Mob Spawning Protections
+     */
+
     @EventHandler
-    public void onMonsterSpawn(CreatureSpawnEvent e) {
+    public void onNaturalMonsterSpawn(CreatureSpawnEvent e) {
         if (!plugin.getConfig().getBoolean("Protections.MobSpawning"))
             return;
-        //TODO: Test that monsters aren't spawning
+        //Return if it's not a monster or if it isn't natural
+        if (!(e.getEntity() instanceof Monster) || !e.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.NATURAL))
+            return;
+        boolean shouldSpawn = spawnManager.shouldNaturalSpawn(e.getLocation());
+        if (!shouldSpawn)
+            e.setCancelled(false);
+    }
+
+    @EventHandler
+    public void onSpawnerMonsterSpawn(SpawnerSpawnEvent e) {
+        if (!plugin.getConfig().getBoolean("Protections.MobSpawning"))
+            return;
+        //Return if it's not a monster
         if (!(e.getEntity() instanceof Monster))
             return;
-        boolean shouldSpawn = spawnManager.shouldSpawn(e.getLocation(), e.getSpawnReason());
+        boolean shouldSpawn = spawnManager.shouldSpawnerSpawn(e.getSpawner());
         if (!shouldSpawn)
             e.setCancelled(false);
     }
