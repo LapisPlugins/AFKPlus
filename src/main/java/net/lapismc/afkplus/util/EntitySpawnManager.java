@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Benjamin Martin
+ * Copyright 2023 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,12 +57,14 @@ public class EntitySpawnManager {
     }
 
     public boolean shouldNaturalSpawn(Location loc) {
+        List<Player> playersInRange = new ArrayList<>();
         //for all chunks in spawnRange-1 chunk radius of location
         //Get all player entities and add them to nearbyPlayers
         //This code is derived from information provided in this spigot post
         //https://www.spigotmc.org/threads/what-exactly-does-mob-spawn-range-do.176889/#post-3221175
-        for (int i = -(spawnRange - 1); i < (spawnRange - 1); i++) {
-            for (int j = -(spawnRange - 1); j < (spawnRange - 1); j++) {
+        for (int i = -(spawnRange); i < (spawnRange); i++) {
+            for (int j = -(spawnRange); j < (spawnRange); j++) {
+
                 Chunk chunk = loc.getWorld().getChunkAt(loc.getChunk().getX() + i, loc.getChunk().getZ() + j);
                 for (Entity e : chunk.getEntities()) {
                     if (!(e instanceof Player))
@@ -70,14 +73,23 @@ public class EntitySpawnManager {
                     //Ignore players who are in spectator mode as they cannot spawn mobs
                     if (p.getGameMode() == GameMode.SPECTATOR)
                         continue;
-                    //We have found a player in the spawn radius, If they aren't AFK then the mob spawn is valid
-                    if (!plugin.getPlayer(p).isAFK())
-                        return true;
+                    //We have found a player in the spawn radius, adding them to the list
+                    playersInRange.add(p);
                 }
             }
         }
-        //If the code reaches this point, then no player has been found in the spawn radius who is not AFK
-        //Hence the spawn should be cancelled
+        //Check if all players found are AFK
+        if (playersInRange.size() == 0) {
+            //No players in range so this is just a distant natural spawn
+            return true;
+        }
+        for (Player p : playersInRange) {
+            if (!plugin.getPlayer(p).isAFK()) {
+                //A player in the spawn range is not AFK, therefore the spawn is valid
+                return true;
+            }
+        }
+        //If we reach this point, there are players in range, but they are all AFK. Disallow spawn
         return false;
     }
 
@@ -86,20 +98,31 @@ public class EntitySpawnManager {
         List<Player> players = spawner.getLocation().getWorld().getPlayers();
         //Remove players who are in spectator mode
         players.removeIf(p -> p.getGameMode().equals(GameMode.SPECTATOR));
-        //Remove players who are AFK
-        players.removeIf(p -> plugin.getPlayer(p).isAFK());
 
         //Spawner mechanics information from the following page
         //https://minecraft.fandom.com/wiki/Monster_Spawner#Mechanics
 
         //Get the exact location at the center of the spawner block
         Location centerOfSpawner = spawner.getLocation().add(0.5, -0.5, 0.5);
-        //Remove players who are outside the range of the spawner
-        players.removeIf(p -> p.getLocation().distance(centerOfSpawner) > range);
+        boolean playerInRange = false;
+        boolean playerAFK = false;
 
-        //All players who cannot or should not trigger this spawner have been removed
-        //Therefore it should only spawn if the list is still populated with players
-        return players.size() > 0;
+        for (Player p : players) {
+            if (p.getLocation().distance(centerOfSpawner) > range)
+                continue;
+            playerInRange = true;
+            if (plugin.getPlayer(p).isAFK()) {
+                playerAFK = true;
+            } else {
+                //We found a player in range who is not AFK
+                //This needs to trigger a spawn, as such we set AFK to false and break
+                playerAFK = false;
+                break;
+            }
+        }
+        if (playerInRange && !playerAFK)
+            return true;
+        return !playerInRange;
     }
 
 }

@@ -137,3 +137,7 @@
 3.3.15:
   - "Fixed null pointer on shutdown on systems that do no support file watching"
   - "Added LuckPerms context afkstate"
+3.4.0:
+  - "Fixed MobSpawning protection"
+  - "Added MobTargeting protection (Thanks to KaspianDev on GitHub)"
+  - "API Updates"

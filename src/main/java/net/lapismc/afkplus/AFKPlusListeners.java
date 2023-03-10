@@ -233,7 +233,7 @@ public class AFKPlusListeners implements Listener {
             return;
         boolean shouldSpawn = spawnManager.shouldNaturalSpawn(e.getLocation());
         if (!shouldSpawn)
-            e.setCancelled(false);
+            e.setCancelled(true);
     }
 
     @EventHandler
@@ -245,7 +245,7 @@ public class AFKPlusListeners implements Listener {
             return;
         boolean shouldSpawn = spawnManager.shouldSpawnerSpawn(e.getSpawner());
         if (!shouldSpawn)
-            e.setCancelled(false);
+            e.setCancelled(true);
     }
 
     /*

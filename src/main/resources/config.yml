@@ -72,7 +72,8 @@ Protections:
   HurtByOther: true
   #When enabled, mobs will not spawn if the AFK player is the cause of the spawning
   #This only applies to natural and spawner spawning
-  MobSpawning: true
+  #This may cause minor lag on high-end servers
+  MobSpawning: false
   #When enabled AFK players will not be targeted by mobs
   MobTargeting: false
 
