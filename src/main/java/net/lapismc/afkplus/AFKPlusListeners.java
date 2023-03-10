@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Benjamin Martin
+ * Copyright 2023 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -253,13 +253,13 @@ public class AFKPlusListeners implements Listener {
      */
     @EventHandler
     public void onEntityTarget(EntityTargetLivingEntityEvent e) {
-       if (!plugin.getConfig().getBoolean("Protections.MobTargeting"))
-           return;
+        if (!plugin.getConfig().getBoolean("Protections.MobTargeting"))
+            return;
         if (!(e.getEntity() instanceof Monster))
             return;
         if (!(e.getTarget() instanceof Player))
             return;
-        Player player = ((Player) e.getTarget()).getPlayer();
+        Player player = (Player) e.getTarget();
         if (player == null) return;
         if (!plugin.getPlayer(player).isAFK())
             return;
