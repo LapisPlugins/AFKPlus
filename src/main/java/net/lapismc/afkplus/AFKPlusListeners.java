@@ -32,10 +32,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.SpawnerSpawnEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -249,6 +246,24 @@ public class AFKPlusListeners implements Listener {
         boolean shouldSpawn = spawnManager.shouldSpawnerSpawn(e.getSpawner());
         if (!shouldSpawn)
             e.setCancelled(false);
+    }
+
+    /*
+    Mob targeting protection
+     */
+    @EventHandler
+    public void onEntityTarget(EntityTargetLivingEntityEvent e) {
+       if (!plugin.getConfig().getBoolean("Protections.MobTargeting"))
+           return;
+        if (!(e.getEntity() instanceof Monster))
+            return;
+        if (!(e.getTarget() instanceof Player))
+            return;
+        Player player = ((Player) e.getTarget()).getPlayer();
+        if (player == null) return;
+        if (!plugin.getPlayer(player).isAFK())
+            return;
+        e.setCancelled(true);
     }
 
     /*

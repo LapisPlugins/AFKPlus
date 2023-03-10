@@ -1,4 +1,4 @@
-ConfigVersion: 10
+ConfigVersion: 11
 
 #Should the plugin auto download and install new versions when they are available
 UpdateDownload: true
@@ -73,6 +73,8 @@ Protections:
   #When enabled, mobs will not spawn if the AFK player is the cause of the spawning
   #This only applies to natural and spawner spawning
   MobSpawning: true
+  #When enabled AFK players will not be targeted by mobs
+  MobTargeting: false
 
 #Who should receive messages when players AFK status changes
 #Self = the player whose status has changed
