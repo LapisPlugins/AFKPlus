@@ -145,11 +145,14 @@ public class AFKPlusListeners implements Listener {
 
     @EventHandler
     public void onPlayerMoveProtect(PlayerMoveEvent e) {
+        //Make sure the player is AFK before doing any work
+        if (!plugin.getPlayer(e.getPlayer()).isAFK())
+            return;
         PlayerMovementStorage movement = new PlayerMovementStorage(e);
 
         //Check if bump protection is enabled and the player has only moved but not looked
         boolean isBumpProtected = isMovementCausedByEntityBump(e.getPlayer());
-        if (isBumpProtected && plugin.getPlayer(e.getPlayer()).isAFK() && (movement.didMove && !movement.didLook)) {
+        if (isBumpProtected && (movement.didMove && !movement.didLook)) {
             //Make sure they haven't moved up in the Y direction (this allows jumping but not falling)
             if (movement.to.getY() <= movement.from.getY()) {
                 //The players has only moved in the X or Z directions so we cancel the event since it could be a bump
@@ -300,14 +303,6 @@ public class AFKPlusListeners implements Listener {
                                 inactive = true;
                             if (checkTransform(savedLoc, loc))
                                 inactive = true;
-                        } else {
-                            //Without aggressive enabled we only want one to be true,
-                            //if both are false then inactive will be false
-                            //This is achieved by converting true to 1 and false to 0 and summing them
-                            //Inactive is only true when only one of the booleans is true
-                            if ((checkRotation(savedLoc, loc) ? 1 : 0) + (checkTransform(savedLoc, loc) ? 1 : 0) == 1) {
-                                inactive = true;
-                            }
                         }
                         //This is sent to the player object, if the player is deemed to not be moving they will not
                         //be able to reset their interact timer. This wil force them into AFK even

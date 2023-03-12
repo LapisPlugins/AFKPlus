@@ -141,3 +141,8 @@
   - "Fixed MobSpawning protection"
   - "Added MobTargeting protection (Thanks to KaspianDev on GitHub)"
   - "API Updates"
+3.4.1:
+  - "Fixed mildly aggressive AFK machine detection without AggressiveAFKDetection enabled"
+  - "Added an option to enable Essentials AFK Hook, which was previously enabled by default with no way to disable it"
+  - "Improved efficiency of bump protections"
+  - "Updated to LapisCore 1.12.0"

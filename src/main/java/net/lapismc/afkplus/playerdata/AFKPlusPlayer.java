@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Benjamin Martin
+ * Copyright 2023 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -312,7 +312,7 @@ public class AFKPlusPlayer {
      * This will stop AFK if a player is AFK and update the lastInteract value
      */
     public void interact() {
-        //Dont allow interact when the player is inactive
+        //Don't allow interact when the player is inactive
         //Inactive is decided by the listener class checking location data
         if (isInactive)
             return;
@@ -359,6 +359,9 @@ public class AFKPlusPlayer {
      * Updates the players current AFK State within the essentials plugin
      */
     private void updateEssentialsAFKState() {
+        //Allow users to configure if this feature is enabled
+        if (!plugin.getConfig().getBoolean("EssentialsAFKHook"))
+            return;
         //Update the AFK state with essentials if it is installed
         if (!Bukkit.getPluginManager().isPluginEnabled("Essentials"))
             return;

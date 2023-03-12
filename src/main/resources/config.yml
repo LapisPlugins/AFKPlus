@@ -1,4 +1,4 @@
-ConfigVersion: 11
+ConfigVersion: 12
 
 #Should the plugin auto download and install new versions when they are available
 UpdateDownload: true
@@ -17,6 +17,10 @@ Commands:
 #Its also recommended that you edit the warning message to tell players that they will be kicked when the server reaches x players
 #Setting to 0 means that players will always be acted upon when they reach their time to action
 ActionPlayerRequirement: 0
+
+#Enabling this setting will make AFKPlus update a players AFK status in essentials to match their AFKPlus AFK state
+#This may be useful for other plugins that check if a player is AFK by checking with Essentials
+EssentialsAFKHook: false
 
 #The sound to be played when a player is warned
 #Set to blank if you don't want a sound e.g. ""

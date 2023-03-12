@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Benjamin Martin
+ * Copyright 2023 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import org.bukkit.Location;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 /**
- * This class is used to cleanup duplicate code from different {@link PlayerMoveEvent}s in the {@link net.lapismc.afkplus.AFKPlusListeners} class
+ * This class is used to clean up duplicate code from different {@link PlayerMoveEvent}s in the {@link net.lapismc.afkplus.AFKPlusListeners} class
  */
 public class PlayerMovementStorage {
 
