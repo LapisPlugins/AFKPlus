@@ -17,13 +17,13 @@
 package net.lapismc.afkplus.util;
 
 import net.lapismc.afkplus.AFKPlus;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
@@ -62,7 +62,7 @@ public class EntitySpawnManager {
         //Get all player entities and add them to nearbyPlayers
         //This code is derived from information provided in this spigot post
         //https://www.spigotmc.org/threads/what-exactly-does-mob-spawn-range-do.176889/#post-3221175
-        for (int i = -(spawnRange); i < (spawnRange); i++) {
+        /*for (int i = -(spawnRange); i < (spawnRange); i++) {
             for (int j = -(spawnRange); j < (spawnRange); j++) {
 
                 Chunk chunk = loc.getWorld().getChunkAt(loc.getChunk().getX() + i, loc.getChunk().getZ() + j);
@@ -77,7 +77,29 @@ public class EntitySpawnManager {
                     playersInRange.add(p);
                 }
             }
+        }*/
+        //Theoretically faster way of checking players
+        //TODO: Test this and remove if not worth it
+        int chunkX = loc.getChunk().getX();
+        int maxX = chunkX + spawnRange;
+        int minX = chunkX - spawnRange;
+        int chunkZ = loc.getChunk().getZ();
+        int maxZ = chunkZ + spawnRange;
+        int minZ = chunkZ - spawnRange;
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (p.getGameMode() == GameMode.SPECTATOR)
+                continue;
+            Chunk c = p.getLocation().getChunk();
+            int playerChunkX = p.getLocation().getChunk().getX();
+            if (playerChunkX < maxX && playerChunkX > minX) {
+                int playerChunkZ = p.getLocation().getChunk().getZ();
+                if (playerChunkZ < maxZ && playerChunkZ > minZ) {
+                    playersInRange.add(p);
+                }
+            }
+
         }
+
         //Check if all players found are AFK
         if (playersInRange.size() == 0) {
             //No players in range so this is just a distant natural spawn
