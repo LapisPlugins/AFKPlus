@@ -415,7 +415,7 @@ public class AFKPlusPlayer {
         XSound sound;
         Optional<XSound> retrievedSound = XSound.matchXSound(soundName);
         sound = retrievedSound.orElse(def);
-        sound.playSound(p);
+        sound.play(p);
     }
 
     /**

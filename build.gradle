@@ -17,9 +17,8 @@
 plugins {
     id 'java'
     id 'maven'
-    id 'signing'
+    id 'maven-publish'
     id "com.github.johnrengelman.shadow" version "5.2.0"
-    id 'io.codearte.nexus-staging' version '0.30.0'
 }
 
 group = 'net.lapismc'
@@ -37,6 +36,15 @@ repositories {
     maven {
         url = uri('https://hub.spigotmc.org/nexus/content/groups/public/')
     }
+    //Personal Repo
+    maven {
+        name = "lapismc-repo"
+        url = "https://maven.lapismc.net/repository/maven/"
+    }
+    //Paper repo
+    maven {
+        url = uri("https://repo.papermc.io/repository/maven-public/")
+    }
     //Essentials Repo
     maven {
         url = uri('https://repo.essentialsx.net/releases/')
@@ -44,11 +52,11 @@ repositories {
 }
 
 dependencies {
-    compile 'net.lapismc:LapisCore:1.12.0'
-    compile 'org.ocpsoft.prettytime:prettytime:5.0.6.Final'
-    compileOnly 'net.essentialsx:EssentialsX:2.19.0'
+    implementation 'net.lapismc:LapisCore:1.12.5'
+    implementation 'org.ocpsoft.prettytime:prettytime:5.0.6.Final'
+    compileOnly 'net.essentialsx:EssentialsX:2.20.1'
     compileOnly 'net.luckperms:api:5.4'
-    compileOnly 'org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT'
 }
 
 processResources {
@@ -80,69 +88,32 @@ task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
 }
 
-task copyToUpdate(type: Copy) {
-    from "$buildDir/libs/" + archivesBaseName + "-" + project.getVersion() + ".jar"
-    into "./updater/AFKPlus"
-    rename(archivesBaseName + "-" + project.getVersion() + ".jar", archivesBaseName + ".jar")
-}
-
 artifacts {
     archives javadocJar, sourcesJar, shadowJar
-}
-
-signing {
-    useGpgCmd()
-    sign configurations.archives
 }
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-nexusStaging {
-    packageGroup = "net.lapismc" //optional if packageGroup == project.getGroup()
+java {
+    withSourcesJar()
+    withJavadocJar()
 }
 
-uploadArchives {
+publishing {
+    publications {
+        shadow(MavenPublication) {
+            from components.java
+        }
+    }
     repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            pom.project {
-                name = project.archivesBaseName
-                packaging 'jar'
-                // optionally artifactId can be defined here
-                description = project.description
-                url 'https://github.com/LapisPlugins/AFKPlus'
-
-                scm {
-                    connection 'git@github.com:LapisPlugins/AFKPlus.git'
-                    developerConnection 'git@github.com:LapisPlugins/AFKPlus.git'
-                    url 'https://github.com/LapisPlugins/AFKPlus'
-                }
-
-                licenses {
-                    license {
-                        name 'The Apache License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id 'Dart2112'
-                        name 'Benjamin Martin'
-                        email 'dart2112@lapismc.net'
-                    }
-                }
+        maven {
+            name 'nexus'
+            url "https://nexus.dnablue2112.com/repository/maven-releases/"
+            credentials {
+                username repoUser
+                password repoPassword
             }
         }
     }
