@@ -1,5 +1,7 @@
-ConfigVersion: 12
+ConfigVersion: 13
 
+#Should the plugin check for new updates, UpdateDownload will not work if this is set to false
+UpdateCheck: true
 #Should the plugin auto download and install new versions when they are available
 UpdateDownload: true
 

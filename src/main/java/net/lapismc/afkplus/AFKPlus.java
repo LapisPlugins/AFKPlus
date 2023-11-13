@@ -49,7 +49,7 @@ public final class AFKPlus extends LapisCorePlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        registerConfiguration(new LapisCoreConfiguration(this, 12, 2));
+        registerConfiguration(new LapisCoreConfiguration(this, 13, 2));
         registerPermissions(new AFKPlusPermissions(this));
         registerLuckPermsContext();
         update();
@@ -95,6 +95,9 @@ public final class AFKPlus extends LapisCorePlugin {
     }
 
     private void update() {
+        //Don't check for updates if the update check setting is set to false
+        if (!getConfig().getBoolean("UpdateCheck"))
+            return;
         updater = new LapisUpdater(this, "AFKPlus", "Dart2112", "AFKPlus", "master");
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
             if (updater.checkUpdate()) {
