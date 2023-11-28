@@ -71,9 +71,9 @@ shadowJar {
 }
 
 javadoc {
-    exclude 'net/lapismc/afkplus/commands'
-    exclude 'net/lapismc/afkplus/util'
-    exclude 'net/lapismc/afkplus/*.java'
+    source = sourceSets.main.allJava
+    include("net/lapismc/afkplus/api/*.java")
+    include("net/lapismc/afkplus/playerdata/*.java")
 }
 
 task javadocJar(type: Jar) {
