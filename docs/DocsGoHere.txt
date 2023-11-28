@@ -1,1 +1,0 @@
-Jenkins will generate docs in this folder
