@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Benjamin Martin
+ * Copyright 2024 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -97,8 +97,7 @@ public class AFKPlusListeners implements Listener {
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent e) {
         //Run the attack detection if the attacker is a player
-        if (plugin.getConfig().getBoolean("EnabledDetections.Attack") && e.getDamager() instanceof Player) {
-            Player p = (Player) e.getDamager();
+        if (plugin.getConfig().getBoolean("EnabledDetections.Attack") && e.getDamager() instanceof Player p) {
             plugin.getPlayer(p).interact();
         }
     }
@@ -260,9 +259,8 @@ public class AFKPlusListeners implements Listener {
             return;
         if (!(e.getEntity() instanceof Monster))
             return;
-        if (!(e.getTarget() instanceof Player))
+        if (!(e.getTarget() instanceof Player player))
             return;
-        Player player = (Player) e.getTarget();
         if (player == null) return;
         if (!plugin.getPlayer(player).isAFK())
             return;
@@ -298,15 +296,15 @@ public class AFKPlusListeners implements Listener {
                         //Check if the player is moving in both rotation and transform
                         boolean inactive = false;
                         if (plugin.getConfig().getBoolean("AggressiveAFKDetection")) {
-                            //If aggressive is enabled we want to check if the player isn't moving in one or both
-                            if (checkRotation(savedLoc, loc))
-                                inactive = true;
-                            if (checkTransform(savedLoc, loc))
+                            //If aggressive is enabled we want to check if the player isn't moving in both look and transform
+                            boolean isNotLooking = checkRotation(savedLoc, loc);
+                            boolean isNotMoving = checkTransform(savedLoc, loc);
+                            if (isNotLooking && isNotMoving)
                                 inactive = true;
                         }
                         //This is sent to the player object, if the player is deemed to not be moving they will not
                         //be able to reset their interact timer. This wil force them into AFK even
-                        //if they are triggering move events
+                        //if they are triggering detection events
                         if (inactive) {
                             //Trigger the AFKMachine event if the player is deemed to be avoiding AFK
                             Bukkit.getScheduler().runTask(plugin, () ->

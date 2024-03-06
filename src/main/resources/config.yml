@@ -92,9 +92,11 @@ Broadcast:
   Self: true
   Vanish: false
 
-#Enabling aggressive AFK detection will tighten tolerances on AFK machines but may slow down the reaction time of
-#removing players from AFK and may also mark players as AFK when they are simply not moving much, this should only
-#be enabled if you are having trouble with players using machines like AFK fishing farms
+#Aggressive AFK Detection is an attempt to stop people using AFK farms or machines
+#It does this by checking that players are moving in both look (using the mouse to look around) and transform (using wasd to move)
+#If a player is only moving in one of these ways they will stop triggering the detections that are enabled in "EnabledDetections"
+#This will force them into AFK unless they start moving in both look and transform
+#This can be over-kill and should only be enabled if you know people are attempting to bypass AFKPlus by triggering detections while still being AFK
 AggressiveAFKDetection: false
 
 #Setting this to true will mean AFK players are ignored when calculating if night should be skipped

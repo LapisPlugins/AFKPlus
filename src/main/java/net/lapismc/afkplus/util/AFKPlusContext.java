@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Benjamin Martin
+ * Copyright 2024 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ public class AFKPlusContext extends LapisCoreContextCalculator<Player> {
     AFKPlus plugin = (AFKPlus) super.plugin;
 
     public AFKPlusContext() {
-        LapisCoreContexts luckPermsContexts = new LapisCoreContexts(plugin);
+        LapisCoreContexts luckPermsContexts = new LapisCoreContexts();
         luckPermsContexts.registerContext(this);
         plugin.tasks.addShutdownTask(luckPermsContexts::unregisterAll);
     }
