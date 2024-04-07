@@ -259,21 +259,27 @@ public class AFKPlusPlayer {
     }
 
     /**
+     * Check if the player's AFK status should be broadcast to other players
+     *
+     * @return Returns whether the player's AFK message should be broadcast to other players
+     */
+    public boolean shouldBroadcastToOthers() {
+        boolean vanish = plugin.getConfig().getBoolean("Broadcast.Vanish");
+        boolean otherPlayers = plugin.getConfig().getBoolean("Broadcast.OtherPlayers");
+        return (vanish || !isVanished()) && otherPlayers;
+    }
+
+    /**
      * Get the list of recipients for a broadcast
      *
      * @return Returns a list of command senders that the broadcast should be sent to
      */
     public List<CommandSender> getBroadcastRecipients() {
-        boolean vanish = plugin.getConfig().getBoolean("Broadcast.Vanish");
         boolean console = plugin.getConfig().getBoolean("Broadcast.Console");
-        boolean otherPlayers = plugin.getConfig().getBoolean("Broadcast.OtherPlayers");
+        boolean otherPlayers = shouldBroadcastToOthers();
         boolean self = plugin.getConfig().getBoolean("Broadcast.Self");
 
         final List<CommandSender> recipients = new ArrayList<>();
-        if (!vanish && isVanished()) {
-            //Stop the broadcast from going to other players, but it still shows to the player and console
-            otherPlayers = false;
-        }
         if (console) {
             recipients.add(Bukkit.getConsoleSender());
         }
@@ -297,7 +303,6 @@ public class AFKPlusPlayer {
         if (msg.isEmpty()) {
             return;
         }
-
         for (CommandSender recipient : getBroadcastRecipients()) {
             recipient.sendMessage(msg);
         }
