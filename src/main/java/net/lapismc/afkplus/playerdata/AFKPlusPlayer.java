@@ -23,15 +23,14 @@ import net.lapismc.afkplus.api.AFKStopEvent;
 import net.lapismc.afkplus.util.EssentialsAFKHook;
 import net.lapismc.lapiscore.compatibility.XSound;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * This class can be used to start, stop and check AFK as well as the values used to start and stop AFK
@@ -260,6 +259,35 @@ public class AFKPlusPlayer {
     }
 
     /**
+     * Get the list of recipients for a broadcast
+     *
+     * @return Returns a list of command senders that the broadcast should be sent to
+     */
+    public List<CommandSender> getBroadcastRecipients() {
+        boolean vanish = plugin.getConfig().getBoolean("Broadcast.Vanish");
+        boolean console = plugin.getConfig().getBoolean("Broadcast.Console");
+        boolean otherPlayers = plugin.getConfig().getBoolean("Broadcast.OtherPlayers");
+        boolean self = plugin.getConfig().getBoolean("Broadcast.Self");
+
+        final List<CommandSender> recipients = new ArrayList<>();
+        if (!vanish && isVanished()) {
+            //Stop the broadcast from going to other players, but it still shows to the player and console
+            otherPlayers = false;
+        }
+        if (console) {
+            recipients.add(Bukkit.getConsoleSender());
+        }
+        if (otherPlayers) {
+            recipients.addAll(Bukkit.getOnlinePlayers());
+        }
+        Player player = Bukkit.getPlayer(getUUID());
+        if (self && player != null) {
+            recipients.add(player);
+        }
+        return recipients;
+    }
+
+    /**
      * Broadcast a message using the settings from the config
      *
      * @param msg The message you wish to broadcast
@@ -269,28 +297,9 @@ public class AFKPlusPlayer {
         if (msg.isEmpty()) {
             return;
         }
-        boolean vanish = plugin.getConfig().getBoolean("Broadcast.Vanish");
-        boolean console = plugin.getConfig().getBoolean("Broadcast.Console");
-        boolean otherPlayers = plugin.getConfig().getBoolean("Broadcast.OtherPlayers");
-        boolean self = plugin.getConfig().getBoolean("Broadcast.Self");
-        if (!vanish && isVanished()) {
-            //Stop the broadcast from going to other players, but it still shows to the player and console
-            otherPlayers = false;
-        }
-        Player player = Bukkit.getPlayer(getUUID());
-        if (console) {
-            Bukkit.getLogger().info(msg);
-        }
-        if (otherPlayers) {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                if (p.equals(player)) {
-                    continue;
-                }
-                p.sendMessage(msg);
-            }
-        }
-        if (self) {
-            player.sendMessage(msg);
+
+        for (CommandSender recipient : getBroadcastRecipients()) {
+            recipient.sendMessage(msg);
         }
     }
 
