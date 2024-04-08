@@ -274,21 +274,28 @@ public class AFKPlusPlayer {
      *
      * @return Returns a list of command senders that the broadcast should be sent to
      */
-    public List<CommandSender> getBroadcastRecipients() {
+    public Set<CommandSender> getBroadcastRecipients() {
         boolean console = plugin.getConfig().getBoolean("Broadcast.Console");
         boolean otherPlayers = shouldBroadcastToOthers();
         boolean self = plugin.getConfig().getBoolean("Broadcast.Self");
 
-        final List<CommandSender> recipients = new ArrayList<>();
+        Set<CommandSender> recipients = new HashSet<>();
+        // console
         if (console) {
             recipients.add(Bukkit.getConsoleSender());
         }
+        // otherPlayers
         if (otherPlayers) {
             recipients.addAll(Bukkit.getOnlinePlayers());
         }
+        // self
         Player player = Bukkit.getPlayer(getUUID());
-        if (self && player != null) {
-            recipients.add(player);
+        if (player != null) {
+            if (self) {
+                recipients.add(player);
+            } else {
+                recipients.remove(player);
+            }
         }
         return recipients;
     }
