@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Benjamin Martin
+ * Copyright 2024 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,8 +53,7 @@ public final class AFKPlus extends LapisCorePlugin {
         registerPermissions(new AFKPlusPermissions(this));
         registerLuckPermsContext();
         update();
-        LapisCoreFileWatcher fileWatcher = new LapisCoreFileWatcher(this);
-        tasks.addShutdownTask(fileWatcher::stop);
+        new LapisCoreFileWatcher(this);
         Locale loc = new Locale(config.getMessage("PrettyTimeLocale"));
         prettyTime = new PrettyTime(loc);
         prettyTime.removeUnit(JustNow.class);
