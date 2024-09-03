@@ -64,7 +64,7 @@ processResources {
 }
 
 shadowJar {
-    archiveFileName.set(archivesBaseName + ".jar")
+    archiveFileName.set(archivesBaseName + "-" + project.getVersion() + ".jar")
     exclude 'javax/**'
     relocate("org.ocpsoft.prettytime", "net.lapismc.afkplus.util.prettytime")
     relocate("net.lapismc.lapiscore", "net.lapismc.afkplus.util.core")
