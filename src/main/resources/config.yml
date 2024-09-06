@@ -1,9 +1,12 @@
-ConfigVersion: 13
+ConfigVersion: 14
 
 #Should the plugin check for new updates, UpdateDownload will not work if this is set to false
 UpdateCheck: true
 #Should the plugin auto download and install new versions when they are available
 UpdateDownload: true
+
+#Should the plugin record statistics about how long the player has been AFK for in total
+EnableStatistics: true
 
 #Leave a command blank if you don't wish to use one, the commands are run during the process of setting the player to AFK
 #this may cause issues if you attempt to teleport or move the player etc.

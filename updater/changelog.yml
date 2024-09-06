@@ -148,3 +148,5 @@
   - "Updated to LapisCore 1.12.0"
 3.4.2:
   - "Updated how aggressive AFK detection works and also added a better description in the config"
+3.4.3:
+  - "Added the ability to disable statistic gathering"

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Benjamin Martin
+ * Copyright 2024 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,17 +19,15 @@ package net.lapismc.afkplus.playerdata;
 import net.lapismc.afkplus.AFKPlus;
 import net.lapismc.afkplus.api.AFKActionEvent;
 import net.lapismc.afkplus.api.AFKStartEvent;
+import net.lapismc.afkplus.api.AFKStatisticManager;
 import net.lapismc.afkplus.api.AFKStopEvent;
 import net.lapismc.afkplus.util.EssentialsAFKHook;
 import net.lapismc.lapiscore.compatibility.XSound;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -366,14 +364,10 @@ public class AFKPlusPlayer {
      * @return The total time spent AFK, 0 if there is no record for this player
      */
     public long getTotalTimeAFK() {
-        //Get or create the statistics file
-        File f = new File(plugin.getDataFolder(), "statistics.yml");
-        if (!f.exists()) {
-            return 0L;
-        }
-        YamlConfiguration statistics = YamlConfiguration.loadConfiguration(f);
-        //Grab the current value of the statistic so that we can add to it, or get 0L if there is no current value
-        return statistics.getLong(getName() + ".TimeSpentAFK", 0L);
+        //Get the statistics manager
+        AFKStatisticManager statisticManager = new AFKStatisticManager(plugin);
+        //Get and return the total time AFK
+        return statisticManager.getTotalTimeAFK(this);
     }
 
     /**
@@ -443,29 +437,12 @@ public class AFKPlusPlayer {
      * Records the time spent AFK and adds it to the already existing value in the statistics file
      */
     private void recordTimeStatistic() {
-        //Get or create the statistics file
-        File f = new File(plugin.getDataFolder(), "statistics.yml");
-        if (!f.exists()) {
-            try {
-                if (!f.createNewFile())
-                    throw new IOException("Failed to create " + f.getName());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        YamlConfiguration statistics = YamlConfiguration.loadConfiguration(f);
-        //Grab the current value of the statistic so that we can add to it, or get 0L if there is no current value
-        Long currentTimeSpendAFK = statistics.getLong(getName() + ".TimeSpentAFK", 0L);
+        //Load the statistics manager
+        AFKStatisticManager statisticManager = new AFKStatisticManager(plugin);
         //Calculate the amount of time that the player was AFK for
         Long timeAFK = System.currentTimeMillis() - afkStart;
-        //Set the value to be the old value plus the most recent amount of time AFK
-        statistics.set(getName() + ".TimeSpentAFK", currentTimeSpendAFK + timeAFK);
-        //Save the file
-        try {
-            statistics.save(f);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //Tell the manager to increment the players time by this amount
+        statisticManager.incrementTotalTimeAFK(this, timeAFK);
     }
 
     /**
