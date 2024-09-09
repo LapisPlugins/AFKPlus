@@ -1,4 +1,4 @@
-ConfigVersion: 2
+ConfigVersion: 3
 
 PrimaryColor: "&6"
 SecondaryColor: "&3"
@@ -13,6 +13,12 @@ Broadcast:
   Start: "&8[&6AFK&4+&8] &s{PLAYER}&p is now AFK"
   #You may also add a {TIME} variable that will be replaced by how long the player was AFK
   Stop: "&8[&6AFK&4+&8] &s{PLAYER}&p is no longer AFK"
+
+#These messages are sent to the individual who's AFK status is changing
+Self:
+  Start: "&8[&6AFK&4+&8] &sYou&p are now AFK"
+  #You may also add a {TIME} variable that will be replaced by how long the player was AFK
+  Stop: "&8[&6AFK&4+&8] &sYou&p are no longer AFK"
 
 Updater:
   NoUpdate: "&pThere is no update available"

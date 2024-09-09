@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Benjamin Martin
+ * Copyright 2024 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,17 +29,19 @@ import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 public class AFKStartEvent extends AFKCommandEvent {
 
     private final AFKPlusPlayer player;
-    private String broadcastMessage;
+    private String broadcastMessage, selfMessage;
 
     /**
      * @param player           The player being set as AFK
      * @param command          The command to be run after the event has finished
      * @param broadcastMessage The message that will be broadcast if the event succeeds
+     * @param selfMessage      The message that will be sent to the player if the event succeeds
      */
-    public AFKStartEvent(AFKPlusPlayer player, String command, String broadcastMessage) {
+    public AFKStartEvent(AFKPlusPlayer player, String command, String broadcastMessage, String selfMessage) {
         super(command);
         this.player = player;
         this.broadcastMessage = broadcastMessage;
+        this.selfMessage = selfMessage;
     }
 
     /**
@@ -67,5 +69,23 @@ public class AFKStartEvent extends AFKCommandEvent {
      */
     public void setBroadcastMessage(String broadcastMessage) {
         this.broadcastMessage = broadcastMessage;
+    }
+
+    /**
+     * Get the message that will be sent to the player if the event succeeds
+     *
+     * @return The message to be sent to the player
+     */
+    public String getSelfMessage() {
+        return selfMessage;
+    }
+
+    /**
+     * Set the message that will be sent to the player if the event succeeds
+     *
+     * @param selfMessage a String with color codes already parsed
+     */
+    public void setSelfMessage(String selfMessage) {
+        this.selfMessage = selfMessage;
     }
 }

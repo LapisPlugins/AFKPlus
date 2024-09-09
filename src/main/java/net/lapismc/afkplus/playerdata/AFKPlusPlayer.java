@@ -153,15 +153,17 @@ public class AFKPlusPlayer {
         }
         //Get the command and message for the AFK start event
         String command = plugin.getConfig().getString("Commands.AFKStart");
-        String message = getMessage("Broadcast.Start");
+        String broadcastMessage = getMessage("Broadcast.Start");
+        String selfMessage = getMessage("Self.Start");
         //Call the AKFStart event
-        AFKStartEvent event = new AFKStartEvent(this, command, message);
+        AFKStartEvent event = new AFKStartEvent(this, command, broadcastMessage, selfMessage);
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
             return;
         }
         //Broadcast the AFK start message
-        broadcast(event.getBroadcastMessage().replace("{PLAYER}", getName()));
+        broadcastOthers(event.getBroadcastMessage().replace("{PLAYER}", getName()));
+        selfMessage(event.getSelfMessage().replace("{PLAYER}", getName()));
         //Run AFK command
         runCommand(event.getCommand());
         //Play the AFK start sound
@@ -212,9 +214,10 @@ public class AFKPlusPlayer {
         }
         //Get the command and broadcast message
         String command = plugin.getConfig().getString("Commands.AFKStop");
-        String message = getMessage("Broadcast.Stop");
+        String broadcastMessage = getMessage("Broadcast.Stop");
+        String selfMessage = getMessage("Self.Stop");
         //Call the AKFStop event
-        AFKStopEvent event = new AFKStopEvent(this, command, message);
+        AFKStopEvent event = new AFKStopEvent(this, command, broadcastMessage, selfMessage);
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
             return;
@@ -224,7 +227,8 @@ public class AFKPlusPlayer {
         //This will replace the {TIME} variable, if present
         String afkTime = plugin.prettyTime.formatDuration(plugin.reduceDurationList
                 (plugin.prettyTime.calculatePreciseDuration(new Date(afkStart))));
-        broadcast(event.getBroadcastMessage().replace("{PLAYER}", getName()).replace("{TIME}", afkTime));
+        broadcastOthers(event.getBroadcastMessage().replace("{PLAYER}", getName()).replace("{TIME}", afkTime));
+        selfMessage(event.getSelfMessage().replace("{TIME}", afkTime));
         //Stop the AFK status
         forceStopAFK();
     }
@@ -301,15 +305,36 @@ public class AFKPlusPlayer {
     /**
      * Broadcast a message using the settings from the config
      *
-     * @param msg The message you wish to broadcast
+     * @param msg The message to broadcast
      */
-    public void broadcast(String msg) {
+    public void broadcastOthers(String msg) {
+        boolean console = plugin.getConfig().getBoolean("Broadcast.Console");
+        boolean otherPlayers = shouldBroadcastToOthers();
         //Don't broadcast if the message is empty
-        if (msg.isEmpty()) {
-            return;
+        if (!msg.isEmpty()) {
+            //Broadcast the message to console and other players if its enabled
+            if (console) {
+                Bukkit.getConsoleSender().sendMessage(msg);
+            }
+            if (otherPlayers) {
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    if (p.getUniqueId().equals(getUUID()))
+                        continue;
+                    p.sendMessage(msg);
+                }
+            }
         }
-        for (CommandSender recipient : getBroadcastRecipients()) {
-            recipient.sendMessage(msg);
+    }
+
+    /**
+     * Send the self message to the player if it is enabled
+     *
+     * @param msg The message to send
+     */
+    public void selfMessage(String msg) {
+        boolean self = plugin.getConfig().getBoolean("Broadcast.Self");
+        if (!msg.isEmpty()) {
+            Bukkit.getPlayer(getUUID()).sendMessage(msg);
         }
     }
 
