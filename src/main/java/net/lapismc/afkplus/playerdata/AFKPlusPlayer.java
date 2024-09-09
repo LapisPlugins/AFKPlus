@@ -228,7 +228,7 @@ public class AFKPlusPlayer {
         String afkTime = plugin.prettyTime.formatDuration(plugin.reduceDurationList
                 (plugin.prettyTime.calculatePreciseDuration(new Date(afkStart))));
         broadcastOthers(event.getBroadcastMessage().replace("{PLAYER}", getName()).replace("{TIME}", afkTime));
-        selfMessage(event.getSelfMessage().replace("{TIME}", afkTime));
+        selfMessage(event.getSelfMessage().replace("{PLAYER}", getName()).replace("{TIME}", afkTime));
         //Stop the AFK status
         forceStopAFK();
     }
