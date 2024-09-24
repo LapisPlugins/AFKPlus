@@ -204,10 +204,20 @@ public class AFKPlusPlayer {
     }
 
     /**
-     * Stops AFK for this player with a broadcast, Use {@link #forceStopAFK()} for a silent stop
+     * Stops AFK for this player with a broadcast, Use {@link #forceStopAFK()} or {@link #stopAFK(boolean)} for a silent stop
      * This can be cancelled with {@link AFKStopEvent}
      */
     public void stopAFK() {
+        stopAFK(false);
+    }
+
+    /**
+     * Stops AFK for this player with a broadcast, Use {@link #forceStopAFK()} for a silent stop
+     * This can be cancelled with {@link AFKStopEvent}
+     *
+     * @param silent Skips broadcasting when true, used to cleanly exit afk when a player disconnects
+     */
+    public void stopAFK(boolean silent) {
         if (Bukkit.getPlayer(getUUID()) == null) {
             //Player isn't online, stop here
             return;
@@ -227,8 +237,10 @@ public class AFKPlusPlayer {
         //This will replace the {TIME} variable, if present
         String afkTime = plugin.prettyTime.formatDuration(plugin.reduceDurationList
                 (plugin.prettyTime.calculatePreciseDuration(new Date(afkStart))));
-        broadcastOthers(event.getBroadcastMessage().replace("{PLAYER}", getName()).replace("{TIME}", afkTime));
-        selfMessage(event.getSelfMessage().replace("{PLAYER}", getName()).replace("{TIME}", afkTime));
+        if (!silent) {
+            broadcastOthers(event.getBroadcastMessage().replace("{PLAYER}", getName()).replace("{TIME}", afkTime));
+            selfMessage(event.getSelfMessage().replace("{PLAYER}", getName()).replace("{TIME}", afkTime));
+        }
         //Stop the AFK status
         forceStopAFK();
     }
