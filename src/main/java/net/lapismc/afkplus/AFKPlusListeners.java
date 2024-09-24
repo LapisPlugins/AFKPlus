@@ -66,7 +66,7 @@ public class AFKPlusListeners implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
-        plugin.getPlayer(e.getPlayer()).forceStopAFK();
+        plugin.getPlayer(e.getPlayer()).stopAFK(true);
     }
 
     @EventHandler

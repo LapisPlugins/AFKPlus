@@ -218,10 +218,9 @@ public class AFKPlusPlayer {
      * @param silent Skips broadcasting when true, used to cleanly exit afk when a player disconnects
      */
     public void stopAFK(boolean silent) {
-        if (Bukkit.getPlayer(getUUID()) == null) {
-            //Player isn't online, stop here
+        //Don't run if the player isn't actually AFK since we are running commands and messages
+        if (!isAFK())
             return;
-        }
         //Get the command and broadcast message
         String command = plugin.getConfig().getString("Commands.AFKStop");
         String broadcastMessage = getMessage("Broadcast.Stop");
@@ -330,6 +329,7 @@ public class AFKPlusPlayer {
             }
             if (otherPlayers) {
                 for (Player p : Bukkit.getOnlinePlayers()) {
+                    //Skip the player represented by this class, messages to them will be handled by selfMessage
                     if (p.getUniqueId().equals(getUUID()))
                         continue;
                     p.sendMessage(msg);
@@ -344,9 +344,13 @@ public class AFKPlusPlayer {
      * @param msg The message to send
      */
     public void selfMessage(String msg) {
+        //Get the config option for if players should be notified when they become AFK
         boolean self = plugin.getConfig().getBoolean("Broadcast.Self");
-        if (!msg.isEmpty()) {
-            Bukkit.getPlayer(getUUID()).sendMessage(msg);
+        //Get the player so we can null check them, this ensures that they are online
+        Player p = Bukkit.getPlayer(uuid);
+        //Check that the message has content, the player should receive messages and that the player is online
+        if (!msg.isEmpty() && self && p != null) {
+            p.sendMessage(msg);
         }
     }
 
