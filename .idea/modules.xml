@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AFKPlus.iml" filepath="$PROJECT_DIR$/.idea/modules/AFKPlus.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AFKPlus.main.iml" filepath="$PROJECT_DIR$/.idea/modules/AFKPlus.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/IdeaProjects.AFKPlus.main.iml" filepath="$PROJECT_DIR$/.idea/modules/IdeaProjects.AFKPlus.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/benja.IdeaProjects.AFKPlus.main.iml" filepath="$PROJECT_DIR$/.idea/modules/benja.IdeaProjects.AFKPlus.main.iml" />

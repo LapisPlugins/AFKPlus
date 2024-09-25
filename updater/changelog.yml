@@ -150,3 +150,6 @@
   - "Updated how aggressive AFK detection works and also added a better description in the config"
 3.4.3:
   - "Added the ability to disable statistic gathering"
+3.4.4:
+  - "Added a separation between messages sent to players when they go AFK and the message sent to everyone else"
+  - "Fixed the handling of afk start and stop commands when a player leaves the server or the server is shutdown"
