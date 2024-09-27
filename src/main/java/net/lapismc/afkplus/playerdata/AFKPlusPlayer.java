@@ -432,17 +432,27 @@ public class AFKPlusPlayer {
      */
     private void runCommand(String command) {
         //Ignore the command if it is blank, this is so that start/stop/warn events dont need to have commands
-        if (command.equals(""))
+        if (command.isEmpty())
             return;
         //Replace the player variable with the players name
         String cmd = command.replace("[PLAYER]", getName());
-        //Dispatch the command on the next game tick
-        Bukkit.getScheduler().runTask(plugin, () -> {
+        //Define a runnable to dispatch the command
+        Runnable commandTask = () -> {
             boolean activeState = isInactive;
             isInactive = true;
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
             isInactive = activeState;
-        });
+        };
+        //Check if we are on the primary thread
+        //If we aren't then we need to run in a task on the main thread to dispatch a command
+        //If we are, then we might be mid-disable which means we cant register a task
+        if (Bukkit.isPrimaryThread()) {
+            //We are on the main thread so we can run the command here
+            commandTask.run();
+        } else {
+            //Dispatch the command on the next game tick
+            Bukkit.getScheduler().runTask(plugin, commandTask);
+        }
     }
 
     /**

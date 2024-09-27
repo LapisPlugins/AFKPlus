@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Benjamin Martin
+ * Copyright 2024 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,20 +17,26 @@
 package net.lapismc.afkplus.commands;
 
 import net.lapismc.afkplus.AFKPlus;
+import net.lapismc.afkplus.commands.tabcomplete.PlayerNames;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.lapismc.afkplus.playerdata.Permission;
 import net.lapismc.afkplus.util.AFKPlusCommand;
+import net.lapismc.lapiscore.commands.tabcomplete.LapisCoreTabCompleter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class AFK extends AFKPlusCommand {
 
     public AFK(AFKPlus plugin) {
         super(plugin, "afk", "Toggle AFK status", new ArrayList<>());
+        LapisCoreTabCompleter tabCompleter = new LapisCoreTabCompleter();
+        tabCompleter.registerTopLevelOptions(this, Collections.singletonList(new PlayerNames(false)));
+        registerTabCompleter(tabCompleter);
     }
 
     @Override
@@ -67,7 +73,7 @@ public class AFK extends AFKPlusCommand {
                 return;
             }
             //Check that they are permitted to use this command
-            if (isNotPermitted(sender, Permission.AFKOthers)) {
+            if (isNotPermitted(sender, Permission.AFKOthers) && !args[0].equalsIgnoreCase(sender.getName())) {
                 sendMessage(sender, "Error.NotPermitted");
                 return;
             }

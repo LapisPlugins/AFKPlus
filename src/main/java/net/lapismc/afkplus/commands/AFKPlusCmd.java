@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Benjamin Martin
+ * Copyright 2024 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,13 @@
 package net.lapismc.afkplus.commands;
 
 import net.lapismc.afkplus.AFKPlus;
+import net.lapismc.afkplus.commands.tabcomplete.AFKPlusPlayerTabOption;
+import net.lapismc.afkplus.commands.tabcomplete.OtherAFKPlusOptions;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.lapismc.afkplus.playerdata.Permission;
 import net.lapismc.afkplus.util.AFKPlusCommand;
+import net.lapismc.lapiscore.commands.tabcomplete.LapisCoreTabCompleter;
+import net.lapismc.lapiscore.commands.tabcomplete.LapisTabOption;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -31,6 +35,12 @@ public class AFKPlusCmd extends AFKPlusCommand {
 
     public AFKPlusCmd(AFKPlus plugin) {
         super(plugin, "afkplus", "Shows plugin, player and help information", new ArrayList<>());
+        LapisCoreTabCompleter tabCompleter = new LapisCoreTabCompleter();
+        ArrayList<LapisTabOption> topLevelOptions = new ArrayList<>();
+        topLevelOptions.add(new AFKPlusPlayerTabOption());
+        topLevelOptions.add(new OtherAFKPlusOptions());
+        tabCompleter.registerTopLevelOptions(this, topLevelOptions);
+        registerTabCompleter(tabCompleter);
     }
 
     @Override

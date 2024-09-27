@@ -40,6 +40,10 @@ public class AFKPlusConfiguration extends LapisCoreConfiguration {
     public void reloadMessages() {
         //Run the super reload to actually reload the messages file
         super.reloadMessages();
+        //This is so that this code doesn't run on first load
+        //The plugin crashes without this
+        if (plugin == null)
+            return;
         //Get both the config and pretty time locales and compare them
         Locale configLocale = new Locale(getMessage("PrettyTimeLocale"));
         Locale prettyTimeLocale = plugin.prettyTime.getLocale();
