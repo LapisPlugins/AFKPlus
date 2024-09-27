@@ -21,8 +21,8 @@ import net.lapismc.afkplus.api.AFKPlusPlayerAPI;
 import net.lapismc.afkplus.commands.AFK;
 import net.lapismc.afkplus.commands.AFKPlusCmd;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
+import net.lapismc.afkplus.util.AFKPlusConfiguration;
 import net.lapismc.afkplus.util.AFKPlusContext;
-import net.lapismc.lapiscore.LapisCoreConfiguration;
 import net.lapismc.lapiscore.LapisCorePlugin;
 import net.lapismc.lapiscore.utils.LapisCoreFileWatcher;
 import net.lapismc.lapiscore.utils.LapisUpdater;
@@ -49,7 +49,7 @@ public final class AFKPlus extends LapisCorePlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        registerConfiguration(new LapisCoreConfiguration(this, 14, 3));
+        registerConfiguration(new AFKPlusConfiguration(this, 14, 3));
         registerPermissions(new AFKPlusPermissions(this));
         registerLuckPermsContext();
         update();
