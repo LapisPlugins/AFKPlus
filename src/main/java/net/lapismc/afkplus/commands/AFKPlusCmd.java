@@ -28,6 +28,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 
@@ -71,8 +72,22 @@ public class AFKPlusCmd extends AFKPlusCommand {
                     //no update available
                     sendMessage(sender, "Updater.NoUpdate");
                 }
-                // /afkplus help
+            } else if (args[0].equalsIgnoreCase("reload")) {
+                if (isNotPermitted(sender, Permission.CanReload)) {
+                    sendMessage(sender, "Error.NotPermitted");
+                    return;
+                }
+                // Reload the configs
+                plugin.reloadConfig();
+                plugin.perms.loadPermissions();
+                plugin.config.reloadMessages();
+                // Send the user of the command a message to let them know that the command worked
+                sendMessage(sender, "Reload");
+                //If the sender is a player, notify the console that AFKPlus has been reloaded
+                if (sender instanceof Player)
+                    plugin.getLogger().info(sender.getName() + " just reloaded AFKPlus configs!");
             } else if (!args[0].equalsIgnoreCase("player")) {
+                // /afkplus help
                 sendHelp(sender);
             }
             // /afkplus player

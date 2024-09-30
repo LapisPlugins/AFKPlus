@@ -1,4 +1,4 @@
-ConfigVersion: 3
+ConfigVersion: 4
 
 PrimaryColor: "&6"
 SecondaryColor: "&3"
@@ -24,6 +24,8 @@ Updater:
   NoUpdate: "&pThere is no update available"
   UpdateFound: "&pThere is an update available for AFKPlus"
   UpdateDownloading: "&pAn update was found and is being downloaded, it will be installed on the next server restart"
+
+Reload: "&pConfig files have been reloaded, any errors will be printed to the console"
 
 Player:
   AFK: "&s{PLAYER}&p has been AFK since &s{TIME}"

@@ -32,6 +32,8 @@ public class OtherAFKPlusOptions implements LapisTabOption {
         List<String> options = new ArrayList<>();
         if (AFKPlus.getInstance().perms.isPermitted(((Player) sender).getUniqueId(), Permission.CanUpdate.getPermission()))
             options.add("update");
+        if (AFKPlus.getInstance().perms.isPermitted(((Player) sender).getUniqueId(), Permission.CanReload.getPermission()))
+            options.add("reload");
         options.add("help");
         return options;
     }

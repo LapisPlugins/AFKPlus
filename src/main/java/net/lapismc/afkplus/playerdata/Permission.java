@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Benjamin Martin
+ * Copyright 2024 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,11 @@ public enum Permission {
     /**
      * Allows a player to update the plugin using /afkplus update
      */
-    CanUpdate(new Update());
+    CanUpdate(new Update()),
+    /**
+     * Allows a player to reload config and messages files with a command
+     */
+    CanReload(new Reload());
 
     private final LapisPermission permission;
 
@@ -111,6 +115,12 @@ public enum Permission {
     private static class Update extends LapisPermission {
         Update() {
             super("CanUpdate", 0);
+        }
+    }
+
+    private static class Reload extends LapisPermission {
+        Reload() {
+            super("CanReload", 0);
         }
     }
 }

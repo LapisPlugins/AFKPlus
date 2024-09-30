@@ -1,4 +1,4 @@
-ConfigVersion: 14
+ConfigVersion: 15
 
 #Should the plugin check for new updates, UpdateDownload will not work if this is set to false
 UpdateCheck: true
@@ -113,7 +113,7 @@ IgnoreAFKPlayersForSleep: true
 #Action and warning times are how long the player has been AFK, not how long since the last interact
 
 #You no longer need to list values that differ from the default values below
-# Default=0, Priority=0, AFKSelf=1, AFKOthers=0, FakeAFK=0, TimeToAFK=30, TimeToWarning=90, TimeToAction=120 and CanUpdate=0
+# Default=0, Priority=0, AFKSelf=1, AFKOthers=0, FakeAFK=0, TimeToAFK=30, TimeToWarning=90, TimeToAction=120, CanUpdate=0 and CanReload=0
 Permissions:
   afkplus,player:
     #Who should get this permission without it being given, 0 = no one, 1 = everyone, 2 = Ops
@@ -135,6 +135,8 @@ Permissions:
     TimeToAction: 120
     #Can this player use the update command to install new versions
     CanUpdate: 0
+    #Can this player use the reload command to reload the configuration files
+    CanReload: 0
   afkplus,vip:
     #If a player has more than 1 permission they will be given the one with the highest priority
     Priority: 2
@@ -167,3 +169,5 @@ Permissions:
     TimeToAction: -1
     #Can this player use the update command to install new versions
     CanUpdate: 1
+    #Can this player use the reload command to reload the configuration files
+    CanReload: 1

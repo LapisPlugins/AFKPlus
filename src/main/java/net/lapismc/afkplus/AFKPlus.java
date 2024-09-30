@@ -49,7 +49,7 @@ public final class AFKPlus extends LapisCorePlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        registerConfiguration(new AFKPlusConfiguration(this, 14, 3));
+        registerConfiguration(new AFKPlusConfiguration(this, 15, 4));
         registerPermissions(new AFKPlusPermissions(this));
         registerLuckPermsContext();
         update();
