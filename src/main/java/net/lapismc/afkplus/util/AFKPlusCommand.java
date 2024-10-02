@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Benjamin Martin
+ * Copyright 2024 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,14 +35,41 @@ public abstract class AFKPlusCommand extends LapisCoreCommand {
         this.plugin = plugin;
     }
 
+    /**
+     * Check if a command sender is given the provided permission by the configured permission system
+     *
+     * @param sender     A command sender, could be a player or the console, who needs a permissions check
+     * @param permission The permission type to check
+     * @return true if the player is NOT permitted, otherwise false
+     */
     protected boolean isNotPermitted(CommandSender sender, Permission permission) {
         return !isPermitted(sender, permission.getPermission());
     }
 
+    /**
+     * Get a formatted string that is relative (Includes ago/from now)
+     * @param epoch The system time to calculate to
+     * @return a formatted relative string for how far away the given time is
+     */
     protected String getTimeDifference(Long epoch) {
         return plugin.prettyTime.format(plugin.reduceDurationList(plugin.prettyTime.calculatePreciseDuration(new Date(epoch))));
     }
 
+    /**
+     * Get a relative time string but without the relative time language at the end (e.g. no from now/ago)
+     *
+     * @param epoch The system time to calculate to
+     * @return a raw relative string for how far away the given time is
+     */
+    protected String getTimeDuration(Long epoch) {
+        return plugin.prettyTime.formatDuration(plugin.reduceDurationList(plugin.prettyTime.calculatePreciseDuration(new Date(epoch))));
+    }
+
+    /**
+     * Get an AFKPlus Player class instance from a given offline player
+     * @param op The player that the class should represent
+     * @return an AFKPlus Player class for the provided player
+     */
     protected AFKPlusPlayer getPlayer(OfflinePlayer op) {
         return plugin.getPlayer(op);
     }

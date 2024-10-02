@@ -17,6 +17,7 @@
 package net.lapismc.afkplus.commands;
 
 import net.lapismc.afkplus.AFKPlus;
+import net.lapismc.afkplus.api.AFKStatisticManager;
 import net.lapismc.afkplus.commands.tabcomplete.AFKPlusPlayerTabOption;
 import net.lapismc.afkplus.commands.tabcomplete.OtherAFKPlusOptions;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
@@ -24,6 +25,7 @@ import net.lapismc.afkplus.playerdata.Permission;
 import net.lapismc.afkplus.util.AFKPlusCommand;
 import net.lapismc.lapiscore.commands.tabcomplete.LapisCoreTabCompleter;
 import net.lapismc.lapiscore.commands.tabcomplete.LapisTabOption;
+import net.lapismc.lapiscore.permissions.PlayerPermission;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -121,6 +123,7 @@ public class AFKPlusCmd extends AFKPlusCommand {
                 return;
             }
             AFKPlusPlayer player = getPlayer(op);
+            //Send the players current AFK status plus how long that have been AFK if they are AFK
             if (player.isAFK()) {
                 Long afkStart = player.getAFKStart();
                 String message = plugin.config.getMessage("Player.AFK").replace("{PLAYER}", player.getName())
@@ -129,6 +132,35 @@ public class AFKPlusCmd extends AFKPlusCommand {
             } else {
                 String message = plugin.config.getMessage("Player.NotAFK").replace("{PLAYER}", player.getName());
                 sender.sendMessage(message);
+            }
+            //Send AFK Statistics if they are enabled
+            AFKStatisticManager stats = new AFKStatisticManager(plugin);
+            if (stats.isEnabled()) {
+                //Get the amount of time that the player has spent AFK
+                Long timeSpentAFK = stats.getTotalTimeAFK(player);
+                //Add accumulated time to the current time so that we have a relative time for PrettyTime
+                Long relativeTime = System.currentTimeMillis() + timeSpentAFK;
+                //Calculate and replace the time into the message
+                String msg = plugin.config.getMessage("Player.Stats").replace("{TIME}", getTimeDuration(relativeTime));
+                sender.sendMessage(msg);
+            }
+            //Send the players assigned permission
+            PlayerPermission perm = plugin.perms.calculatePermission(player.getUUID());
+            //Check that we have a stored permission for the player, if not, don't try to send it
+            if (perm != null) {
+                String permissionMessage = plugin.config.getMessage("Player.Permission") + perm.getPermission().getName();
+                sender.sendMessage(permissionMessage);
+            }
+            //Check if aggressive AFK detection is enabled
+            if (plugin.getConfig().getBoolean("AggressiveAFKDetection") && player.isOnline()) {
+                //Check if the player has been marked as inactive by aggressive AFK detection
+                boolean isPlayerInactive = player.isInactive();
+                //Send the appropriate message from the messages yaml based on the players inactive state
+                if (isPlayerInactive) {
+                    sendMessage(sender, "Player.Inactive");
+                } else {
+                    sendMessage(sender, "Player.Active");
+                }
             }
         } else {
             sendMessage(sender, "Help.AFKPlusPlayer");

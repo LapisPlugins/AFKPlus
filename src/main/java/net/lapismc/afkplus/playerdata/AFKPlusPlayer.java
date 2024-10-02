@@ -24,11 +24,12 @@ import net.lapismc.afkplus.api.AFKStopEvent;
 import net.lapismc.afkplus.util.EssentialsAFKHook;
 import net.lapismc.lapiscore.compatibility.XSound;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
-import java.util.*;
+import java.util.Date;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * This class can be used to start, stop and check AFK as well as the values used to start and stop AFK
@@ -89,6 +90,16 @@ public class AFKPlusPlayer {
     }
 
     /**
+     * Check if the player has been marked as inactive by aggressive AFK detection
+     * This will be true if the player has been exhibiting the behaviours tested for in the aggressive AFK detection code
+     *
+     * @return true if the player is labeled as inactive
+     */
+    public boolean isInactive() {
+        return isInactive;
+    }
+
+    /**
      * Check if the player is permitted to do something
      * Permissions are stored in {@link Permission} as an Enumeration
      *
@@ -103,11 +114,12 @@ public class AFKPlusPlayer {
      * Warn the player with a message and sound if enabled
      */
     public void warnPlayer() {
-        isWarned = true;
-        Player p = Bukkit.getPlayer(uuid);
-        if (p == null) {
+        if (!isOnline()) {
+            //Make sure the player is online
             return;
         }
+        isWarned = true;
+        Player p = Bukkit.getPlayer(uuid);
         //Send the player the warning message
         p.sendMessage(getMessage("Warning"));
         //Play the warning sound from the config
@@ -147,7 +159,7 @@ public class AFKPlusPlayer {
      * This can be cancelled with {@link AFKStartEvent}
      */
     public void startAFK() {
-        if (Bukkit.getPlayer(getUUID()) == null) {
+        if (!isOnline()) {
             //Player isn't online, stop here
             return;
         }
@@ -283,37 +295,6 @@ public class AFKPlusPlayer {
     }
 
     /**
-     * Get the list of recipients for a broadcast
-     *
-     * @return Returns a list of command senders that the broadcast should be sent to
-     */
-    public Set<CommandSender> getBroadcastRecipients() {
-        boolean console = plugin.getConfig().getBoolean("Broadcast.Console");
-        boolean otherPlayers = shouldBroadcastToOthers();
-        boolean self = plugin.getConfig().getBoolean("Broadcast.Self");
-
-        Set<CommandSender> recipients = new HashSet<>();
-        // console
-        if (console) {
-            recipients.add(Bukkit.getConsoleSender());
-        }
-        // otherPlayers
-        if (otherPlayers) {
-            recipients.addAll(Bukkit.getOnlinePlayers());
-        }
-        // self
-        Player player = Bukkit.getPlayer(getUUID());
-        if (player != null) {
-            if (self) {
-                recipients.add(player);
-            } else {
-                recipients.remove(player);
-            }
-        }
-        return recipients;
-    }
-
-    /**
      * Broadcast a message using the settings from the config
      *
      * @param msg The message to broadcast
@@ -388,7 +369,7 @@ public class AFKPlusPlayer {
      * @return Returns true if the player is currently vanished
      */
     public boolean isVanished() {
-        if (!Bukkit.getOfflinePlayer(getUUID()).isOnline()) {
+        if (!isOnline()) {
             return false;
         }
         Player p = Bukkit.getPlayer(getUUID());
@@ -398,11 +379,21 @@ public class AFKPlusPlayer {
         return false;
     }
 
+
+    /**
+     * Check if this player is currently online
+     *
+     * @return true if the player is online, otherwise false
+     */
+    public boolean isOnline() {
+        return Bukkit.getOfflinePlayer(getUUID()).isOnline();
+    }
+
     /**
      * Get the total time that a player has been AFK
      * This is the sum of all time that the player has been AFK
      *
-     * @return The total time spent AFK, 0 if there is no record for this player
+     * @return The total time spent AFK, 0 if there is no record for this player, -1 if stats are not enabled
      */
     public long getTotalTimeAFK() {
         //Get the statistics manager
@@ -472,9 +463,9 @@ public class AFKPlusPlayer {
      * @param def         The sound to be used if the sound in the config isn't valid
      */
     private void playSound(String pathToSound, XSound def) {
-        Player p = Bukkit.getPlayer(getUUID());
-        if (p == null || !p.isOnline())
+        if (!isOnline())
             return;
+        Player p = Bukkit.getPlayer(getUUID());
         String soundName = plugin.getConfig().getString(pathToSound);
         if ("".equals(soundName) || soundName == null)
             return;
@@ -505,7 +496,7 @@ public class AFKPlusPlayer {
      */
     public Runnable getRepeatingTask() {
         return () -> {
-            if (Bukkit.getOfflinePlayer(getUUID()).isOnline()) {
+            if (isOnline()) {
                 if (isAFK) {
                     boolean isAtPlayerRequirement;
                     int playersRequired = plugin.getConfig().getInt("ActionPlayerRequirement");

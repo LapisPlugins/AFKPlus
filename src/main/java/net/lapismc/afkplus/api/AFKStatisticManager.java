@@ -61,6 +61,15 @@ public class AFKStatisticManager {
     }
 
     /**
+     * Get the status of the statistics subsystem
+     *
+     * @return true if statistics are enabled, otherwise false
+     */
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
      * Get the total accumulated time that this player has been AFK
      *
      * @param player The player you wish to get stats for
