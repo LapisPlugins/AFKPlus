@@ -31,6 +31,7 @@ Reload: "&pConfig files have been reloaded, any errors will be printed to the co
 Player:
   AFK: "&s{PLAYER}&p has been AFK since &s{TIME}"
   NotAFK: "&s{PLAYER}&p is not AFK"
+  NotOnline: "&s{PLAYER}&p is not currently online"
   Stats: "&pThey have spent &s{TIME}&p AFK in total"
   #The current permission assigned to this player will be appended to this string
   Permission: "&pPlayers permission: &s"

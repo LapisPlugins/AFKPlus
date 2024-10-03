@@ -124,13 +124,16 @@ public class AFKPlusCmd extends AFKPlusCommand {
             }
             AFKPlusPlayer player = getPlayer(op);
             //Send the players current AFK status plus how long that have been AFK if they are AFK
-            if (player.isAFK()) {
+            if (player.isAFK() && player.isOnline()) {
                 Long afkStart = player.getAFKStart();
                 String message = plugin.config.getMessage("Player.AFK").replace("{PLAYER}", player.getName())
                         .replace("{TIME}", getTimeDifference(afkStart));
                 sender.sendMessage(message);
-            } else {
+            } else if (player.isOnline()) {
                 String message = plugin.config.getMessage("Player.NotAFK").replace("{PLAYER}", player.getName());
+                sender.sendMessage(message);
+            } else {
+                String message = plugin.config.getMessage("Player.NotOnline").replace("{PLAYER}", player.getName());
                 sender.sendMessage(message);
             }
             //Send AFK Statistics if they are enabled
