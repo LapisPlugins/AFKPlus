@@ -33,6 +33,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -121,6 +122,16 @@ public class AFKPlusListeners implements Listener {
     public void onPlayerInteract(PlayerInteractEvent e) {
         if (plugin.getConfig().getBoolean("EnabledDetections.Interact")) {
             plugin.getPlayer(e.getPlayer()).interact();
+        }
+    }
+
+    @EventHandler
+    public void onPlayerInventoryInteract(InventoryInteractEvent e) {
+        if (!(e.getWhoClicked() instanceof Player)) {
+            return;
+        }
+        if (plugin.getConfig().getBoolean("EnabledDetections.GUI")) {
+            plugin.getPlayer(e.getWhoClicked().getUniqueId()).interact();
         }
     }
 

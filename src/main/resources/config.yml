@@ -1,4 +1,4 @@
-ConfigVersion: 15
+ConfigVersion: 16
 
 #Should the plugin check for new updates, UpdateDownload will not work if this is set to false
 UpdateCheck: true
@@ -53,6 +53,8 @@ EnabledDetections:
   Command: true
   #Right-clicking blocks
   Interact: true
+  #Intertacting with an inventory or entity GUI
+  GUI: true
   #Placing blocks
   BlockPlace: true
   #Breaking blocks
