@@ -157,5 +157,5 @@
   - "PrettyTime now gets reloaded when the locale changes in the config"
   - "Added proper tab completion to commands including permission check based completions"
   - "Added a /afkplus reload command to force a config reload"
-  - "(NOTE: to use this, you need to add a \"CanReload: 1\" to the permission group you wish to allow to reload the configs)"
-  - "Added more details to the \"/afkplus player name\" output"
+  - "(NOTE: to use this, you need to add a CanReload: 1 to the permission group you wish to allow to reload the configs)"
+  - "Added more details to the /afkplus player name output"
