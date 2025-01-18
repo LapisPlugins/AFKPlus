@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Benjamin Martin
+ * Copyright 2025 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -343,7 +343,7 @@ public class AFKPlusPlayer {
         AFKActionEvent event = new AFKActionEvent(this, command);
         Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
-            forceStopAFK();
+            stopAFK(true);
             runCommand(event.getCommand());
         }
     }

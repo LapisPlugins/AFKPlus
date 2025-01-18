@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Benjamin Martin
+ * Copyright 2025 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
@@ -120,8 +121,16 @@ public class AFKPlusListeners implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
-        if (plugin.getConfig().getBoolean("EnabledDetections.Interact")) {
-            plugin.getPlayer(e.getPlayer()).interact();
+        if (e.getAction() == Action.PHYSICAL) {
+            //Physical Actions include stepping on redstone ore, pressure plates, trip wire or jumping on soil
+            if (plugin.getConfig().getBoolean("EnabledDetections.PhysicalInteract")) {
+                plugin.getPlayer(e.getPlayer()).interact();
+            }
+        } else {
+            //All other action are click based, e.g. Left/Right Clicking Air/Blocks
+            if (plugin.getConfig().getBoolean("EnabledDetections.ClickInteract")) {
+                plugin.getPlayer(e.getPlayer()).interact();
+            }
         }
     }
 

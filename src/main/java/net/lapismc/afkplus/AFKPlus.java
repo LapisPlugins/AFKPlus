@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Benjamin Martin
+ * Copyright 2025 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ public final class AFKPlus extends LapisCorePlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        registerConfiguration(new AFKPlusConfiguration(this, 16, 5));
+        registerConfiguration(new AFKPlusConfiguration(this, 17, 5));
         registerPermissions(new AFKPlusPermissions(this));
         registerLuckPermsContext();
         update();
