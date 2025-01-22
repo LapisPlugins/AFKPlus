@@ -159,3 +159,7 @@
   - "Added a /afkplus reload command to force a config reload"
   - "(NOTE: to use this, you need to add a CanReload: 1 to the permission group you wish to allow to reload the configs)"
   - "Added more details to the /afkplus player name output"
+3.4.6:
+  - "Added GUI Interaction as a detection"
+  - "Split Interact into ClickInteract and PhysicalInteract since they detect different types of world interactions"
+  - "Added a messages prefix to simplify the messages.yml"
