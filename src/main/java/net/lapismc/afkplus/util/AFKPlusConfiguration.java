@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Benjamin Martin
+ * Copyright 2025 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package net.lapismc.afkplus.util;
 
 import net.lapismc.afkplus.AFKPlus;
 import net.lapismc.lapiscore.LapisCoreConfiguration;
+import org.bukkit.OfflinePlayer;
 import org.ocpsoft.prettytime.PrettyTime;
 import org.ocpsoft.prettytime.units.JustNow;
 import org.ocpsoft.prettytime.units.Millisecond;
@@ -34,6 +35,18 @@ public class AFKPlusConfiguration extends LapisCoreConfiguration {
     public AFKPlusConfiguration(AFKPlus plugin, int configVersion, int messagesVersion) {
         super(plugin, configVersion, messagesVersion);
         this.plugin = plugin;
+    }
+
+    @Override
+    public String getMessage(String key) {
+        String msg = super.getMessage(key);
+        msg = msg.replace("{PREFIX}", super.getMessage("Prefix"));
+        return msg;
+    }
+
+    @Override
+    public String getMessage(String key, OfflinePlayer op) {
+        return colorMessage(replacePlaceholders(super.getMessage(key), op)).replace("{PREFIX}", super.getMessage("Prefix"));
     }
 
     @Override

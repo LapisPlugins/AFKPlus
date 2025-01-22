@@ -1,7 +1,11 @@
-ConfigVersion: 5
+ConfigVersion: 6
 
+#Primary and secondary colors will replace &p and &s in any messages
 PrimaryColor: "&6"
 SecondaryColor: "&3"
+
+#This prefix will replace {PREFIX} in all messages
+Prefix: "&8[&6AFK&4+&8]"
 
 #The language used for time values like "60 minutes from now"
 #Accepted values can be found at http://www.ocpsoft.org/prettytime/#i18n
@@ -10,15 +14,15 @@ PrettyTimeLocale: "en"
 
 #These are sent to all players when AFK starts and stops
 Broadcast:
-  Start: "&8[&6AFK&4+&8] &s{PLAYER}&p is now AFK"
+  Start: "{PREFIX} &s{PLAYER}&p is now AFK"
   #You may also add a {TIME} variable that will be replaced by how long the player was AFK
-  Stop: "&8[&6AFK&4+&8] &s{PLAYER}&p is no longer AFK"
+  Stop: "{PREFIX} &s{PLAYER}&p is no longer AFK"
 
 #These messages are sent to the individual who's AFK status is changing
 Self:
-  Start: "&8[&6AFK&4+&8] &sYou&p are now AFK"
+  Start: "{PREFIX} &sYou&p are now AFK"
   #You may also add a {TIME} variable that will be replaced by how long the player was AFK
-  Stop: "&8[&6AFK&4+&8] &sYou&p are no longer AFK"
+  Stop: "{PREFIX} &sYou&p are no longer AFK"
 
 Updater:
   NoUpdate: "&pThere is no update available"
@@ -40,7 +44,7 @@ Player:
   Inactive: "&sThis player has been behaving in a way that MIGHT mean they are trying to avoid AFK detection, they have been marked as inactive"
 
 #Sent when the player is AFK long enough for a warning to be sent
-Warning: "&8[&6AFK&4+&8]&p You will be kicked for AFK soon!"
+Warning: "{PREFIX}&p You will be kicked for AFK soon!"
 
 Help:
   Help: "The following is a list of commands and their uses:\n"
