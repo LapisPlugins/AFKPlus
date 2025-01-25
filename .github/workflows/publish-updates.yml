@@ -1,0 +1,41 @@
+name: Publish Updates
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: "contains(github.event.head_commit.message, 'Update')"
+    
+    permissions:
+      contents: write
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: "get env variables"
+        id: "get_env_var"
+        run: |
+          #!/bin/bash
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          # "Update M.m.b"
+          COMMIT_MESSAGE_HEADER=$(git log -1 --pretty=%B | head -n 1)
+          # M.m.b
+          COMMIT_VER_TAG=$(echo ${COMMIT_MESSAGE_HEADER/"Update "/""})
+          # Changelog
+          CHANGELOG=$(tail -n +2 <<< $COMMIT_MESSAGE)
+          # Push them to env
+          echo "COMMIT_VER_TAG=${COMMIT_VER_TAG}" >> $GITHUB_ENV
+          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
+          echo "${CHANGELOG}" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+      
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "updater/AFKPlus/AFKPlus.jar"
+          body: ${{ env.CHANGELOG }}
+          tag: ${{ env.COMMIT_VER_TAG }}
+          name: "Update ${{ env.COMMIT_VER_TAG }}"
