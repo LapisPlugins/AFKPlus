@@ -63,6 +63,11 @@ public class AFKPlusListeners implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
+        //TODO: Check here if the player has been offline for some amount of time.
+        //If they have only recently left then we wont run forceStop since it triggers an interact
+        //This will stop players from reconnecting to reset their AFK timer
+        //If the player has been offline for more than a few minutes, we can run forceStop as we used to
+        //This will ensure that all settings are reset to start tracking AFK time and interacts from right now
         plugin.getPlayer(e.getPlayer()).forceStopAFK();
     }
 
