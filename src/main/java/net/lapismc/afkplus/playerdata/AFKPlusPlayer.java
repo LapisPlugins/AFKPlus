@@ -28,6 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -213,7 +214,7 @@ public class AFKPlusPlayer {
         broadcastOthers(event.getBroadcastMessage().replace("{PLAYER}", getName()));
         selfMessage(event.getSelfMessage().replace("{PLAYER}", getName()));
         //Run AFK command
-        runCommand(event.getCommand());
+        runCommands(event.getCommand());
         //Play the AFK start sound
         playSound("AFKStartSound", XSound.BLOCK_ANVIL_HIT);
         //Start the AFK
@@ -279,7 +280,7 @@ public class AFKPlusPlayer {
         if (event.isCancelled()) {
             return;
         }
-        runCommand(event.getCommand());
+        runCommands(event.getCommand());
         //Get a string that is the user-friendly version of how long the player was AFK
         //This will replace the {TIME} variable, if present
         String afkTime = plugin.prettyTime.formatDuration(plugin.reduceDurationList
@@ -380,7 +381,7 @@ public class AFKPlusPlayer {
         Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
             stopAFK(true);
-            runCommand(event.getCommand());
+            runCommands(event.getCommand());
         }
     }
 
@@ -472,20 +473,24 @@ public class AFKPlusPlayer {
 
     /**
      * Handles the running of a command with a player variable, this is used for AFK start/stop/warn/action commands
+     * The string can split commands using a semicolon
      *
-     * @param command The command to be run with "[PLAYER]" in place of the players name
+     * @param commandsString The command to be run with "[PLAYER]" in place of the players name
      */
-    private void runCommand(String command) {
-        //Ignore the command if it is blank, this is so that start/stop/warn events dont need to have commands
-        if (command.isEmpty())
+    private void runCommands(String commandsString) {
+        //Ignore the command if it is blank, this is so that start/stop/warn events don't need to have commands
+        if (commandsString.isEmpty())
             return;
         //Replace the player variable with the players name
-        String cmd = command.replace("[PLAYER]", getName());
+        String finalCommandsString = commandsString.replace("[PLAYER]", getName());
         //Define a runnable to dispatch the command
         Runnable commandTask = () -> {
             boolean activeState = isInactive;
             isInactive = true;
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+            List<String> commands = List.of(finalCommandsString.split(";"));
+            for (String command : commands) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+            }
             isInactive = activeState;
         };
         //Check if we are on the primary thread
