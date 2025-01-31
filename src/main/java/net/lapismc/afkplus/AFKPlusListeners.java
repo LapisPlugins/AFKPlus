@@ -18,6 +18,7 @@ package net.lapismc.afkplus;
 
 import net.lapismc.afkplus.api.AFKMachineDetectEvent;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
+import net.lapismc.afkplus.playerdata.AFKSession;
 import net.lapismc.afkplus.util.EntitySpawnManager;
 import net.lapismc.afkplus.util.PlayerMovementMonitoring;
 import net.lapismc.afkplus.util.PlayerMovementStorage;
@@ -63,17 +64,19 @@ public class AFKPlusListeners implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        //TODO: Check here if the player has been offline for some amount of time.
-        //If they have only recently left then we wont run forceStop since it triggers an interact
-        //This will stop players from reconnecting to reset their AFK timer
-        //If the player has been offline for more than a few minutes, we can run forceStop as we used to
-        //This will ensure that all settings are reset to start tracking AFK time and interacts from right now
-        plugin.getPlayer(e.getPlayer()).forceStopAFK();
+        //Load the players session if one is stored
+        AFKSession session = plugin.getPlayerSession(e.getPlayer().getUniqueId());
+        //If the session is null, it means we didn't have one stored, so run the old code
+        //But otherwise we let the session handle it
+        if (session == null)
+            plugin.getPlayer(e.getPlayer()).forceStopAFK();
+        else
+            session.processReconnect(plugin.getPlayer(e.getPlayer()));
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
-        plugin.getPlayer(e.getPlayer()).stopAFK(true);
+        plugin.storeAFKSession(new AFKSession(plugin, plugin.getPlayer(e.getPlayer())));
     }
 
     @EventHandler

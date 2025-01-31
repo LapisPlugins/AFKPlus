@@ -64,7 +64,7 @@ public class AFKPlusPlayer {
     /**
      * Get the UUID of the player
      *
-     * @return Returns the UUID of the player
+     * @return the UUID of the player
      */
     public UUID getUUID() {
         return uuid;
@@ -73,7 +73,7 @@ public class AFKPlusPlayer {
     /**
      * Get the players username
      *
-     * @return Returns the name of the player
+     * @return the name of the player
      */
     public String getName() {
         return Bukkit.getOfflinePlayer(uuid).getName();
@@ -104,7 +104,7 @@ public class AFKPlusPlayer {
      * Permissions are stored in {@link Permission} as an Enumeration
      *
      * @param perm The permission you wish to check
-     * @return Returns true if the player DOESN'T have the permission
+     * @return true if the player DOESN'T have the permission
      */
     public boolean isNotPermitted(Permission perm) {
         return !plugin.perms.isPermitted(uuid, perm.getPermission());
@@ -127,9 +127,27 @@ public class AFKPlusPlayer {
     }
 
     /**
+     * Check if the user has received a warning about being acted upon for being AFK
+     *
+     * @return true if the player has been warned, otherwise false
+     */
+    public boolean isWarned() {
+        return isWarned;
+    }
+
+    /**
+     * Set the warned state of the user, this is only used when resuming sessions
+     *
+     * @param isWarned the desired state of isWarned
+     */
+    protected void setIsWarned(boolean isWarned) {
+        this.isWarned = isWarned;
+    }
+
+    /**
      * Check if the player is AFK
      *
-     * @return returns true if the player is currently AFK
+     * @return true if the player is currently AFK
      */
     public boolean isAFK() {
         return isAFK;
@@ -138,20 +156,38 @@ public class AFKPlusPlayer {
     /**
      * Check if the players AFK state is fake
      *
-     * @return returns true if the player is both AFK and the AFK state is faked
+     * @return true if the player is both AFK and the AFK state is faked
      */
     public boolean isFakeAFK() {
         return isAFK && isFakeAFK;
     }
 
     /**
+     * Set the fake AFK attribute after the fact, this is only used to restore sessions
+     *
+     * @param isFakeAFK the desired value for isFakeAFK
+     */
+    protected void setFakeAFK(boolean isFakeAFK) {
+        this.isFakeAFK = isFakeAFK;
+    }
+
+    /**
      * Get the system time when the player became AFK
      * Could be null if the player is not AFK
      *
-     * @return Returns the System.currentTimeMillis() when the player was set AFK
+     * @return the System.currentTimeMillis() when the player was set AFK
      */
     public Long getAFKStart() {
         return afkStart;
+    }
+
+    /**
+     * Set the time when the player entered AFK, this is used for resuming AFK after reconnect
+     *
+     * @param afkStart The UNIX Epoch of when the player entered AFK
+     */
+    protected void setAFKStart(Long afkStart) {
+        this.afkStart = afkStart;
     }
 
     /**
@@ -286,7 +322,7 @@ public class AFKPlusPlayer {
     /**
      * Check if the player's AFK status should be broadcast to other players
      *
-     * @return Returns whether the player's AFK message should be broadcast to other players
+     * @return whether the player's AFK message should be broadcast to other players
      */
     public boolean shouldBroadcastToOthers() {
         boolean vanish = plugin.getConfig().getBoolean("Broadcast.Vanish");
@@ -353,8 +389,8 @@ public class AFKPlusPlayer {
      * This will stop AFK if a player is AFK and update the lastInteract value
      */
     public void interact() {
-        //Don't allow interact when the player is inactive
-        //Inactive is decided by the listener class checking location data
+        //Don't allow the player to interact when the player is inactive
+        //Inactivity is decided by the listener class checking location data
         if (isInactive)
             return;
         lastInteract = System.currentTimeMillis();
@@ -364,9 +400,27 @@ public class AFKPlusPlayer {
     }
 
     /**
+     * This is the UNIX Epoch at the time that the player last triggered an interact event based on the current config
+     *
+     * @return the last time the player interacted
+     */
+    public Long getLastInteract() {
+        return lastInteract;
+    }
+
+    /**
+     * Set the last interact time for this player, used when resuming sessions
+     *
+     * @param lastInteract the UNIX Epoch at the time the player last interacted with the world
+     */
+    protected void setLastInteract(Long lastInteract) {
+        this.lastInteract = lastInteract;
+    }
+
+    /**
      * Check if a player is currently vanished
      *
-     * @return Returns true if the player is currently vanished
+     * @return true if the player is currently vanished
      */
     public boolean isVanished() {
         if (!isOnline()) {
@@ -492,7 +546,7 @@ public class AFKPlusPlayer {
      * It is run every second by default
      * This should not be used else where
      *
-     * @return Returns the runnable used for AFK detection
+     * @return the runnable used for AFK detection
      */
     public Runnable getRepeatingTask() {
         return () -> {

@@ -21,6 +21,7 @@ import net.lapismc.afkplus.api.AFKPlusPlayerAPI;
 import net.lapismc.afkplus.commands.AFK;
 import net.lapismc.afkplus.commands.AFKPlusCmd;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
+import net.lapismc.afkplus.playerdata.AFKSession;
 import net.lapismc.afkplus.util.AFKPlusConfiguration;
 import net.lapismc.afkplus.util.AFKPlusContext;
 import net.lapismc.lapiscore.LapisCorePlugin;
@@ -44,16 +45,17 @@ public final class AFKPlus extends LapisCorePlugin {
     public PrettyTime prettyTime;
     public LapisUpdater updater;
     private final HashMap<UUID, AFKPlusPlayer> players = new HashMap<>();
+    private final HashMap<UUID, AFKSession> playerSessions = new HashMap<>();
     private AFKPlusListeners listeners;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        registerConfiguration(new AFKPlusConfiguration(this, 17, 6));
+        registerConfiguration(new AFKPlusConfiguration(this, 18, 7));
         registerPermissions(new AFKPlusPermissions(this));
         registerLuckPermsContext();
         update();
-        new LapisCoreFileWatcher(this);
+        fileWatcher = new LapisCoreFileWatcher(this);
         Locale loc = new Locale(config.getMessage("PrettyTimeLocale"));
         prettyTime = new PrettyTime(loc);
         prettyTime.removeUnit(JustNow.class);
@@ -91,6 +93,14 @@ public final class AFKPlus extends LapisCorePlugin {
 
     public AFKPlusPlayer getPlayer(OfflinePlayer op) {
         return getPlayer(op.getUniqueId());
+    }
+
+    public AFKSession getPlayerSession(UUID uuid) {
+        return playerSessions.getOrDefault(uuid, null);
+    }
+
+    public void storeAFKSession(AFKSession session) {
+        playerSessions.put(session.getUUID(), session);
     }
 
     private void update() {

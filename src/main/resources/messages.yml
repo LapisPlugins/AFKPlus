@@ -1,4 +1,4 @@
-ConfigVersion: 6
+ConfigVersion: 7
 
 #Primary and secondary colors will replace &p and &s in any messages
 PrimaryColor: "&6"
@@ -23,6 +23,8 @@ Self:
   Start: "{PREFIX} &sYou&p are now AFK"
   #You may also add a {TIME} variable that will be replaced by how long the player was AFK
   Stop: "{PREFIX} &sYou&p are no longer AFK"
+  #The message sent to players when they join and are immediately set as AFK
+  Resume: "{PREFIX} &pYour AFK State has been resumed!"
 
 Updater:
   NoUpdate: "&pThere is no update available"

@@ -1,4 +1,4 @@
-ConfigVersion: 17
+ConfigVersion: 18
 
 #Should the plugin check for new updates, UpdateDownload will not work if this is set to false
 UpdateCheck: true
@@ -22,6 +22,11 @@ Commands:
 #Its also recommended that you edit the warning message to tell players that they will be kicked when the server reaches x players
 #Setting to 0 means that players will always be acted upon when they reach their time to action
 ActionPlayerRequirement: 0
+
+#Session Length refers to how long a player needs to be offline before their AFK state is reset
+#If a player quits while AFK and rejoins before this number of minutes, they will be set as AFK automatically on join
+#This value is in minutes, you can enter fractions of a minute, e.g. 0.5 = 30 seconds
+SessionLength: 5.0
 
 #Enabling this setting will make AFKPlus update a players AFK status in essentials to match their AFKPlus AFK state
 #This may be useful for other plugins that check if a player is AFK by checking with Essentials
