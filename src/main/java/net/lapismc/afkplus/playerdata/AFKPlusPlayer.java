@@ -390,7 +390,7 @@ public class AFKPlusPlayer {
                         return;
                     plugin.getLogger().warning(getName() + " was acted upon by AFKPlus but is still online!");
                     plugin.getLogger().warning("This should not happen, please check your Action command in the config");
-                    plugin.getLogger().warning("This message can be disabled by adding \"ActionNoKick: true\" in the config");
+                    plugin.getLogger().warning("This message can be disabled by adding \"ActionNoKick: true\" to the config");
                 }
             }, 2);
         }
