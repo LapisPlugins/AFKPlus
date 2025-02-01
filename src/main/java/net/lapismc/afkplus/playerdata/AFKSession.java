@@ -42,7 +42,10 @@ public class AFKSession {
         this.plugin = plugin;
         playerUUID = player.getUUID();
         isAFK = player.isAFK();
-        relativeAFKStart = System.currentTimeMillis() - player.getAFKStart();
+        if (player.getAFKStart() != null)
+            relativeAFKStart = System.currentTimeMillis() - player.getAFKStart();
+        else
+            relativeAFKStart = 0L;
         isFakeAFK = player.isFakeAFK();
         isWarned = player.isWarned();
         isInactive = player.isInactive();

@@ -168,3 +168,5 @@
   - "Added warning when the action command doesn't remove a player from the server"
   - "Added AFK Sessions which stop players from reconnecting to evade AFK detection and actions"
   - "Implemented features that used to be in an add-on, multiple commands can now be entered in the config"
+3.4.8:
+  - "Hotfix for an NPE in the session code, triggered when the player quits before ever being AFK"
