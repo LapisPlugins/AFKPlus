@@ -382,6 +382,17 @@ public class AFKPlusPlayer {
         if (!event.isCancelled()) {
             stopAFK(true);
             runCommands(event.getCommand());
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                //Check if the player has been removed by the action, warn if they haven't
+                //This can be silenced by setting ActionNoKick: true in the config
+                if (Bukkit.getOfflinePlayer(getUUID()).isOnline()) {
+                    if (plugin.getConfig().getBoolean("ActionNoKick"))
+                        return;
+                    plugin.getLogger().warning(getName() + " was acted upon by AFKPlus but is still online!");
+                    plugin.getLogger().warning("This should not happen, please check your Action command in the config");
+                    plugin.getLogger().warning("This message can be disabled by adding \"ActionNoKick: true\" in the config");
+                }
+            }, 2);
         }
     }
 
