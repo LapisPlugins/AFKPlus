@@ -1,4 +1,4 @@
-ConfigVersion: 18
+ConfigVersion: 19
 
 #Should the plugin check for new updates, UpdateDownload will not work if this is set to false
 UpdateCheck: true
@@ -105,6 +105,9 @@ Broadcast:
   OtherPlayers: true
   Self: true
   Vanish: false
+  DiscordSRV:
+    Enabled: false
+    Channel: "global"
 
 #Aggressive AFK Detection is an attempt to stop people using AFK farms or machines
 #It does this by checking that players are moving in both look (using the mouse to look around) and transform (using wasd to move)

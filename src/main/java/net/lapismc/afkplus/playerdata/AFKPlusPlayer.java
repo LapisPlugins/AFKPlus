@@ -23,6 +23,7 @@ import net.lapismc.afkplus.api.AFKStatisticManager;
 import net.lapismc.afkplus.api.AFKStopEvent;
 import net.lapismc.afkplus.util.EssentialsAFKHook;
 import net.lapismc.lapiscore.compatibility.XSound;
+import net.lapismc.lapiscore.utils.LapisCoreDiscordSRVHook;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
@@ -338,12 +339,19 @@ public class AFKPlusPlayer {
      */
     public void broadcastOthers(String msg) {
         boolean console = plugin.getConfig().getBoolean("Broadcast.Console");
+        //Only send to DiscordSRV if the option is enabled and the plugin is enabled
+        boolean discordSrv = plugin.getConfig().getBoolean("Broadcast.DiscordSRV.Enabled") &&
+                Bukkit.getServer().getPluginManager().isPluginEnabled("DiscordSRV");
         boolean otherPlayers = shouldBroadcastToOthers();
         //Don't broadcast if the message is empty
         if (!msg.isEmpty()) {
             //Broadcast the message to console and other players if its enabled
             if (console) {
                 Bukkit.getConsoleSender().sendMessage(msg);
+            }
+            if (discordSrv) {
+                String channelName = plugin.getConfig().getString("Broadcast.DiscordSRV.Channel", "global");
+                LapisCoreDiscordSRVHook.pushMessageToDiscord(channelName, msg);
             }
             if (otherPlayers) {
                 for (Player p : Bukkit.getOnlinePlayers()) {
