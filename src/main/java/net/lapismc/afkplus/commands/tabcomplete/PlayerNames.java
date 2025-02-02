@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Benjamin Martin
+ * Copyright 2025 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,8 @@ public class PlayerNames implements LapisTabOption {
             }
         } else {
             //This is used by /afk and so needs a permission check before recommending players other than yourself
-            if (AFKPlus.getInstance().perms.isPermitted(((Player) sender).getUniqueId(), Permission.AFKOthers.getPermission()))
+            if (!(sender instanceof Player) ||
+                    AFKPlus.getInstance().perms.isPermitted(((Player) sender).getUniqueId(), Permission.AFKOthers.getPermission()))
                 Bukkit.getServer().getOnlinePlayers().forEach(player -> names.add(player.getName()));
             else
                 names.add(sender.getName());

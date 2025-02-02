@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Benjamin Martin
+ * Copyright 2025 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,9 +30,11 @@ public class OtherAFKPlusOptions implements LapisTabOption {
     @Override
     public List<String> getOptions(CommandSender sender) {
         List<String> options = new ArrayList<>();
-        if (AFKPlus.getInstance().perms.isPermitted(((Player) sender).getUniqueId(), Permission.CanUpdate.getPermission()))
+        if (!(sender instanceof Player) ||
+                AFKPlus.getInstance().perms.isPermitted(((Player) sender).getUniqueId(), Permission.CanUpdate.getPermission()))
             options.add("update");
-        if (AFKPlus.getInstance().perms.isPermitted(((Player) sender).getUniqueId(), Permission.CanReload.getPermission()))
+        if (!(sender instanceof Player) ||
+                AFKPlus.getInstance().perms.isPermitted(((Player) sender).getUniqueId(), Permission.CanReload.getPermission()))
             options.add("reload");
         options.add("help");
         return options;
