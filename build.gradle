@@ -47,6 +47,10 @@ repositories {
     maven {
         url = uri('https://repo.essentialsx.net/releases/')
     }
+    //DiscordSRV Repo
+    maven {
+        url 'https://nexus.scarsz.me/content/groups/public/'
+    }
 }
 
 dependencies {
@@ -55,6 +59,7 @@ dependencies {
     compileOnly 'net.essentialsx:EssentialsX:2.20.1'
     compileOnly 'net.luckperms:api:5.4'
     compileOnly 'org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT'
+    compileOnly 'com.discordsrv:discordsrv:1.29.0'
 }
 
 processResources {
