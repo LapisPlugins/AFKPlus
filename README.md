@@ -1,4 +1,4 @@
-![Alt text](https://i.postimg.cc/Rh2DzPKy/AFK-Title.png "AFKPlus Logo Banner")
+<img src="https://i.postimg.cc/Rh2DzPKy/AFK-Title.png">
 
 This is a spigot plugin for managing AFK players
 
