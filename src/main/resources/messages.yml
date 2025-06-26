@@ -1,4 +1,4 @@
-ConfigVersion: 7
+ConfigVersion: 8
 
 #Primary and secondary colors will replace &p and &s in any messages
 PrimaryColor: "&6"
@@ -17,6 +17,10 @@ Broadcast:
   Start: "{PREFIX} &s{PLAYER}&p is now AFK"
   #You may also add a {TIME} variable that will be replaced by how long the player was AFK
   Stop: "{PREFIX} &s{PLAYER}&p is no longer AFK"
+  DiscordSRV:
+    Start: "{PLAYER} is AFK"
+    Stop: "{PLAYER} is no longer AFK"
+    TimeAFK: "They were AFK for:"
 
 #These messages are sent to the individual who's AFK status is changing
 Self:

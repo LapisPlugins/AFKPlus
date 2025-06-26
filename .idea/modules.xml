@@ -4,12 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AFKPlus.iml" filepath="$PROJECT_DIR$/.idea/modules/AFKPlus.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AFKPlus.main.iml" filepath="$PROJECT_DIR$/.idea/modules/AFKPlus.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AFKPlus.main~1.iml" filepath="$PROJECT_DIR$/.idea/modules/AFKPlus.main~1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AFKPlus.main~2.iml" filepath="$PROJECT_DIR$/.idea/modules/AFKPlus.main~2.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/IdeaProjects.AFKPlus.main.iml" filepath="$PROJECT_DIR$/.idea/modules/IdeaProjects.AFKPlus.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Users.benja.IdeaProjects.AFKPlus.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Users.benja.IdeaProjects.AFKPlus.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/benja.IdeaProjects.AFKPlus.main.iml" filepath="$PROJECT_DIR$/.idea/modules/benja.IdeaProjects.AFKPlus.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/benjamin.IdeaProjects.AFKPlus.main.iml" filepath="$PROJECT_DIR$/.idea/modules/benjamin.IdeaProjects.AFKPlus.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/net.lapismc.AFKPlus.main.iml" filepath="$PROJECT_DIR$/.idea/modules/net.lapismc.AFKPlus.main.iml" />
     </modules>
   </component>

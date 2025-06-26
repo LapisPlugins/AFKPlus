@@ -19,7 +19,6 @@ package net.lapismc.afkplus;
 import net.lapismc.afkplus.api.AFKPlusAPI;
 import net.lapismc.afkplus.api.AFKPlusPlayerAPI;
 import net.lapismc.afkplus.commands.AFK;
-import net.lapismc.afkplus.commands.AFKDiscordTest;
 import net.lapismc.afkplus.commands.AFKPlusCmd;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.lapismc.afkplus.playerdata.AFKSession;
@@ -52,7 +51,7 @@ public final class AFKPlus extends LapisCorePlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        registerConfiguration(new AFKPlusConfiguration(this, 19, 7));
+        registerConfiguration(new AFKPlusConfiguration(this, 20, 8));
         registerPermissions(new AFKPlusPermissions(this));
         registerLuckPermsContext();
         update();
@@ -63,8 +62,6 @@ public final class AFKPlus extends LapisCorePlugin {
         prettyTime.removeUnit(Millisecond.class);
         new AFK(this);
         new AFKPlusCmd(this);
-        //TODO: Remove this before any releases
-        new AFKDiscordTest(this);
         listeners = new AFKPlusListeners(this);
         new AFKPlusAPI(this);
         new AFKPlusPlayerAPI(this);

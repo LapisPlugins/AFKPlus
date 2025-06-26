@@ -21,9 +21,9 @@ import net.lapismc.afkplus.api.AFKActionEvent;
 import net.lapismc.afkplus.api.AFKStartEvent;
 import net.lapismc.afkplus.api.AFKStatisticManager;
 import net.lapismc.afkplus.api.AFKStopEvent;
+import net.lapismc.afkplus.util.AFKPlusDiscordSRVHook;
 import net.lapismc.afkplus.util.EssentialsAFKHook;
 import net.lapismc.lapiscore.compatibility.XSound;
-import net.lapismc.lapiscore.utils.LapisCoreDiscordSRVHook;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
@@ -212,7 +212,7 @@ public class AFKPlusPlayer {
             return;
         }
         //Broadcast the AFK start message
-        broadcastOthers(event.getBroadcastMessage().replace("{PLAYER}", getName()));
+        broadcastOthers(event.getBroadcastMessage().replace("{PLAYER}", getName()), true, null);
         selfMessage(event.getSelfMessage().replace("{PLAYER}", getName()));
         //Run AFK command
         runCommands(event.getCommand());
@@ -287,7 +287,7 @@ public class AFKPlusPlayer {
         String afkTime = plugin.prettyTime.formatDuration(plugin.reduceDurationList
                 (plugin.prettyTime.calculatePreciseDuration(new Date(afkStart))));
         if (!silent) {
-            broadcastOthers(event.getBroadcastMessage().replace("{PLAYER}", getName()).replace("{TIME}", afkTime));
+            broadcastOthers(event.getBroadcastMessage().replace("{PLAYER}", getName()).replace("{TIME}", afkTime), false, afkTime);
             selfMessage(event.getSelfMessage().replace("{PLAYER}", getName()).replace("{TIME}", afkTime));
         }
         //Stop the AFK status
@@ -335,9 +335,11 @@ public class AFKPlusPlayer {
     /**
      * Broadcast a message using the settings from the config
      *
-     * @param msg The message to broadcast
+     * @param msg           The message to broadcast
+     * @param isStartingAFK Should be true if this broadcast is for a player starting AFK, if they are ending AFK it should be false
+     * @param timeAFK       The human-readable string of how long the player was AFK, null if not applicable
      */
-    public void broadcastOthers(String msg) {
+    public void broadcastOthers(String msg, boolean isStartingAFK, String timeAFK) {
         boolean console = plugin.getConfig().getBoolean("Broadcast.Console");
         //Only send to DiscordSRV if the option is enabled and the plugin is enabled
         boolean discordSrv = plugin.getConfig().getBoolean("Broadcast.DiscordSRV.Enabled") &&
@@ -350,8 +352,13 @@ public class AFKPlusPlayer {
                 Bukkit.getConsoleSender().sendMessage(msg);
             }
             if (discordSrv) {
-                String channelName = plugin.getConfig().getString("Broadcast.DiscordSRV.Channel", "global");
-                LapisCoreDiscordSRVHook.pushMessageToDiscord(channelName, msg);
+                if (plugin.getConfig().getBoolean("Broadcast.DiscordSRV.UseEmbeds")) {
+                    timeAFK = plugin.getConfig().getBoolean("Broadcast.DiscordSRV.EmbedTimeAFK") ? timeAFK : null;
+                    new AFKPlusDiscordSRVHook(plugin).sendAFKEmbed(this, isStartingAFK, timeAFK);
+                } else {
+                    String channelName = plugin.getConfig().getString("Broadcast.DiscordSRV.Channel", "global");
+                    AFKPlusDiscordSRVHook.pushMessageToDiscord(channelName, msg);
+                }
             }
             if (otherPlayers) {
                 for (Player p : Bukkit.getOnlinePlayers()) {
