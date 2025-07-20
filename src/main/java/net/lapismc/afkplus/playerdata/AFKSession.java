@@ -84,8 +84,8 @@ public class AFKSession {
             if (isWarned)
                 p.setIsWarned(true);
             //Send a message to the player to let them know that their AFK state has been resumed
-            Bukkit.getScheduler().runTaskLater(plugin, () ->
-                    Bukkit.getPlayer(playerUUID).sendMessage(plugin.config.getMessage("Self.Resume")), 20);
+            plugin.tasks.runTaskLater(() ->
+                    Bukkit.getPlayer(playerUUID).sendMessage(plugin.config.getMessage("Self.Resume")), 20, false);
         }
         p.setInactive(isInactive);
         //Set the last interact time based on the value at disconnect

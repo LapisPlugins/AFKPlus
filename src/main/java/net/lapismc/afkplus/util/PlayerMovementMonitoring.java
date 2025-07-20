@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Benjamin Martin
+ * Copyright 2025 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,8 +34,7 @@ public class PlayerMovementMonitoring {
 
     public PlayerMovementMonitoring() {
         //Register our repeating task for dealing with still players
-        AFKPlus.getInstance().tasks.addTask(Bukkit.getScheduler()
-                .runTaskTimerAsynchronously(AFKPlus.getInstance(), getRepeatingTask(), 5, 5));
+        AFKPlus.getInstance().tasks.addTask(AFKPlus.getInstance().tasks.runTaskTimer(getRepeatingTask(), 5, 5, true));
     }
 
     /**

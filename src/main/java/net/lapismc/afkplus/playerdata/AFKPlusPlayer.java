@@ -365,6 +365,7 @@ public class AFKPlusPlayer {
                     //Skip the player represented by this class, messages to them will be handled by selfMessage
                     if (p.getUniqueId().equals(getUUID()))
                         continue;
+                    //TODO: Handle chat component messages for hover text
                     p.sendMessage(msg);
                 }
             }
@@ -383,6 +384,7 @@ public class AFKPlusPlayer {
         Player p = Bukkit.getPlayer(uuid);
         //Check that the message has content, the player should receive messages and that the player is online
         if (!msg.isEmpty() && self && p != null) {
+            //TODO: Also handle chat components here
             p.sendMessage(msg);
         }
     }
@@ -397,7 +399,7 @@ public class AFKPlusPlayer {
         if (!event.isCancelled()) {
             stopAFK(true);
             runCommands(event.getCommand());
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            plugin.tasks.runTaskLater(() -> {
                 //Check if the player has been removed by the action, warn if they haven't
                 //This can be silenced by setting ActionNoKick: true in the config
                 if (Bukkit.getOfflinePlayer(getUUID()).isOnline()) {
@@ -407,7 +409,7 @@ public class AFKPlusPlayer {
                     plugin.getLogger().warning("This should not happen, please check your Action command in the config");
                     plugin.getLogger().warning("This message can be disabled by adding \"ActionNoKick: true\" to the config");
                 }
-            }, 2);
+            }, 2, false);
         }
     }
 
@@ -527,7 +529,7 @@ public class AFKPlusPlayer {
             commandTask.run();
         } else {
             //Dispatch the command on the next game tick
-            Bukkit.getScheduler().runTask(plugin, commandTask);
+            plugin.tasks.runTask(commandTask, false);
         }
     }
 
@@ -599,14 +601,14 @@ public class AFKPlusPlayer {
                     if (!timeToWarning.equals(-1)) {
                         //Check for warning
                         if (!isWarned && secondsSinceAFKStart >= timeToWarning) {
-                            Bukkit.getScheduler().runTask(plugin, this::warnPlayer);
+                            plugin.tasks.runTask(this::warnPlayer, false);
                         }
                     }
                     //Check if the player can have an action taken
                     if (!timeToAction.equals(-1)) {
                         //Check for action and if we are taking action yet
                         if (secondsSinceAFKStart >= timeToAction && isAtPlayerRequirement) {
-                            Bukkit.getScheduler().runTask(plugin, this::takeAction);
+                            plugin.tasks.runTask(this::takeAction, false);
                         }
                     }
                 } else {
@@ -621,7 +623,7 @@ public class AFKPlusPlayer {
                     long secondsSinceLastInteract = (System.currentTimeMillis() - lastInteract) / 1000;
                     //Set them as AFK if it is the same or longer than the time to AFK
                     if (secondsSinceLastInteract >= timeToAFK) {
-                        Bukkit.getScheduler().runTask(plugin, (Runnable) this::startAFK);
+                        plugin.tasks.runTask(this::startAFK, false);
                     }
                 }
             }

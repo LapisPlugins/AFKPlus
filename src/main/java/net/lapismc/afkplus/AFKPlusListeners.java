@@ -23,6 +23,7 @@ import net.lapismc.afkplus.util.EntitySpawnManager;
 import net.lapismc.afkplus.util.PlayerMovementMonitoring;
 import net.lapismc.afkplus.util.PlayerMovementStorage;
 import net.lapismc.lapiscore.commands.CommandRegistry;
+import net.lapismc.lapiscore.utils.LapisTaskHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
@@ -37,7 +38,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -46,7 +46,7 @@ public class AFKPlusListeners implements Listener {
 
     private final AFKPlus plugin;
     private final HashMap<UUID, Location> playerLocations = new HashMap<>();
-    private BukkitTask AfkMachineDetectionTask;
+    private LapisTaskHandler.LapisTask AfkMachineDetectionTask;
     private final EntitySpawnManager spawnManager;
     private final PlayerMovementMonitoring monitoring;
 
@@ -82,7 +82,7 @@ public class AFKPlusListeners implements Listener {
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e) {
         if (plugin.getConfig().getBoolean("EnabledDetections.Chat")) {
-            Bukkit.getScheduler().runTask(plugin, () -> plugin.getPlayer(e.getPlayer()).interact());
+            plugin.tasks.runTask(() -> plugin.getPlayer(e.getPlayer()).interact(), false);
         }
     }
 
@@ -304,18 +304,18 @@ public class AFKPlusListeners implements Listener {
      *
      * @return The AFK machine detection task being run by Bukkit
      */
-    public BukkitTask getAfkMachineDetectionTask() {
+    public LapisTaskHandler.LapisTask getAfkMachineDetectionTask() {
         return AfkMachineDetectionTask;
     }
 
     private void startAFKMachineDetection() {
-        AfkMachineDetectionTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+        AfkMachineDetectionTask = plugin.tasks.runTaskTimer(() -> {
             playerLocations.clear();
             //Save all players current locations
             for (Player p : Bukkit.getOnlinePlayers()) {
                 playerLocations.put(p.getUniqueId(), p.getLocation());
             }
-            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
+            plugin.tasks.runTaskLater(() -> {
                 //Go through each saved location and see if the player is moving
                 for (UUID uuid : playerLocations.keySet()) {
                     if (Bukkit.getOfflinePlayer(uuid).isOnline()) {
@@ -335,15 +335,15 @@ public class AFKPlusListeners implements Listener {
                         //if they are triggering detection events
                         if (inactive) {
                             //Trigger the AFKMachine event if the player is deemed to be avoiding AFK
-                            Bukkit.getScheduler().runTask(plugin, () ->
-                                    Bukkit.getPluginManager().callEvent(new AFKMachineDetectEvent(plugin.getPlayer(uuid))));
+                            plugin.tasks.runTask(() ->
+                                    Bukkit.getPluginManager().callEvent(new AFKMachineDetectEvent(plugin.getPlayer(uuid))), false);
                         }
                         plugin.getPlayer(uuid).setInactive(inactive);
 
                     }
                 }
-            }, 20 * 2);
-        }, 20 * 5, 20 * 5);
+            }, 20 * 2, true);
+        }, 20 * 5, 20 * 5, true);
     }
 
     private boolean checkRotation(Location oldLoc, Location newLoc) {

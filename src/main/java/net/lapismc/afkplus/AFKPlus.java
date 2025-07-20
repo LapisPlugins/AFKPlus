@@ -28,7 +28,6 @@ import net.lapismc.lapiscore.LapisCorePlugin;
 import net.lapismc.lapiscore.utils.LapisCoreFileWatcher;
 import net.lapismc.lapiscore.utils.LapisUpdater;
 import net.lapismc.lapiscore.utils.Metrics;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.ocpsoft.prettytime.Duration;
 import org.ocpsoft.prettytime.PrettyTime;
@@ -71,7 +70,7 @@ public final class AFKPlus extends LapisCorePlugin {
             players.values().forEach(player -> player.stopAFK(true));
             players.clear();
         });
-        tasks.addTask(Bukkit.getScheduler().runTaskTimerAsynchronously(this, getRepeatingTasks(), 20, 20));
+        tasks.addTask(tasks.runTaskTimer(getRepeatingTasks(), 20, 20, true));
         getLogger().info(getName() + " v." + getDescription().getVersion() + " has been enabled!");
     }
 
@@ -108,7 +107,7 @@ public final class AFKPlus extends LapisCorePlugin {
         if (!getConfig().getBoolean("UpdateCheck"))
             return;
         updater = new LapisUpdater(this, "AFKPlus", "Dart2112", "AFKPlus", "master");
-        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+        tasks.runTask(() -> {
             if (updater.checkUpdate()) {
                 if (getConfig().getBoolean("UpdateDownload")) {
                     updater.downloadUpdate();
@@ -118,7 +117,7 @@ public final class AFKPlus extends LapisCorePlugin {
             } else {
                 getLogger().info(config.getMessage("Updater.NoUpdate"));
             }
-        });
+        }, true);
     }
 
     private void registerLuckPermsContext() {

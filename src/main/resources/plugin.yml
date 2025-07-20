@@ -2,6 +2,7 @@ name: AFKPlus
 version: ${project.version}
 main: net.lapismc.afkplus.AFKPlus
 api-version: 1.18
+folia-supported: true
 softdepend: [ PlaceholderAPI, Essentials, LuckPerms, DiscordSRV ]
 authors: [Dart2112]
 description: AFK for professional servers
