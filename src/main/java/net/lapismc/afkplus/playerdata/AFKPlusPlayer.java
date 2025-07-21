@@ -521,16 +521,8 @@ public class AFKPlusPlayer {
             }
             isInactive = activeState;
         };
-        //Check if we are on the primary thread
-        //If we aren't then we need to run in a task on the main thread to dispatch a command
-        //If we are, then we might be mid-disable which means we cant register a task
-        if (Bukkit.isPrimaryThread()) {
-            //We are on the main thread so we can run the command here
-            commandTask.run();
-        } else {
-            //Dispatch the command on the next game tick
-            plugin.tasks.runTask(commandTask, false);
-        }
+        //Use this tasks method to dispatch the command on the main thread regardless of Bukkit or Folia
+        plugin.tasks.runSynchronousTaskNow(commandTask);
     }
 
     /**
