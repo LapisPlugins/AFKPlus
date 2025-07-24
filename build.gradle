@@ -50,7 +50,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'net.lapismc:LapisCore:1.13.5'
+    implementation 'net.lapismc:LapisCore:1.13.7'
     implementation 'org.ocpsoft.prettytime:prettytime:5.0.8.Final'
     compileOnly 'net.essentialsx:EssentialsX:2.20.1'
     compileOnly 'net.luckperms:api:5.4'

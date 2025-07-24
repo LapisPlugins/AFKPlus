@@ -521,6 +521,12 @@ public class AFKPlusPlayer {
             }
             isInactive = activeState;
         };
+        //Check if the server is stopping and is Folia
+        if (!plugin.isEnabled() && plugin.tasks.isFolia()) {
+            //Commands cannot be dispatched while the server is stopping on Folia
+            //So we just don't bother
+            return;
+        }
         //Use this tasks method to dispatch the command on the main thread regardless of Bukkit or Folia
         plugin.tasks.runSynchronousTaskNow(commandTask);
     }
