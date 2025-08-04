@@ -22,7 +22,7 @@ plugins {
 
 group = 'net.lapismc'
 archivesBaseName = "AFKPlus"
-version = '3.4.9'
+version = '3.5.1'
 description = 'AFK for professional servers'
 sourceCompatibility = '21'
 targetCompatibility = '21'

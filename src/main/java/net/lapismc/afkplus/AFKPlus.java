@@ -83,6 +83,12 @@ public final class AFKPlus extends LapisCorePlugin {
         getLogger().info(getName() + " has been disabled!");
     }
 
+    /**
+     * Get a AFKPlusPlayer object for a player on the server
+     *
+     * @param uuid The UUID of the player you wish to request
+     * @return a AFKPlayer object for the UUID provided
+     */
     public AFKPlusPlayer getPlayer(UUID uuid) {
         if (!players.containsKey(uuid)) {
             players.put(uuid, new AFKPlusPlayer(this, uuid));
@@ -94,10 +100,30 @@ public final class AFKPlus extends LapisCorePlugin {
         return getPlayer(op.getUniqueId());
     }
 
+    /**
+     * Get the players currently managed by the plugin
+     *
+     * @return a map of UUID to AFKPlayer object
+     */
+    public HashMap<UUID, AFKPlusPlayer> getPlayers() {
+        return players;
+    }
+
+    /**
+     * Get a stored players AFKSession object
+     *
+     * @param uuid The UUID of the player to request
+     * @return the Session object or null if one isn't stored
+     */
     public AFKSession getPlayerSession(UUID uuid) {
         return playerSessions.getOrDefault(uuid, null);
     }
 
+    /**
+     * Store a player AFK session in the plugin for later use
+     *
+     * @param session The session to be stored
+     */
     public void storeAFKSession(AFKSession session) {
         playerSessions.put(session.getUUID(), session);
     }
@@ -134,6 +160,12 @@ public final class AFKPlus extends LapisCorePlugin {
         };
     }
 
+    /**
+     * Used to reduce a list of durations to the largest 2 values
+     *
+     * @param durationList The initial duration list to be reduced
+     * @return the provided list of durations with only the largest two time units remaining
+     */
     public List<Duration> reduceDurationList(List<Duration> durationList) {
         while (durationList.size() > 2) {
             Duration smallest = null;
