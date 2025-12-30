@@ -37,7 +37,7 @@ repositories {
     //Personal Repo
     maven {
         name = "lapismc-repo"
-        url = "https://maven.lapismc.net/repository/maven/"
+        url = "https://maven.lapismc.net/releases/"
     }
     //Essentials Repo
     maven {
@@ -50,7 +50,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'net.lapismc:LapisCore:1.13.7'
+    implementation 'net.lapismc:LapisCore:1.13.9'
     implementation 'org.ocpsoft.prettytime:prettytime:5.0.8.Final'
     compileOnly 'net.essentialsx:EssentialsX:2.20.1'
     compileOnly 'net.luckperms:api:5.4'
@@ -108,11 +108,10 @@ publishing {
     }
     repositories {
         maven {
-            name 'nexus'
-            url "https://nexus.dnablue2112.com/repository/maven-releases/"
+            url "https://reposilite.dnablue2112.com/releases/"
             credentials {
-                username repoUser
-                password repoPassword
+                username reposiliteUser
+                password reposilitePassword
             }
         }
     }
