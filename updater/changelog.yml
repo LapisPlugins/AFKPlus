@@ -174,3 +174,9 @@
   - "Added basic DiscordSRV support"
   - "Currently it's just using a color-stripped version of the broadcast message"
   - "You can find the \"Enable\" and \"Channel\" settings in the broadcast section of the config"
+3.5.1:
+  - "Updated to Java 21"
+  - "Added embeds for DiscordSRV"
+  - "Fixed error when the console tries to tab complete a command"
+  - "Added support for Folia"
+  - "Added methods required for the NoBump add-on releasing soon"
