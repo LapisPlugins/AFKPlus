@@ -16,6 +16,9 @@
 
 package net.lapismc.afkplus.playerdata;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.lapismc.afkplus.AFKPlus;
 import net.lapismc.afkplus.api.AFKActionEvent;
 import net.lapismc.afkplus.api.AFKStartEvent;
@@ -382,8 +385,17 @@ public class AFKPlusPlayer {
                     //Skip the player represented by this class, messages to them will be handled by selfMessage
                     if (p.getUniqueId().equals(getUUID()))
                         continue;
-                    //TODO: Handle chat component messages for hover text
-                    p.sendMessage(msg);
+                    //Check if this is for an AFKStop and chat components are enabled for stop messages
+                    if (isAFK && timeAFK != null && plugin.getConfig().getBoolean("Broadcast.ChatComponent")) {
+                        String stopComponentString = plugin.config.getMessage("Broadcast.StopChatComponent");
+                        stopComponentString = stopComponentString.replace("{TIME}", timeAFK)
+                                .replace("{PLAYER}", getName());
+                        TextComponent hoverableText = Component.text(msg)
+                                .hoverEvent(HoverEvent.showText(Component.text(stopComponentString)));
+                        p.sendMessage(hoverableText);
+                    } else {
+                        p.sendMessage(msg);
+                    }
                 }
             }
         }
@@ -401,8 +413,19 @@ public class AFKPlusPlayer {
         Player p = Bukkit.getPlayer(uuid);
         //Check that the message has content, the player should receive messages and that the player is online
         if (!msg.isEmpty() && self && p != null) {
-            //TODO: Also handle chat components here
-            p.sendMessage(msg);
+            //Check if the player is stopping AFK, if this is the case, they will currently be AFK
+            //We only do a chat component on AFK stop, we also need to check that chat components are enabled
+            if (isAFK && plugin.getConfig().getBoolean("Broadcast.ChatComponent")) {
+                String stopComponentString = plugin.config.getMessage("Self.StopChatComponent");
+                String afkTime = plugin.prettyTime.formatDuration(plugin.reduceDurationList
+                        (plugin.prettyTime.calculatePreciseDuration(new Date(afkStart))));
+                stopComponentString = stopComponentString.replace("{TIME}", afkTime);
+                TextComponent hoverableText = Component.text(msg)
+                        .hoverEvent(HoverEvent.showText(Component.text(stopComponentString)));
+                p.sendMessage(hoverableText);
+            } else {
+                p.sendMessage(msg);
+            }
         }
     }
 

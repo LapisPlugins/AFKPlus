@@ -1,4 +1,4 @@
-ConfigVersion: 8
+ConfigVersion: 9
 
 #Primary and secondary colors will replace &p and &s in any messages
 PrimaryColor: "&6"
@@ -17,6 +17,8 @@ Broadcast:
   Start: "{PREFIX} &s{PLAYER}&p is now AFK"
   #You may also add a {TIME} variable that will be replaced by how long the player was AFK
   Stop: "{PREFIX} &s{PLAYER}&p is no longer AFK"
+  #The message will be displayed when hovering over a stop AFK message if ChatComponent is enabled in the config
+  StopChatComponent: "&s{PLAYER}&p was AFK for &s{TIME}"
   DiscordSRV:
     Start: "{PLAYER} is AFK"
     Stop: "{PLAYER} is no longer AFK"
@@ -27,6 +29,7 @@ Self:
   Start: "{PREFIX} &sYou&p are now AFK"
   #You may also add a {TIME} variable that will be replaced by how long the player was AFK
   Stop: "{PREFIX} &sYou&p are no longer AFK"
+  StopChatComponent: "&sYou&p were AFK for &s{TIME}"
   #The message sent to players when they join and are immediately set as AFK
   Resume: "{PREFIX} &pYour AFK State has been resumed!"
 

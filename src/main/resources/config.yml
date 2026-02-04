@@ -1,4 +1,4 @@
-ConfigVersion: 20
+ConfigVersion: 21
 
 #Should the plugin check for new updates, UpdateDownload will not work if this is set to false
 UpdateCheck: true
@@ -104,6 +104,8 @@ Broadcast:
   OtherPlayers: true
   Self: true
   Vanish: false
+  #Enabling this will allow players to see how long a player was AFK by hovering over the AFK stop chat message
+  ChatComponent: false
   DiscordSRV:
     Enabled: false
     #Uses plain text when false, uses discord embeds when true

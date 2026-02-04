@@ -114,8 +114,8 @@ publishing {
         maven {
             url "https://reposilite.dnablue2112.com/releases/"
             credentials {
-                username reposiliteUser
-                password reposilitePassword
+                username project.findProperty('reposiliteUser') ?: ""
+                password project.findProperty('reposilitePassword') ?: ""
             }
         }
     }
