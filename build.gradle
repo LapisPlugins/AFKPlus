@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Benjamin Martin
+ * Copyright 2026 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ plugins {
 
 group = 'net.lapismc'
 archivesBaseName = "AFKPlus"
-version = '3.5.1'
+version = '3.5.2'
 description = 'AFK for professional servers'
 sourceCompatibility = '21'
 targetCompatibility = '21'
@@ -50,9 +50,13 @@ repositories {
 }
 
 dependencies {
-    implementation 'net.lapismc:LapisCore:1.13.9'
+    implementation 'net.lapismc:LapisCore:1.13.11'
     implementation 'org.ocpsoft.prettytime:prettytime:5.0.8.Final'
-    compileOnly 'net.essentialsx:EssentialsX:2.20.1'
+    compileOnly 'io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT'
+    compileOnly('net.essentialsx:EssentialsX:2.20.1') {
+        //This exclusion is so we can use the paper api without class collisions
+        exclude group: "org.spigotmc", module: "spigot-api"
+    }
     compileOnly 'net.luckperms:api:5.4'
     compileOnly 'com.discordsrv:discordsrv:1.29.0'
 }

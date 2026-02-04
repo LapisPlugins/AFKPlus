@@ -91,8 +91,7 @@ Protections:
   #Same as HurtByPlayer but stops any non-player damage
   HurtByOther: true
   #When enabled, mobs will not spawn if the AFK player is the cause of the spawning
-  #This only applies to natural and spawner spawning
-  #This may cause minor lag on high-end servers
+  #This feature uses an API only available on Paper based servers, so will not function on Spigot/Bukkit
   MobSpawning: false
   #When enabled AFK players will not be targeted by mobs
   MobTargeting: false

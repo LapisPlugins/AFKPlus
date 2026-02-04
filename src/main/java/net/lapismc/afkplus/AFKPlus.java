@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Benjamin Martin
+ * Copyright 2026 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,23 +53,27 @@ public final class AFKPlus extends LapisCorePlugin {
         registerConfiguration(new AFKPlusConfiguration(this, 20, 8));
         registerPermissions(new AFKPlusPermissions(this));
         registerLuckPermsContext();
-        update();
+        checkForUpdate();
         fileWatcher = new LapisCoreFileWatcher(this);
         Locale loc = new Locale(config.getMessage("PrettyTimeLocale"));
         prettyTime = new PrettyTime(loc);
         prettyTime.removeUnit(JustNow.class);
         prettyTime.removeUnit(Millisecond.class);
+        //Register Commands
         new AFK(this);
         new AFKPlusCmd(this);
         listeners = new AFKPlusListeners(this);
+        //Provide main class to API classes
         new AFKPlusAPI(this);
         new AFKPlusPlayerAPI(this);
+        //Setup BStats
         new Metrics(this, 424);
         //Safely handle the stopping of AFKPlus in regard to player data
         tasks.addShutdownTask(() -> {
             players.values().forEach(player -> player.stopAFK(true));
             players.clear();
         });
+        //This task is for processing AFK start, warn and kick
         tasks.addTask(tasks.runTaskTimer(getRepeatingTasks(), 20, 20, true));
         getLogger().info(getName() + " v." + getDescription().getVersion() + " has been enabled!");
     }
@@ -128,7 +132,7 @@ public final class AFKPlus extends LapisCorePlugin {
         playerSessions.put(session.getUUID(), session);
     }
 
-    private void update() {
+    private void checkForUpdate() {
         //Don't check for updates if the update check setting is set to false
         if (!getConfig().getBoolean("UpdateCheck"))
             return;

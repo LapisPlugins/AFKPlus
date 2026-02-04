@@ -180,3 +180,5 @@
   - "Fixed error when the console tries to tab complete a command"
   - "Added support for Folia"
   - "Added methods required for the NoBump add-on releasing soon"
+3.5.2:
+  - ""

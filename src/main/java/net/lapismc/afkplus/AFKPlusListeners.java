@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Benjamin Martin
+ * Copyright 2026 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package net.lapismc.afkplus;
 import net.lapismc.afkplus.api.AFKMachineDetectEvent;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.lapismc.afkplus.playerdata.AFKSession;
-import net.lapismc.afkplus.util.EntitySpawnManager;
 import net.lapismc.afkplus.util.PlayerMovementMonitoring;
 import net.lapismc.afkplus.util.PlayerMovementStorage;
 import net.lapismc.lapiscore.commands.CommandRegistry;
@@ -35,7 +34,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.player.*;
 
@@ -47,14 +48,12 @@ public class AFKPlusListeners implements Listener {
     private final AFKPlus plugin;
     private final HashMap<UUID, Location> playerLocations = new HashMap<>();
     private LapisTaskHandler.LapisTask AfkMachineDetectionTask;
-    private final EntitySpawnManager spawnManager;
     private final PlayerMovementMonitoring monitoring;
 
     AFKPlusListeners(AFKPlus plugin) {
         this.plugin = plugin;
         monitoring = new PlayerMovementMonitoring();
         startAFKMachineDetection();
-        spawnManager = new EntitySpawnManager(plugin);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -251,34 +250,6 @@ public class AFKPlusListeners implements Listener {
     }
 
     /*
-    Mob Spawning Protections
-     */
-
-    @EventHandler
-    public void onNaturalMonsterSpawn(CreatureSpawnEvent e) {
-        if (!plugin.getConfig().getBoolean("Protections.MobSpawning"))
-            return;
-        //Return if it's not a monster or if it isn't natural
-        if (!(e.getEntity() instanceof Monster) || !e.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.NATURAL))
-            return;
-        boolean shouldSpawn = spawnManager.shouldNaturalSpawn(e.getLocation());
-        if (!shouldSpawn)
-            e.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onSpawnerMonsterSpawn(SpawnerSpawnEvent e) {
-        if (!plugin.getConfig().getBoolean("Protections.MobSpawning"))
-            return;
-        //Return if it's not a monster
-        if (!(e.getEntity() instanceof Monster))
-            return;
-        boolean shouldSpawn = spawnManager.shouldSpawnerSpawn(e.getSpawner());
-        if (!shouldSpawn)
-            e.setCancelled(true);
-    }
-
-    /*
     Mob targeting protection
      */
     @EventHandler
@@ -289,7 +260,6 @@ public class AFKPlusListeners implements Listener {
             return;
         if (!(e.getTarget() instanceof Player player))
             return;
-        if (player == null) return;
         if (!plugin.getPlayer(player).isAFK())
             return;
         e.setCancelled(true);

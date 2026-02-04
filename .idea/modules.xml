@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AFKPlus.main.iml" filepath="$PROJECT_DIR$/.idea/modules/AFKPlus.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/IdeaProjects.AFKPlus.main.iml" filepath="$PROJECT_DIR$/.idea/modules/IdeaProjects.AFKPlus.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/net.lapismc.AFKPlus.main.iml" filepath="$PROJECT_DIR$/.idea/modules/net.lapismc.AFKPlus.main.iml" />
     </modules>
   </component>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Benjamin Martin
+ * Copyright 2026 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import net.lapismc.afkplus.api.AFKStatisticManager;
 import net.lapismc.afkplus.api.AFKStopEvent;
 import net.lapismc.afkplus.util.AFKPlusDiscordSRVHook;
 import net.lapismc.afkplus.util.EssentialsAFKHook;
+import net.lapismc.lapiscore.compatibility.ServerImplementations;
 import net.lapismc.lapiscore.compatibility.XSound;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -251,6 +252,14 @@ public class AFKPlusPlayer {
                 p.setSleepingIgnored(true);
             }
         }
+        //Set the player as being ignored for mob spawning on paper servers if it is enabled
+        if (plugin.getConfig().getBoolean("Protections.MobSpawning")) {
+            if (new ServerImplementations().getImplementations().contains(ServerImplementations.imp.Paper)) {
+                Player p = Bukkit.getPlayer(getUUID());
+                if (p != null)
+                    p.setAffectsSpawning(false);
+            }
+        }
     }
 
     /**
@@ -317,6 +326,14 @@ public class AFKPlusPlayer {
             Player p = Bukkit.getPlayer(getUUID());
             if (p != null) {
                 p.setSleepingIgnored(false);
+            }
+        }
+        //Set the player as being included for mob spawning on paper servers if it is enabled
+        if (plugin.getConfig().getBoolean("Protections.MobSpawning")) {
+            if (new ServerImplementations().getImplementations().contains(ServerImplementations.imp.Paper)) {
+                Player p = Bukkit.getPlayer(getUUID());
+                if (p != null)
+                    p.setAffectsSpawning(true);
             }
         }
     }
