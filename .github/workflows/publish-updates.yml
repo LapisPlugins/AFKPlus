@@ -15,7 +15,7 @@ jobs:
     
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: "get env variables"
         id: "get_env_var"
         run: |
@@ -32,10 +32,20 @@ jobs:
           echo "CHANGELOG<<EOF" >> $GITHUB_ENV
           echo "${CHANGELOG}" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-      
+
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "updater/AFKPlus/AFKPlus.jar"
           body: ${{ env.CHANGELOG }}
           tag: ${{ env.COMMIT_VER_TAG }}
           name: "Update ${{ env.COMMIT_VER_TAG }}"
+
+      - uses: cloudnode-pro/modrinth-publish@v2
+        with:
+          token: ${{ secrets.MODRINTH_TOKEN }}
+          project: TFVOdaeG
+          version: ${{ env.COMMIT_VER_TAG }}
+          loaders: '["paper", "spigot", "bukkit", "folia"]'
+          game-versions: 1.21.*
+          files: "updater/AFKPlus/AFKPlus.jar"
+          changelog: ${{ env.CHANGELOG }}
