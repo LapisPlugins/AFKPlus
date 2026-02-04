@@ -46,6 +46,6 @@ jobs:
           project: TFVOdaeG
           version: ${{ env.COMMIT_VER_TAG }}
           loaders: '["paper", "spigot", "bukkit", "folia"]'
-          game-versions: 1.21.*
+          game-versions: 1.21.x
           files: "updater/AFKPlus/AFKPlus.jar"
           changelog: ${{ env.CHANGELOG }}
