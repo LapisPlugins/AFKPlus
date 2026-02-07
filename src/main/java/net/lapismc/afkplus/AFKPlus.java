@@ -55,7 +55,7 @@ public final class AFKPlus extends LapisCorePlugin {
         registerLuckPermsContext();
         checkForUpdate();
         fileWatcher = new LapisCoreFileWatcher(this);
-        Locale loc = new Locale(config.getMessage("PrettyTimeLocale"));
+        Locale loc = Locale.forLanguageTag(config.getMessage("PrettyTimeLocale"));
         prettyTime = new PrettyTime(loc);
         prettyTime.removeUnit(JustNow.class);
         prettyTime.removeUnit(Millisecond.class);
