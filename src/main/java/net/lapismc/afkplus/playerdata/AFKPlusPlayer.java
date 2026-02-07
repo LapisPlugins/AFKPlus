@@ -16,9 +16,6 @@
 
 package net.lapismc.afkplus.playerdata;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.event.HoverEvent;
 import net.lapismc.afkplus.AFKPlus;
 import net.lapismc.afkplus.api.AFKActionEvent;
 import net.lapismc.afkplus.api.AFKStartEvent;
@@ -26,6 +23,7 @@ import net.lapismc.afkplus.api.AFKStatisticManager;
 import net.lapismc.afkplus.api.AFKStopEvent;
 import net.lapismc.afkplus.util.AFKPlusDiscordSRVHook;
 import net.lapismc.afkplus.util.EssentialsAFKHook;
+import net.lapismc.afkplus.util.PlayerHoverMessage;
 import net.lapismc.lapiscore.compatibility.ServerImplementations;
 import net.lapismc.lapiscore.compatibility.XSound;
 import org.bukkit.Bukkit;
@@ -386,13 +384,13 @@ public class AFKPlusPlayer {
                     if (p.getUniqueId().equals(getUUID()))
                         continue;
                     //Check if this is for an AFKStop and chat components are enabled for stop messages
-                    if (isAFK && timeAFK != null && plugin.getConfig().getBoolean("Broadcast.ChatComponent")) {
+                    //Also check that this is a Paper server or this will break
+                    if (isAFK && timeAFK != null && plugin.getConfig().getBoolean("Broadcast.ChatComponent")
+                            && new ServerImplementations().getImplementations().contains(ServerImplementations.imp.Paper)) {
                         String stopComponentString = plugin.config.getMessage("Broadcast.StopChatComponent");
                         stopComponentString = stopComponentString.replace("{TIME}", timeAFK)
                                 .replace("{PLAYER}", getName());
-                        TextComponent hoverableText = Component.text(msg)
-                                .hoverEvent(HoverEvent.showText(Component.text(stopComponentString)));
-                        p.sendMessage(hoverableText);
+                        new PlayerHoverMessage(p, msg, stopComponentString);
                     } else {
                         p.sendMessage(msg);
                     }
@@ -415,14 +413,14 @@ public class AFKPlusPlayer {
         if (!msg.isEmpty() && self && p != null) {
             //Check if the player is stopping AFK, if this is the case, they will currently be AFK
             //We only do a chat component on AFK stop, we also need to check that chat components are enabled
-            if (isAFK && plugin.getConfig().getBoolean("Broadcast.ChatComponent")) {
+            //Make sure this is a paper based server since that's the hover implementation we are using
+            if (isAFK && plugin.getConfig().getBoolean("Broadcast.ChatComponent")
+                    && new ServerImplementations().getImplementations().contains(ServerImplementations.imp.Paper)) {
                 String stopComponentString = plugin.config.getMessage("Self.StopChatComponent");
                 String afkTime = plugin.prettyTime.formatDuration(plugin.reduceDurationList
                         (plugin.prettyTime.calculatePreciseDuration(new Date(afkStart))));
                 stopComponentString = stopComponentString.replace("{TIME}", afkTime);
-                TextComponent hoverableText = Component.text(msg)
-                        .hoverEvent(HoverEvent.showText(Component.text(stopComponentString)));
-                p.sendMessage(hoverableText);
+                new PlayerHoverMessage(p, msg, stopComponentString);
             } else {
                 p.sendMessage(msg);
             }
