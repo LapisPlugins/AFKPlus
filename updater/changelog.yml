@@ -181,4 +181,7 @@
   - "Added support for Folia"
   - "Added methods required for the NoBump add-on releasing soon"
 3.5.2:
-  - ""
+  - "Fixed MobSpawning protection to use Paper spigot method which doesn't cause lag like the old method I was using. NOTE: This option now only works on Paper/Folia servers"
+3.5.3:
+  - "Updated to latest LapisCore which fixes issue with StackOverflowError"
+  - "Added hover messages for Paper servers, this displays how long a player was AFK when you hover over their AFK stop message in chat"

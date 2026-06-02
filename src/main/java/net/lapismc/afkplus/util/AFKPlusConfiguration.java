@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Benjamin Martin
+ * Copyright 2026 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,14 +57,17 @@ public class AFKPlusConfiguration extends LapisCoreConfiguration {
         //The plugin crashes without this
         if (plugin == null)
             return;
-        //Get both the config and pretty time locales and compare them
-        Locale configLocale = new Locale(getMessage("PrettyTimeLocale"));
-        Locale prettyTimeLocale = plugin.prettyTime.getLocale();
-        //If they don't match we need to reinit pretty time
-        if (!configLocale.equals(prettyTimeLocale)) {
-            plugin.prettyTime = new PrettyTime(configLocale);
-            plugin.prettyTime.removeUnit(JustNow.class);
-            plugin.prettyTime.removeUnit(Millisecond.class);
-        }
+        //Run this later since it is accessing the files we are reloading
+        plugin.tasks.runTask(() -> {
+            //Get both the config and pretty time locales and compare them
+            Locale configLocale = Locale.forLanguageTag(getMessage("PrettyTimeLocale"));
+            Locale prettyTimeLocale = plugin.prettyTime.getLocale();
+            //If they don't match we need to reinit pretty time
+            if (!configLocale.equals(prettyTimeLocale)) {
+                plugin.prettyTime = new PrettyTime(configLocale);
+                plugin.prettyTime.removeUnit(JustNow.class);
+                plugin.prettyTime.removeUnit(Millisecond.class);
+            }
+        }, false);
     }
 }

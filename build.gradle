@@ -17,15 +17,12 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id "com.gradleup.shadow" version "9.0.0-rc1"
+    id "com.gradleup.shadow" version "9.4.2"
 }
 
 group = 'net.lapismc'
-archivesBaseName = "AFKPlus"
-version = '3.5.2'
+version = '3.5.3'
 description = 'AFK for professional servers'
-sourceCompatibility = '21'
-targetCompatibility = '21'
 defaultTasks 'clean', 'build', 'shadowJar'
 
 repositories {
@@ -50,9 +47,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'net.lapismc:LapisCore:1.13.11'
-    implementation 'org.ocpsoft.prettytime:prettytime:5.0.8.Final'
-    compileOnly 'io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT'
+    implementation 'net.lapismc:LapisCore:1.13.12'
+    implementation 'org.ocpsoft.prettytime:prettytime:5.0.9.Final'
+    compileOnly 'io.papermc.paper:paper-api:26.1.2.build.+'
     compileOnly('net.essentialsx:EssentialsX:2.20.1') {
         //This exclusion is so we can use the paper api without class collisions
         exclude group: "org.spigotmc", module: "spigot-api"
@@ -68,7 +65,7 @@ processResources {
 }
 
 shadowJar {
-    archiveFileName.set(archivesBaseName + "-" + project.getVersion() + ".jar")
+    archiveFileName.set("AFKPlus-" + project.getVersion() + ".jar")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     exclude 'javax/**'
     relocate("org.ocpsoft.prettytime", "net.lapismc.afkplus.util.prettytime")
