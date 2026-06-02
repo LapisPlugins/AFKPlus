@@ -21,14 +21,22 @@ jobs:
         run: |
           #!/bin/bash
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-          # "Update M.m.b"
-          COMMIT_MESSAGE_HEADER=$(git log -1 --pretty=%B | head -n 1)
+          # "Update M.m.b title of update"
+          COMMIT_MESSAGE_HEADER=$(echo "${COMMIT_MESSAGE}" | head -n 1)
           # M.m.b
-          COMMIT_VER_TAG=$(echo ${COMMIT_MESSAGE_HEADER/"Update "/""})
+          # Regex to extract the version number from my update title
+          regex="([0-9]+\.[0-9]+\.[0-9]+?)"
+          # Grab that there value
+          if [[ $input =~ $regex ]]; then
+          semver="${BASH_REMATCH[1]}"
+          fi
+          # Save it as our version tag
+          COMMIT_VER_TAG=${semver}
           # Changelog
-          CHANGELOG=$(tail -n +2 <<< $COMMIT_MESSAGE)
+          CHANGELOG=$(tail -n +2 <<< "${COMMIT_MESSAGE}")
           # Push them to env
           echo "COMMIT_VER_TAG=${COMMIT_VER_TAG}" >> $GITHUB_ENV
+          echo "COMMIT_TITLE=${COMMIT_MESSAGE_HEADER}" >>$GITHUB_ENV
           echo "CHANGELOG<<EOF" >> $GITHUB_ENV
           echo "${CHANGELOG}" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
@@ -45,14 +53,15 @@ jobs:
           artifacts: "build/libs/AFKPlus-${{ env.COMMIT_VER_TAG }}.jar"
           body: ${{ env.CHANGELOG }}
           tag: ${{ env.COMMIT_VER_TAG }}
-          name: "Update ${{ env.COMMIT_VER_TAG }}"
+          name: ${{ env.COMMIT_TITLE }}
 
       - uses: cloudnode-pro/modrinth-publish@v2
         with:
           token: ${{ secrets.MODRINTH_TOKEN }}
           project: TFVOdaeG
           version: ${{ env.COMMIT_VER_TAG }}
+          name: ${{ env.COMMIT_TITLE }}
           loaders: '["paper", "spigot", "bukkit", "folia"]'
           game-versions: 1.21.x
-          files: "updater/AFKPlus/AFKPlus-${{ env.COMMIT_VER_TAG }}.jar"
+          files: "build/libs/AFKPlus-${{ env.COMMIT_VER_TAG }}.jar"
           changelog: ${{ env.CHANGELOG }}
