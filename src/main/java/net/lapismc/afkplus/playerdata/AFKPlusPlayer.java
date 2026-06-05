@@ -594,6 +594,10 @@ public class AFKPlusPlayer {
         String soundName = plugin.getConfig().getString(pathToSound);
         if ("".equals(soundName) || soundName == null)
             return;
+        if (soundName.contains("_")) {
+            soundName = soundName.replace("_", ".");
+            soundName = soundName.toLowerCase();
+        }
         NamespacedKey soundKey = NamespacedKey.minecraft(soundName);
         Sound sound = Bukkit.getRegistry(Sound.class).get(soundKey);
         if (sound == null)
