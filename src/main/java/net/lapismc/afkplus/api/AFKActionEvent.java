@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Benjamin Martin
+ * Copyright 2026 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ public class AFKActionEvent extends AFKCommandEvent {
     private final AFKPlusPlayer player;
 
     /**
+     * Called when a player is about to be actioned
      * @param player  The player that the event is effecting
      * @param command The command that will be run with this event
      */

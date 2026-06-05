@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Benjamin Martin
+ * Copyright 2026 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ public class AFKMachineDetectEvent extends LapisCoreEvent {
     private final AFKPlusPlayer player;
 
     /**
+     * Called when a player is suspected of using an AFK machine
      * @param player The player that is triggering this event
      */
     public AFKMachineDetectEvent(AFKPlusPlayer player) {

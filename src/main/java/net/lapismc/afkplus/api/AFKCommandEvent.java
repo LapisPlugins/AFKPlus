@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Benjamin Martin
+ * Copyright 2026 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ public class AFKCommandEvent extends LapisCoreCancellableEvent {
     private String command;
 
     /**
+     * Specify the command that will be run if this event is not canceled
      * @param command The command to be run when this event finishes, use an empty string for no command
      */
     public AFKCommandEvent(String command) {

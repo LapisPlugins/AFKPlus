@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Benjamin Martin
+ * Copyright 2026 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,8 @@ public class AFKStartEvent extends AFKCommandEvent {
     private String broadcastMessage, selfMessage;
 
     /**
+     * Called when a player is entering an AFK state
+     *
      * @param player           The player being set as AFK
      * @param command          The command to be run after the event has finished
      * @param broadcastMessage The message that will be broadcast if the event succeeds

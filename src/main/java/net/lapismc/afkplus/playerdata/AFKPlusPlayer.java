@@ -25,14 +25,14 @@ import net.lapismc.afkplus.util.AFKPlusDiscordSRVHook;
 import net.lapismc.afkplus.util.EssentialsAFKHook;
 import net.lapismc.afkplus.util.PlayerHoverMessage;
 import net.lapismc.lapiscore.compatibility.ServerImplementations;
-import net.lapismc.lapiscore.compatibility.XSound;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -52,6 +52,8 @@ public class AFKPlusPlayer {
     private boolean isWarned;
 
     /**
+     * Initialize a player object
+     *
      * @param plugin The plugin instance for config and permissions access
      * @param uuid   The UUID of the player that this class should control
      */
@@ -127,7 +129,7 @@ public class AFKPlusPlayer {
         //Send the player the warning message
         p.sendMessage(getMessage("Warning"));
         //Play the warning sound from the config
-        playSound("WarningSound", XSound.ENTITY_PLAYER_LEVELUP);
+        playSound("WarningSound", Sound.ENTITY_PLAYER_LEVELUP);
     }
 
     /**
@@ -219,7 +221,7 @@ public class AFKPlusPlayer {
         //Run AFK command
         runCommands(event.getCommand());
         //Play the AFK start sound
-        playSound("AFKStartSound", XSound.BLOCK_ANVIL_HIT);
+        playSound("AFKStartSound", Sound.BLOCK_ANVIL_HIT);
         //Start the AFK
         forceStartAFK();
     }
@@ -585,17 +587,18 @@ public class AFKPlusPlayer {
      * @param pathToSound The path to the sounds name in the config.yml
      * @param def         The sound to be used if the sound in the config isn't valid
      */
-    private void playSound(String pathToSound, XSound def) {
+    private void playSound(String pathToSound, Sound def) {
         if (!isOnline())
             return;
         Player p = Bukkit.getPlayer(getUUID());
         String soundName = plugin.getConfig().getString(pathToSound);
         if ("".equals(soundName) || soundName == null)
             return;
-        XSound sound;
-        Optional<XSound> retrievedSound = XSound.matchXSound(soundName);
-        sound = retrievedSound.orElse(def);
-        sound.play(p);
+        NamespacedKey soundKey = NamespacedKey.minecraft(soundName);
+        Sound sound = Bukkit.getRegistry(Sound.class).get(soundKey);
+        if (sound == null)
+            sound = def;
+        p.playSound(p, sound, 1, 1);
     }
 
     /**
