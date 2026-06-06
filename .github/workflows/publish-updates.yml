@@ -27,11 +27,9 @@ jobs:
           # Regex to extract the version number from my update title
           regex="([0-9]+\.[0-9]+\.[0-9]+?)"
           # Grab that there value
-          if [[ $input =~ $regex ]]; then
-          semver="${BASH_REMATCH[1]}"
+          if [[ $COMMIT_MESSAGE_HEADER =~ $regex ]]; then
+            COMMIT_VER_TAG="${BASH_REMATCH[1]}"
           fi
-          # Save it as our version tag
-          COMMIT_VER_TAG=${semver}
           # Changelog
           CHANGELOG=$(tail -n +2 <<< "${COMMIT_MESSAGE}")
           # Push them to env
