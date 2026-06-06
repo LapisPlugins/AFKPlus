@@ -24,9 +24,9 @@ import net.lapismc.afkplus.api.AFKStopEvent;
 import net.lapismc.afkplus.util.AFKPlusDiscordSRVHook;
 import net.lapismc.afkplus.util.EssentialsAFKHook;
 import net.lapismc.afkplus.util.PlayerHoverMessage;
+import net.lapismc.lapiscore.compatibility.LapisSound;
 import net.lapismc.lapiscore.compatibility.ServerImplementations;
 import org.bukkit.Bukkit;
-import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
@@ -582,7 +582,7 @@ public class AFKPlusPlayer {
     }
 
     /**
-     * Plays a sound from the config or the default sound if its not available
+     * Plays a sound from the config or the default sound if it's not available
      *
      * @param pathToSound The path to the sounds name in the config.yml
      * @param def         The sound to be used if the sound in the config isn't valid
@@ -591,15 +591,10 @@ public class AFKPlusPlayer {
         if (!isOnline())
             return;
         Player p = Bukkit.getPlayer(getUUID());
-        String soundName = plugin.getConfig().getString(pathToSound);
-        if ("".equals(soundName) || soundName == null)
+        if (p == null)
             return;
-        if (soundName.contains("_")) {
-            soundName = soundName.replace("_", ".");
-            soundName = soundName.toLowerCase();
-        }
-        NamespacedKey soundKey = NamespacedKey.minecraft(soundName);
-        Sound sound = Bukkit.getRegistry(Sound.class).get(soundKey);
+        String soundName = plugin.getConfig().getString(pathToSound);
+        Sound sound = new LapisSound(soundName).getSound();
         if (sound == null)
             sound = def;
         p.playSound(p, sound, 1, 1);

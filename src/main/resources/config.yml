@@ -36,8 +36,8 @@ EssentialsAFKHook: false
 
 #The sound to be played when a player is warned
 #Set to blank if you don't want a sound e.g. ""
-#A list of sounds for the latest spigot version is available at
-#https://github.com/CryptoMorin/XSeries/blob/master/src/main/java/com/cryptomorin/xseries/XSound.java#L64
+#See https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/browse/src/main/java/org/bukkit/Sound.java for a list of available sounds
+#You want to use the name inside the getSound("") at the end of each line
 WarningSound: "entity.player.levelup"
 
 #The sound to be played to a player when they become AFK

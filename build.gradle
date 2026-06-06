@@ -47,7 +47,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'net.lapismc:LapisCore:1.13.12'
+    implementation 'net.lapismc:LapisCore:1.13.13'
     implementation 'org.ocpsoft.prettytime:prettytime:5.0.9.Final'
     compileOnly 'io.papermc.paper:paper-api:26.1.2.build.+'
     compileOnly('net.essentialsx:EssentialsX:2.20.1') {
