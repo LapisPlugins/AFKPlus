@@ -75,16 +75,14 @@ public final class AFKPlus extends LapisCorePlugin {
         });
         //This task is for processing AFK start, warn and kick
         tasks.addTask(tasks.runTaskTimer(getRepeatingTasks(), 20, 20, true));
-        getLogger().info(getName() + " v." + getDescription().getVersion() + " has been enabled!");
+        super.onEnable();
     }
 
     @Override
     public void onDisable() {
-        //Stop the repeating tasks
-        tasks.stopALlTasks();
         //Also stop the AFK Machine detection task
         listeners.getAfkMachineDetectionTask().cancel();
-        getLogger().info(getName() + " has been disabled!");
+        super.onDisable();
     }
 
     /**

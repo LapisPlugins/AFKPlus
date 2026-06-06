@@ -185,3 +185,6 @@
 3.5.3:
   - "Updated to latest LapisCore which fixes issue with StackOverflowError"
   - "Added hover messages for Paper servers, this displays how long a player was AFK when you hover over their AFK stop message in chat"
+3.5.4:
+  - "New sound name system to support namespaced keys for sounds"
+  - "LapisCore update for reloading files"
