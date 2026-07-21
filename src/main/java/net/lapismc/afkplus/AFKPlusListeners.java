@@ -67,15 +67,22 @@ public class AFKPlusListeners implements Listener {
         AFKSession session = plugin.getPlayerSession(e.getPlayer().getUniqueId());
         //If the session is null, it means we didn't have one stored, so run the old code
         //But otherwise we let the session handle it
-        if (session == null)
-            plugin.getPlayer(e.getPlayer()).forceStopAFK();
+        AFKPlusPlayer player = plugin.getPlayer(e.getPlayer().getUniqueId());
+        if (session == null && player.isAFK())
+            player.forceStopAFK();
         else
-            session.processReconnect(plugin.getPlayer(e.getPlayer()));
+            session.processReconnect(player);
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
-        plugin.storeAFKSession(new AFKSession(plugin, plugin.getPlayer(e.getPlayer())));
+        AFKPlusPlayer player = plugin.getPlayer(e.getPlayer().getUniqueId());
+        //Store the Session first so that it accuratly records the players AFK state
+        plugin.storeAFKSession(new AFKSession(plugin, player));
+        //Stop the AFK state if they are AFK, this stops statistics tracking while not AFK
+        if (player.isAFK())
+            player.forceStopAFK();
+
     }
 
     @EventHandler
