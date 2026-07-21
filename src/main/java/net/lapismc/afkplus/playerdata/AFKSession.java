@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Benjamin Martin
+ * Copyright 2026 Benjamin Martin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,7 +68,8 @@ public class AFKSession {
         if (sessionLength < minutesOffline) {
             //The user has been offline longer than the session length
             //Therefore we ignore the users session and reset them
-            p.forceStopAFK();
+            if (p.isAFK())
+                p.forceStopAFK();
             //return so that the session logic is skipped
             return;
         }
