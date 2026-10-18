@@ -21,7 +21,7 @@ plugins {
 }
 
 group = 'net.lapismc'
-version = '3.5.5'
+version = '3.5.6'
 description = 'AFK for professional servers'
 defaultTasks 'clean', 'build', 'shadowJar'
 

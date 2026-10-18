@@ -68,10 +68,12 @@ public class AFKPlusListeners implements Listener {
         //If the session is null, it means we didn't have one stored, so run the old code
         //But otherwise we let the session handle it
         AFKPlusPlayer player = plugin.getPlayer(e.getPlayer().getUniqueId());
-        if (session == null && player.isAFK())
-            player.forceStopAFK();
-        else
+        if (session == null) {
+            if (player.isAFK())
+                player.forceStopAFK();
+        } else {
             session.processReconnect(player);
+        }
     }
 
     @EventHandler

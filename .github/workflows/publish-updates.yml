@@ -60,6 +60,6 @@ jobs:
           version: ${{ env.COMMIT_VER_TAG }}
           name: ${{ env.COMMIT_TITLE }}
           loaders: '["paper", "spigot", "bukkit", "folia"]'
-          game-versions: 1.21.x
+          game-versions: 26.3
           files: "build/libs/AFKPlus-${{ env.COMMIT_VER_TAG }}.jar"
           changelog: ${{ env.CHANGELOG }}
