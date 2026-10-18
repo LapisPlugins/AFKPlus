@@ -188,3 +188,6 @@
 3.5.4:
   - "New sound name system to support namespaced keys for sounds"
   - "LapisCore update for reloading files"
+3.5.5:
+  - "Statistics now track correctly when a player leaves the server while AFK"
+  - "Updated to latest LapisCore and Paper"
